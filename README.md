@@ -1,0 +1,1 @@
+RESTful web-service for booking hotel rooms.
