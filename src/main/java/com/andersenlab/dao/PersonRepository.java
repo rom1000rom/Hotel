@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
  @author Артемьев Р.А.
  @version 05.03.2020 */
 @Repository
-public interface PersonRepository extends CrudRepository<Person, Long>
-{ }
+public interface PersonRepository extends CrudRepository<Person, Long> {
+
+    Person findOneByPersonNameLike(String personName);
+}

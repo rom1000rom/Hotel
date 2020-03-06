@@ -1,8 +1,6 @@
 package com.andersenlab.model;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.persistence.*;
 
@@ -20,7 +18,13 @@ public class Person {
   @Version
   private Integer version;
 
+  private String encrytedPassword;
+
+  /**Находится ли пользователь в "черном" списке*/
   private Boolean blacklisted = false;
+
+  /**Является ли пользователь администратором*/
+  private Boolean admin = false;
 
   @Column(name = "person_name")
   private String personName;
@@ -69,20 +73,12 @@ public class Person {
     return id;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Person)) return false;
-    Person person = (Person) o;
-    return Objects.equals(id, person.id) &&
-            Objects.equals(version, person.version) &&
-            Objects.equals(personName, person.personName) &&
-            Objects.equals(roomSet, person.roomSet);
+  public Boolean getAdmin() {
+    return admin;
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, version, personName, roomSet);
+  public void setAdmin(Boolean admin) {
+    this.admin = admin;
   }
 
   public Boolean getBlacklisted() {
@@ -91,5 +87,13 @@ public class Person {
 
   public void setBlacklisted(Boolean blacklisted) {
     this.blacklisted = blacklisted;
+  }
+
+  public String getEncrytedPassword() {
+    return encrytedPassword;
+  }
+
+  public void setEncrytedPassword(String encrytedPassword) {
+    this.encrytedPassword = encrytedPassword;
   }
 }

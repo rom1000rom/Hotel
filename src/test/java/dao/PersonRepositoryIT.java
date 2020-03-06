@@ -35,6 +35,11 @@ public class PersonRepositoryIT
         assertEquals(person, repository.findById(person.getId()).get());
     }
 
+    @Test
+    public void findOneByPersonNameLikeTest(){
+        assertEquals(person, repository.findOneByPersonNameLike(person.getPersonName()));
+    }
+
     private Person createPerson()
     {
         Person person = new Person();
