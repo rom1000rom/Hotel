@@ -42,10 +42,7 @@ public class PersonRepositoryIT
 
     private Person createPerson()
     {
-        Person person = new Person();
-        person.setPersonName("Roman");
-        person.setVersion(1);
-        return person;
+        return new Person("Roman", "TEST");
     }
 
 }

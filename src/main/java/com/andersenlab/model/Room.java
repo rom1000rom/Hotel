@@ -45,6 +45,13 @@ public class Room {
   @OneToMany(mappedBy = "room")
   private List<Reservation> reservations;
 
+  public Room(String number) {
+    this.number = number;
+  }
+
+  public Room() {
+  }
+
   public List<Reservation> getReservations() {
     return reservations;
   }
@@ -67,6 +74,10 @@ public class Room {
 
   public void setNumber(String number) {
     this.number = number;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public Hotel getHotelId() {

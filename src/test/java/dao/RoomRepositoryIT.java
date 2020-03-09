@@ -39,10 +39,7 @@ public class RoomRepositoryIT
 
     private Room createRoom()
     {
-        Room  room  = new Room();
-        room.setNumber("1");
-        room.setVersion(1);
-        return  room;
+        return  new Room("1");
     }
 
 }

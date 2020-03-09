@@ -41,6 +41,14 @@ public class Person {
     return reservations;
   }
 
+  public Person() {
+  }
+
+  public Person(String personName, String encrytedPassword) {
+    this.encrytedPassword = encrytedPassword;
+    this.personName = personName;
+  }
+
   public void setReservations(List<Reservation> reservations) {
     this.reservations = reservations;
   }
@@ -71,6 +79,10 @@ public class Person {
 
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public Boolean getAdmin() {
