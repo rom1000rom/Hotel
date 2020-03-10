@@ -1,5 +1,6 @@
 package com.andersenlab.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -100,20 +101,24 @@ public class Room {
     return id;
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Room)) return false;
-    Room room = (Room) o;
-    return Objects.equals(id, room.id) &&
-            Objects.equals(version, room.version) &&
-            Objects.equals(number, room.number) &&
-            Objects.equals(hotelId, room.hotelId) &&
-            Objects.equals(personSet, room.personSet);
+  /**Метод проверяет забронирован ли номер на указанный период времени
+   @param dateBegin начало периода
+   @param dateEnd окончание периода
+   @return true - если забронирован, false - если свободен*/
+  public Boolean isBooked(LocalDate dateBegin, LocalDate dateEnd) {
+    if(this.getReservations() == null)
+      return false;
+    return this.getReservations().stream().anyMatch(res -> {
+      if(res.getDateBegin().isAfter(dateBegin)&&
+              res.getDateBegin().isBefore(dateEnd))
+        return true;
+      if(res.getDateEnd().isAfter(dateBegin)&&
+              res.getDateEnd().isBefore(dateEnd))
+        return true;
+
+      return false;
+    });
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, version, number, hotelId, personSet);
-  }
+
 }

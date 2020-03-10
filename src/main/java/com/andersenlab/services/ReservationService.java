@@ -20,6 +20,12 @@ public interface ReservationService {
       @return объект класса Reservation или null, если такого нет*/
      Reservation findReservationById(Long id);
 
+     /**Метод сохраняет бронирование номера
+      @param reservation объект бронирования, который нужно сохранить
+      @return объект бронирования в базе или null, если бронирование не может быть создано: пользователь
+      или номер в отеле с указанными id не существуют или номер уже забронирован на указанные даты*/
+     Reservation saveReservation(Reservation reservation);
+
      /**Метод удаляет объект бронирования по id
       @param id бронирования, которого нужно удалить
       @return id удалённого бронирования, или null если такого нет*/

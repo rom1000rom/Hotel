@@ -32,6 +32,14 @@ public class Reservation {
     private LocalDate dateBegin;
     private LocalDate dateEnd;
 
+    public Reservation() {
+    }
+
+    public Reservation(LocalDate dateBegin, LocalDate dateEnd) {
+        this.dateBegin = dateBegin;
+        this.dateEnd = dateEnd;
+    }
+
     public Integer getVersion() {
         return version;
     }
@@ -74,5 +82,9 @@ public class Reservation {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

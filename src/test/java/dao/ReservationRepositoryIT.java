@@ -42,12 +42,7 @@ public class ReservationRepositoryIT
 
     private Reservation createReservation()
     {
-        Reservation reservation = new Reservation();
-        reservation.setVersion(1);
-        reservation.setDateBegin(LocalDate.parse("2016-09-21"));
-        reservation.setDateEnd(LocalDate.parse("2016-09-25"));
-
-        return reservation;
+        return new Reservation(LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
     }
 
 }

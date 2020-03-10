@@ -23,16 +23,22 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room findRoomById(Long id) {
+        if(id == null)
+            return null;
         return roomRepository.findById(id).orElse(null);
     }
 
     @Override
     public Room saveRoom(Room room) {
+        if(room == null)
+            return null;
         return roomRepository.save(room);
     }
 
     @Override
     public Long deleteRoom(Long id) {
+        if(id == null)
+            return null;
         if(roomRepository.findById(id).isPresent()) {//Если Room с таким id существует
             roomRepository.deleteById(id);
             return id;

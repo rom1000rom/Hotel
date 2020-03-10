@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -98,4 +97,36 @@ public class PersonServiceImplTest {
         assertNull(testObject.deletePerson(id));
     }
 
+    @Test
+    public void testAddToBlacklistNotExist() {
+        Long id = 12L;
+        Mockito.when(personRepository.findById(id)).thenReturn(
+                Optional.empty());
+
+        assertNull(testObject.addToBlacklist(id));
+    }
+
+    @Test
+    public void testAddToBlacklist() {
+        Long id = 12L;
+        Person person = new Person("TEST", "TEST");
+        person.setId(id);
+
+        Mockito.when(personRepository.findById(id)).thenReturn(Optional.of(person));
+
+        assertEquals(id, testObject.addToBlacklist(id));
+        assertTrue(person.getBlacklisted());
+    }
+
+    @Test
+    public void testRemoveFromBlacklist() {
+        Long id = 12L;
+        Person person = new Person("TEST", "TEST");
+        person.setId(id);
+        person.setBlacklisted(true);
+
+        Mockito.when(personRepository.findById(id)).thenReturn(Optional.of(person));
+        assertEquals(id, testObject.removeFromBlacklist(id));
+        assertFalse(person.getBlacklisted());
+    }
 }

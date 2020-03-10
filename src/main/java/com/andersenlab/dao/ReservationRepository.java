@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
  @author Артемьев Р.А.
  @version 05.03.2020 */
 @Repository
-public interface ReservationRepository extends CrudRepository<Reservation, Long>
-{ }
+public interface ReservationRepository extends CrudRepository<Reservation, Long> {
+
+}
