@@ -14,6 +14,7 @@ import lombok.Data;
 @Entity
 @Table(name = "hotel")
 @Data
+@EqualsAndHashCode(exclude = {"id","roomSet", "serviceSet"})
 public class Hotel {
 
   @Id
