@@ -32,6 +32,6 @@ public class Hotel {
   private Set<Room> roomSet;
   
   @OneToMany(mappedBy = "hotelId")
-  private Set<Service> serviceSet;
+  private Set<Facilities> serviceSet;
   
 }
