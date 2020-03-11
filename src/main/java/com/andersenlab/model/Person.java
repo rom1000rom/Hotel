@@ -3,9 +3,10 @@ package com.andersenlab.model;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "person")
@@ -17,6 +18,9 @@ public class Person {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
+  @Column(name = "person_name")
+  private String personName;
+
   @Version
   private Integer version;
 
@@ -27,9 +31,6 @@ public class Person {
 
   /**Является ли пользователь администратором*/
   private Boolean admin = false;
-
-  @Column(name = "person_name")
-  private String personName;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "room_person", joinColumns = @JoinColumn(name = "person_id"),

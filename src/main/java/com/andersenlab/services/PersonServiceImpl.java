@@ -5,6 +5,7 @@ import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public class PersonServiceImpl implements PersonService{
     private PersonRepository personRepository;
 
     public static final String EXCEPTION_MESSAGE = "Such a person does not exist";
+
 
     @Override
     public List<Person> findAllPersons() {
