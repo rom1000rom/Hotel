@@ -17,7 +17,7 @@ public interface RoomService {
 
      /**Метод возвращает объект номера по его id
       @param id id номера
-      @return объект класса Room или null, если такого нет*/
+      @return объект класса Room*/
      Room findRoomById(Long id);
 
      /**Метод сохраняет объект номера отеля
@@ -27,6 +27,6 @@ public interface RoomService {
 
      /**Метод удаляет объект номера по id
       @param id номера, которого нужно удалить
-      @return id удалённого номера, или null если такого нет*/
+      @return id удалённого номера*/
       Long deleteRoom(Long id);
 }

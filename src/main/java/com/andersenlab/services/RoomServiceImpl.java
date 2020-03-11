@@ -1,6 +1,7 @@
 package com.andersenlab.services;
 
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     @Override
     public List<Room> findAllRooms() {
@@ -23,28 +24,23 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room findRoomById(Long id) {
-        if(id == null)
-            return null;
-        return roomRepository.findById(id).orElse(null);
+        return roomRepository.findById(id).orElseThrow(() ->
+                new HotelServiceException("Such a room does not exist"));
     }
 
     @Override
     public Room saveRoom(Room room) {
-        if(room == null)
-            return null;
         return roomRepository.save(room);
     }
 
     @Override
     public Long deleteRoom(Long id) {
-        if(id == null)
-            return null;
         if(roomRepository.findById(id).isPresent()) {//Если Room с таким id существует
             roomRepository.deleteById(id);
             return id;
         }
         else {
-            return null;
+            throw new HotelServiceException("Such a room does not exist");
         }
     }
 }

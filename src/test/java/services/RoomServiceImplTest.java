@@ -2,7 +2,7 @@ package services;
 
 
 import com.andersenlab.dao.RoomRepository;
-import com.andersenlab.model.Person;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.RoomService;
 import com.andersenlab.services.RoomServiceImpl;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class RoomServiceImplTest {
@@ -60,12 +60,12 @@ public class RoomServiceImplTest {
         assertEquals(room, testObject.findRoomById(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testFindRoomByIdNotExist() {
         Long id = 10L;
         Mockito.when(roomRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertNull(testObject.findRoomById(id));
+        testObject.findRoomById(id);
     }
 
     @Test
@@ -88,15 +88,13 @@ public class RoomServiceImplTest {
         assertEquals(id, testObject.deleteRoom(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testDeletePersonNotExist() {
         Long id = 12L;
         Mockito.when(roomRepository.findById(id)).thenReturn(
                 Optional.empty());
 
-        assertNull(testObject.deleteRoom(id));
+        testObject.deleteRoom(id);
     }
-
-
 
 }

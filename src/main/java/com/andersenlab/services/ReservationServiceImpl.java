@@ -3,6 +3,7 @@ package com.andersenlab.services;
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 /**Класс реализует сервисные функции по работе с бронированиями.
  @author Артемьев Р.А.
@@ -20,13 +20,13 @@ import java.util.Optional;
 public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
-    ReservationRepository reservationRepository;
+    private ReservationRepository reservationRepository;
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     @Override
     public List<Reservation> findAllReservations() {
@@ -37,32 +37,22 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation findReservationById(Long id) {
         if(id == null)
             return null;
-        return reservationRepository.findById(id).orElse(null);
+        return reservationRepository.findById(id).orElseThrow(() ->
+                new HotelServiceException("Such a reservation does not exist"));
     }
 
     @Override
     public Reservation saveReservation(Reservation reservation) {
-        if(reservation == null)//Если объект бронирования null
-            return null;
         Person person = reservation.getPerson();
-        if(person == null)//Если объект пользователя в бронировании null
-           return  null;
         if(!personRepository.findById(person.getId()).isPresent())//Если пользователя с указанным id не существует
-            return null;
+            throw new HotelServiceException("Such a person does not exist");
         Room room = reservation.getRoom();
-        if(room == null)//Если объект номера отеля в бронировании null
-            return null;
         if(!roomRepository.findById(room.getId()).isPresent())//Если номер с указанным id не существует
-            return null;
+            throw new HotelServiceException("Such a room does not exist");
         LocalDate dateBegin = reservation.getDateBegin();
         LocalDate dateEnd = reservation.getDateEnd();
-        //Если даты начала/конца бронирования null
-        if((dateBegin ==null)||(dateEnd==null))
-            return null;
-        if(dateBegin.isAfter(dateEnd))//Если дата начала бронирования позже даты конца
-            return null;
         if(room.isBooked(dateBegin, dateEnd))//Если номер забронирован на указанные даты
-            return null;
+            throw new HotelServiceException("This room is booked");
 
         return reservationRepository.save(reservation);
     }
@@ -76,7 +66,7 @@ public class ReservationServiceImpl implements ReservationService {
             return id;
         }
         else {
-            return null;
+            throw new HotelServiceException("Such a reservation does not exist");
         }
     }
 

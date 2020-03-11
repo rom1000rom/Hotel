@@ -5,6 +5,7 @@ package services;
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
@@ -71,21 +72,21 @@ public class ReservationServiceImplTest {
         assertEquals(reservation, testObject.findReservationById(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testFindReservationByIdNotExist() {
         Long id = 10L;
         Mockito.when(reservationRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertNull(testObject.findReservationById(id));
+        testObject.findReservationById(id);
     }
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testSaveReservationPersonOrRoomIsNull() {
         Reservation reservation = new Reservation();
-        assertNull(testObject.saveReservation(reservation));
+        testObject.saveReservation(reservation);
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testSaveReservationPersonNotExist() {
         Long id = 12L;
         Reservation reservation = new Reservation();
@@ -96,10 +97,10 @@ public class ReservationServiceImplTest {
 
         Mockito.when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
-        assertNull(testObject.saveReservation(reservation));
+        testObject.saveReservation(reservation);
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testSaveReservationRoomNotExist() {
         Long id = 12L;
         Reservation reservation = new Reservation();
@@ -116,7 +117,7 @@ public class ReservationServiceImplTest {
                 Optional.of(person));
         Mockito.when(roomRepository.findById(id)).thenReturn(
                 Optional.empty());
-        assertNull(testObject.saveReservation(reservation));
+        testObject.saveReservation(reservation);
     }
 
     @Test
@@ -155,12 +156,12 @@ public class ReservationServiceImplTest {
         assertEquals(id, testObject.deleteReservation(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testDeleteReservationNotExist() {
         Long id = 12L;
         Mockito.when(reservationRepository.findById(id)).thenReturn(
                 Optional.empty());
-        assertNull(testObject.deleteReservation(id));
+        testObject.deleteReservation(id);
     }
 
 

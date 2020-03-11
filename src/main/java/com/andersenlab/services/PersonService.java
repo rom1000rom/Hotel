@@ -1,6 +1,7 @@
 package com.andersenlab.services;
 
 
+
 import com.andersenlab.model.Person;
 
 
@@ -17,7 +18,7 @@ public interface PersonService {
 
      /**Метод возвращает объект пользователя по его id
       @param id id пользователя
-      @return объект класса Person или null, если такого нет*/
+      @return объект класса Person*/
      Person findPersonById(Long id);
 
      /**Метод сохраняет объект пользователя
@@ -27,19 +28,19 @@ public interface PersonService {
 
      /**Метод удаляет объект пользователя по id
       @param id пользователя, которого нужно удалить
-      @return id удалённого пользователя, или null если такого нет*/
+      @return id удалённого пользователя*/
       Long deletePerson(Long id);
 
     /**Метод добавляет пользователя в чёрный список по id.
      * Если пользователь уже в списке, метод не сделает ничего.
      @param id пользователя, которого нужно добавить в чёрный список
-     @return id добавленного пользователя, или null если такого нет*/
+     @return id добавленного пользователя*/
      Long addToBlacklist(Long id);
 
     /**Метод удаляет пользователя из чёрного списка по id.
      * Если пользователь не в списке, метод не сделает ничего.
      @param id пользователя, которого нужно удалить из черного списка
-     @return id  пользователя, или null если такого нет*/
+     @return id  пользователя*/
     Long removeFromBlacklist(Long id);
 
 }

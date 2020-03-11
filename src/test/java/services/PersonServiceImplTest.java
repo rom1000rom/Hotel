@@ -2,6 +2,7 @@ package services;
 
 
 import com.andersenlab.dao.PersonRepository;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.services.PersonService;
 import com.andersenlab.services.PersonServiceImpl;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceImplTest {
@@ -51,7 +52,7 @@ public class PersonServiceImplTest {
     }
 
     @Test
-    public void testFindPersonById() {
+    public void testFindPersonById() throws HotelServiceException {
         Long id = 10L;
         Person person = new Person("TEST", "TEST");
         person.setId(id);
@@ -60,12 +61,12 @@ public class PersonServiceImplTest {
         assertEquals(person, testObject.findPersonById(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testFindPersonByIdNotExist() {
         Long id = 10L;
         Mockito.when(personRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertNull(testObject.findPersonById(id));
+        testObject.findPersonById(id);
     }
 
     @Test
@@ -88,22 +89,22 @@ public class PersonServiceImplTest {
         assertEquals(id, testObject.deletePerson(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testDeletePersonNotExist() {
         Long id = 12L;
         Mockito.when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
 
-        assertNull(testObject.deletePerson(id));
+        testObject.deletePerson(id);
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testAddToBlacklistNotExist() {
         Long id = 12L;
         Mockito.when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
 
-        assertNull(testObject.addToBlacklist(id));
+        testObject.addToBlacklist(id);
     }
 
     @Test

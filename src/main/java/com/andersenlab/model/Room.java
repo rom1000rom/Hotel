@@ -2,7 +2,6 @@ package com.andersenlab.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +17,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "room")
+@EqualsAndHashCode(exclude = {"reservations","personSet"})
 @Data
 public class Room {
 
@@ -53,54 +54,6 @@ public class Room {
   public Room() {
   }
 
-  public List<Reservation> getReservations() {
-    return reservations;
-  }
-
-  public void setReservations(List<Reservation> reservations) {
-    this.reservations = reservations;
-  }
-
-  public Integer getVersion() {
-    return version;
-  }
-
-  public void setVersion(Integer version) {
-    this.version = version;
-  }
-
-  public String getNumber() {
-    return number;
-  }
-
-  public void setNumber(String number) {
-    this.number = number;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Hotel getHotelId() {
-    return hotelId;
-  }
-
-  public void setHotelId(Hotel hotelId) {
-    this.hotelId = hotelId;
-  }
-
-  public Set<Person> getPersonSet() {
-    return personSet;
-  }
-
-  public void setPersonSet(Set<Person> personSet) {
-    this.personSet = personSet;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
   /**Метод проверяет забронирован ли номер на указанный период времени
    @param dateBegin начало периода
    @param dateEnd окончание периода
@@ -119,6 +72,5 @@ public class Room {
       return false;
     });
   }
-
 
 }

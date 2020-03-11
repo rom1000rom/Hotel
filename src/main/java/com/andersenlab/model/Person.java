@@ -5,10 +5,12 @@ import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "person")
 @Data
+@EqualsAndHashCode(exclude = {"roomSet", "reservations"})
 public class Person {
 
   @Id
@@ -37,10 +39,6 @@ public class Person {
   @OneToMany(mappedBy = "person")
   private List<Reservation> reservations;
 
-  public List<Reservation> getReservations() {
-    return reservations;
-  }
-
   public Person() {
   }
 
@@ -49,63 +47,4 @@ public class Person {
     this.personName = personName;
   }
 
-  public void setReservations(List<Reservation> reservations) {
-    this.reservations = reservations;
-  }
-
-  public Integer getVersion() {
-    return version;
-  }
-
-  public void setVersion(Integer version) {
-    this.version = version;
-  }
-
-  public String getPersonName() {
-    return personName;
-  }
-
-  public void setPersonName(String personName) {
-    this.personName = personName;
-  }
-
-  public Set<Room> getRoomSet() {
-    return roomSet;
-  }
-
-  public void setRoomSet(Set<Room> roomSet) {
-    this.roomSet = roomSet;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Boolean getAdmin() {
-    return admin;
-  }
-
-  public void setAdmin(Boolean admin) {
-    this.admin = admin;
-  }
-
-  public Boolean getBlacklisted() {
-    return blacklisted;
-  }
-
-  public void setBlacklisted(Boolean blacklisted) {
-    this.blacklisted = blacklisted;
-  }
-
-  public String getEncrytedPassword() {
-    return encrytedPassword;
-  }
-
-  public void setEncrytedPassword(String encrytedPassword) {
-    this.encrytedPassword = encrytedPassword;
-  }
 }
