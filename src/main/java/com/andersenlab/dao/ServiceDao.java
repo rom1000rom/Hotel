@@ -4,14 +4,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.andersenlab.model.Service;
+import com.andersenlab.model.Facilities;
 
-interface ServiceDao extends JpaRepository<Service, Long> {
+interface ServiceDao extends JpaRepository<Facilities, Long> {
 
-	Page<Service> findAll(Pageable pageable);
+	Page<Facilities> findAll(Pageable pageable);
 
-	Service findByServiceName(String serviceName);
+	Facilities findByServiceName(String serviceName);
 
-	Service findByServiceNumber(String serviceNumber);
+	Facilities findByServiceNumber(String serviceNumber);
 
 }
