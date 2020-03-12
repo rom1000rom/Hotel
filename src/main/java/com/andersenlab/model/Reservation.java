@@ -32,6 +32,7 @@ public class Reservation {
     private Room room;
 
     private LocalDate dateBegin;
+
     private LocalDate dateEnd;
 
     public Reservation() {

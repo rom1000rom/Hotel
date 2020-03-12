@@ -2,7 +2,6 @@ package com.andersenlab.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,7 +18,7 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "room")
-@EqualsAndHashCode(exclude = {"reservations","personSet"})
+@EqualsAndHashCode(exclude = {"reservations"})
 @Data
 public class Room {
 
@@ -38,11 +35,6 @@ public class Room {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "hotel_id")
   private Hotel hotelId;
-
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "room_person", joinColumns = @JoinColumn(name = "room_id"),
-      inverseJoinColumns = @JoinColumn(name = "person_id"))
-  private Set<Person> personSet;
 
   @OneToMany(mappedBy = "room")
   private List<Reservation> reservations;
@@ -63,7 +55,7 @@ public class Room {
       return false;
     return this.getReservations().stream().anyMatch(res -> {
       if(res.getDateBegin().isAfter(dateBegin)&&
-              res.getDateBegin().isBefore(dateEnd))
+            res.getDateBegin().isBefore(dateEnd))
         return true;
       if(res.getDateEnd().isAfter(dateBegin)&&
               res.getDateEnd().isBefore(dateEnd))

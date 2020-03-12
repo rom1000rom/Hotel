@@ -2,6 +2,7 @@ package services;
 
 
 import com.andersenlab.dao.PersonRepository;
+import com.andersenlab.dto.PersonDTO;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.services.PersonService;
@@ -47,8 +48,12 @@ public class PersonServiceImplTest {
         //Настраиваю поведение мока
         Mockito.when(personRepository.findAll()).thenReturn(listPerson);
 
+        List<PersonDTO> listPersonDTO = new ArrayList<>();
+        listPersonDTO.add(new PersonDTO("TEST", "TEST"));
+        listPersonDTO.add(new PersonDTO("TEST2", "TEST2"));
+
         //Проверяю поведение тестируемого объекта
-        assertEquals(listPerson, testObject.findAllPersons());
+        assertEquals(listPersonDTO, testObject.findAllPersons());
     }
 
     @Test
@@ -58,7 +63,9 @@ public class PersonServiceImplTest {
         person.setId(id);
         Mockito.when(personRepository.findById(id)).thenReturn(Optional.of(person));
 
-        assertEquals(person, testObject.findPersonById(id));
+        PersonDTO personDTO = new PersonDTO("TEST", "TEST");
+        personDTO.setId(id);
+        assertEquals(personDTO, testObject.findPersonById(id));
     }
 
     @Test(expected = HotelServiceException.class)
@@ -72,11 +79,15 @@ public class PersonServiceImplTest {
     @Test
     public void testSavePerson() {
         Long id = 12L;
+        PersonDTO personDTO = new PersonDTO("TEST","TEST" );
         Person person = new Person("TEST", "TEST");
-        person.setId(id);
-        Mockito.when(personRepository.save(person)).thenReturn(person);
 
-        assertEquals(person, testObject.savePerson(person));
+        Person personWithId = new Person("TEST", "TEST");
+        personWithId.setId(id);
+
+        Mockito.when(personRepository.save(person)).thenReturn(personWithId);
+
+        assertEquals(id, testObject.savePerson(personDTO));
     }
 
     @Test

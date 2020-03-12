@@ -1,7 +1,7 @@
 package com.andersenlab.model;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,7 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Table(name = "person")
 @Data
-@EqualsAndHashCode(exclude = {"roomSet", "reservations"})
+@EqualsAndHashCode(exclude = {"reservations"})
 public class Person {
 
   @Id
@@ -32,12 +32,8 @@ public class Person {
   /**Является ли пользователь администратором*/
   private Boolean admin = false;
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "room_person", joinColumns = @JoinColumn(name = "person_id"),
-      inverseJoinColumns = @JoinColumn(name = "room_id"))
-  private Set<Room> roomSet;
-
   @OneToMany(mappedBy = "person")
+  @Fetch(FetchMode.JOIN)
   private List<Reservation> reservations;
 
   public Person() {

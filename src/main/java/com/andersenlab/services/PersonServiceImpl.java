@@ -1,14 +1,19 @@
 package com.andersenlab.services;
 
 import com.andersenlab.dao.PersonRepository;
+import com.andersenlab.dto.PersonDTO;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**Класс реализует сервисные функции по работе с пользователями.
@@ -20,23 +25,35 @@ public class PersonServiceImpl implements PersonService{
     @Autowired
     private PersonRepository personRepository;
 
-    public static final String EXCEPTION_MESSAGE = "Such a person does not exist";
+    private static final String EXCEPTION_MESSAGE = "Such a person does not exist";
 
+    private MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 
     @Override
-    public List<Person> findAllPersons() {
-        return (List<Person>)personRepository.findAll();
+    public List<PersonDTO> findAllPersons() {
+        mapperFactory.classMap(Person.class, PersonDTO.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        List<Person> listPerson = (List<Person>)personRepository.findAll();
+        return listPerson.stream().map((person) -> mapper.map(person, PersonDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Person findPersonById(Long id) throws HotelServiceException {
-        return personRepository.findById(id).orElseThrow(() ->
+    public PersonDTO findPersonById(Long id) {
+        mapperFactory.classMap(Person.class, PersonDTO.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        Person person = personRepository.findById(id).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
+        return mapper.map(person, PersonDTO.class);
     }
 
     @Override
-    public Person savePerson(Person person) {
-        return personRepository.save(person);
+    public Long savePerson(PersonDTO personDTO) {
+        mapperFactory.classMap(PersonDTO.class, Person.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        Person person = personRepository.save(mapper.map(personDTO, Person.class));
+
+        return person.getId();
     }
 
     @Override

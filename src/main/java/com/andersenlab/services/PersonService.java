@@ -2,7 +2,7 @@ package com.andersenlab.services;
 
 
 
-import com.andersenlab.model.Person;
+import com.andersenlab.dto.PersonDTO;
 
 
 import java.util.List;
@@ -13,18 +13,18 @@ import java.util.List;
 public interface PersonService {
 
      /**Метод возвращает список всех пользователей.
-     @return список объектов класса Person*/
-     List<Person> findAllPersons();
+     @return список объектов класса PersonDTO*/
+     List<PersonDTO> findAllPersons();
 
      /**Метод возвращает объект пользователя по его id
       @param id id пользователя
-      @return объект класса Person*/
-     Person findPersonById(Long id);
+      @return объект класса PersonDTO*/
+     PersonDTO findPersonById(Long id);
 
      /**Метод сохраняет объект пользователя
-      @param person объект пользователя, которого нужно сохранить
-      @return объект пользователя в базе*/
-      Person savePerson(Person person);
+      @param personDTO объект пользователя, которого нужно сохранить
+      @return id объекта пользователя в базе*/
+      Long savePerson(PersonDTO personDTO);
 
      /**Метод удаляет объект пользователя по id
       @param id пользователя, которого нужно удалить
