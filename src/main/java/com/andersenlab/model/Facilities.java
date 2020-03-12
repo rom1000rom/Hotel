@@ -12,10 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name = "service")
+@Table(name = "facilities")
 @Data
+@EqualsAndHashCode(exclude = {"version"})
 public class Facilities {
 
   @Id
