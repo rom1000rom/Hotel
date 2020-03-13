@@ -5,11 +5,11 @@ package controllers;
 import com.andersenlab.App;
 import com.andersenlab.controllers.PersonController;
 import com.andersenlab.dto.PersonDTO;
+import com.andersenlab.dto.PersonUsernameLoginDTO;
 import com.andersenlab.services.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,8 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @ContextConfiguration(classes = App.class)
@@ -56,10 +55,10 @@ public class PersonControllerTest {
     {
         //Подготавливаю ожидаемый результат
         List<PersonDTO> listPersonDTO = new ArrayList<>();
-        listPersonDTO.add(new PersonDTO("TEST", "TEST"));
-        listPersonDTO.add(new PersonDTO("TEST2", "TEST2"));
+        listPersonDTO.add(new PersonDTO("TEST"));
+        listPersonDTO.add(new PersonDTO("TEST2"));
         //Настраиваю поведение мока
-        Mockito.when(personService.findAllPersons()).thenReturn(listPersonDTO);
+        when(personService.findAllPersons()).thenReturn(listPersonDTO);
 
         mockMvc.perform(get("/persons"))
                 .andExpect(status().isOk())//Проверяем Http-ответ
@@ -71,8 +70,9 @@ public class PersonControllerTest {
     public void testFindPersonById() throws Exception
     {
         Long id = 10L;
-        PersonDTO personDTO = new PersonDTO("TEST", "TEST");
-        Mockito.when(personService.findPersonById(id)).thenReturn(personDTO);
+        PersonDTO personDTO = new PersonDTO("TEST");
+        personDTO.setId(id);
+        when(personService.findPersonById(id)).thenReturn(personDTO);
 
         mockMvc.perform(get("/persons/10"))
                 .andExpect(status().isOk())
@@ -83,24 +83,86 @@ public class PersonControllerTest {
     @Test
     public void testSavePerson() throws Exception
     {
-        Long id = 10L;
+        Long id = 0L;
         String password = "password";
-        PersonDTO actual= new PersonDTO("TEST_NAME", password);
-        actual.setId(0L);
-        PersonDTO expected  = new PersonDTO("TEST_NAME","ENCR_PASSWORD");
+        String encrytedPassword = "ENCR_PASSWORD";
 
+        PersonUsernameLoginDTO actual= new PersonUsernameLoginDTO("TEST_NAME");
+        actual.setEncrytedPassword(password);
+        PersonUsernameLoginDTO expected  = new PersonUsernameLoginDTO("TEST_NAME");
 
-        when(passwordEncoder.encode(password)).thenReturn("ENCR_PASSWORD");
+        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);
+        expected.setEncrytedPassword(encrytedPassword);
         when(personService.savePerson(actual)).thenReturn(id);
         expected.setId(id);
 
         mockMvc.perform(post("/persons")
                 .content(objectMapper.writeValueAsString(actual))
-                .param("password", password)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(201))//Проверяем Http-ответ
                 .andExpect(content().string(
                         objectMapper.writeValueAsString(expected)));//Конвертируем в json
+    }
+
+    @Test
+    public void testDeletePerson() throws Exception
+    {
+        Long id = 1L;
+        when(personService.deletePerson(id)).thenReturn(id);
+
+        mockMvc.perform(delete("/persons/" + id))
+                .andExpect(status().isOk())//Проверяем Http-ответ
+                .andExpect(content().string(
+                        objectMapper.writeValueAsString(id)));//Конвертируем в json
+    }
+
+    @Test
+    public void testUpdatePerson() throws Exception
+    {
+        Long id = 10L;
+        String password = "password";
+        String encrytedPassword = "ENCR_PASSWORD";
+
+        PersonUsernameLoginDTO actual= new PersonUsernameLoginDTO("TEST_NAME_NEW");
+        actual.setEncrytedPassword(password);
+        actual.setId(id);
+        PersonUsernameLoginDTO expected  = new PersonUsernameLoginDTO("TEST_NAME_NEW");
+        expected.setId(id);
+
+        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);
+        expected.setEncrytedPassword(encrytedPassword);
+        when(personService.updatePerson(expected)).thenReturn(expected);
+
+        mockMvc.perform(put("/persons")
+                .content(objectMapper.writeValueAsString(actual))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        objectMapper.writeValueAsString(expected)));//Конвертируем в json
+    }
+
+    @Test
+    public void testAddToBlacklist() throws Exception
+    {
+        Long id = 1L;
+        when(personService.addToBlacklist(id)).thenReturn(id);
+
+        mockMvc.perform(put("/persons/addToBlacklist/" + id))
+                .andExpect(status().isOk())//Проверяем Http-ответ
+                .andExpect(content().string(
+                        objectMapper.writeValueAsString(id)));//Конвертируем в json
+    }
+
+    @Test
+    public void testRemoveFromBlacklist() throws Exception
+    {
+        Long id = 1L;
+        when(personService.removeFromBlacklist(id)).thenReturn(id);
+
+        mockMvc.perform(put("/persons/removeFromBlacklist/" + id))
+                .andExpect(status().isOk())//Проверяем Http-ответ
+                .andExpect(content().string(
+                        objectMapper.writeValueAsString(id)));//Конвертируем в json
     }
 
 }

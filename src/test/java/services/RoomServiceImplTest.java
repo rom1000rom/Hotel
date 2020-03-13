@@ -2,7 +2,11 @@ package services;
 
 
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.dto.PersonDTO;
+import com.andersenlab.dto.PersonUsernameLoginDTO;
+import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.exceptions.HotelServiceException;
+import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.RoomService;
 import com.andersenlab.services.RoomServiceImpl;
@@ -20,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -41,23 +47,29 @@ public class RoomServiceImplTest {
     public void testFindAllRooms() {
         //Подготавливаю ожидаемый результат
         List<Room> listRoom = new ArrayList<>();
-        listRoom.add(new Room("1"));
-        listRoom.add(new Room("2"));
+        listRoom.add(new Room("TEST"));
+        listRoom.add(new Room("TEST2"));
         //Настраиваю поведение мока
-        Mockito.when(roomRepository.findAll()).thenReturn(listRoom);
+        when(roomRepository.findAll()).thenReturn(listRoom);
+
+        List<RoomDTO> listRoomDTO = new ArrayList<>();
+        listRoomDTO.add(new RoomDTO("TEST"));
+        listRoomDTO.add(new RoomDTO("TEST2"));
 
         //Проверяю поведение тестируемого объекта
-        assertEquals(listRoom, testObject.findAllRooms());
+        assertEquals(listRoomDTO, testObject.findAllRooms());
     }
 
     @Test
     public void testFindRoomById() {
         Long id = 10L;
-        Room room = new Room("3");
+        Room room = new Room("TEST");
         room.setId(id);
-        Mockito.when(roomRepository.findById(id)).thenReturn(Optional.of(room));
+        when(roomRepository.findById(id)).thenReturn(Optional.of(room));
 
-        assertEquals(room, testObject.findRoomById(id));
+        RoomDTO roomDTO = new RoomDTO("TEST");
+        roomDTO.setId(id);
+        assertEquals(roomDTO, testObject.findRoomById(id));
     }
 
     @Test(expected = HotelServiceException.class)
@@ -71,19 +83,23 @@ public class RoomServiceImplTest {
     @Test
     public void testSaveRoom() {
         Long id = 12L;
+        RoomDTO roomDTO = new RoomDTO("TEST" );
         Room room = new Room("TEST");
-        room.setId(id);
-        Mockito.when(roomRepository.save(room)).thenReturn(room);
 
-        assertEquals(room, testObject.saveRoom(room));
+        Room roomWithId = new Room("TEST");
+        roomWithId.setId(id);
+
+        when(roomRepository.save(room)).thenReturn(roomWithId);
+
+        assertEquals(id, testObject.saveRoom(roomDTO));
     }
 
     @Test
     public void testDeleteRoom() {
         Long id = 12L;
-        Mockito.when(roomRepository.findById(id)).thenReturn(
+        when(roomRepository.findById(id)).thenReturn(
                 Optional.of(new Room("TEST")));
-        Mockito.doNothing().when(roomRepository).deleteById(id);
+        doNothing().when(roomRepository).deleteById(id);
 
         assertEquals(id, testObject.deleteRoom(id));
     }
@@ -95,6 +111,22 @@ public class RoomServiceImplTest {
                 Optional.empty());
 
         testObject.deleteRoom(id);
+    }
+
+    @Test
+    public void testUpdateRoom() {
+        Long id = 12L;
+        RoomDTO roomDTO = new RoomDTO("TEST_NEW" );
+        roomDTO.setId(id);
+        Room room = new Room("TEST");
+        room.setId(id);
+
+        when(roomRepository.findById(id)).thenReturn(
+                Optional.of(room));
+        room.setNumber("TEST_NEW");
+        when(roomRepository.save(room)).thenReturn(room);
+
+        assertEquals(roomDTO, testObject.updateRoom(roomDTO));
     }
 
 }

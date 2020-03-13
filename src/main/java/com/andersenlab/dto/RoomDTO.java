@@ -1,6 +1,6 @@
 package com.andersenlab.dto;
 
-
+import com.andersenlab.model.Hotel;
 import com.andersenlab.model.Reservation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,22 +8,21 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@EqualsAndHashCode(exclude = {"reservations"})
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"reservations"})
-public class PersonDTO {
+public class RoomDTO {
 
     private Long id;
 
-    private String personName;
+    private String number;
 
-    private Boolean blacklisted = false;
-
-    private Boolean admin = false;
+    private Hotel hotelId;
 
     private List<Reservation> reservations;
 
-    public PersonDTO(String personName) {
-        this.personName = personName;
+    public RoomDTO(String number) {
+        this.number = number;
     }
 }
+

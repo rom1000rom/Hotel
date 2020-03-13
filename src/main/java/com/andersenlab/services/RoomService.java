@@ -2,7 +2,8 @@ package com.andersenlab.services;
 
 
 
-import com.andersenlab.model.Room;
+import com.andersenlab.dto.RoomDTO;
+
 
 import java.util.List;
 
@@ -12,18 +13,23 @@ import java.util.List;
 public interface RoomService {
 
      /**Метод возвращает список всех номеров.
-     @return список объектов класса Room*/
-     List<Room> findAllRooms();
+     @return список объектов класса RoomDTO*/
+     List<RoomDTO> findAllRooms();
 
      /**Метод возвращает объект номера по его id
       @param id id номера
-      @return объект класса Room*/
-     Room findRoomById(Long id);
+      @return объект класса RoomDTO*/
+     RoomDTO findRoomById(Long id);
 
      /**Метод сохраняет объект номера отеля
       @param room объект номера, которого нужно сохранить
-      @return объект номера в базе*/
-     Room saveRoom(Room room);
+      @return id объекта номера в базе*/
+     Long saveRoom(RoomDTO room);
+
+     /**Метод обновляет объект номера в отеле
+      @param roomDTO объект с данными номера
+      @return объект обновлённого номера*/
+     RoomDTO updateRoom(RoomDTO roomDTO);
 
      /**Метод удаляет объект номера по id
       @param id номера, которого нужно удалить

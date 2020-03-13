@@ -42,7 +42,7 @@ public class PersonRepositoryIT
 
     private Person createPerson()
     {
-        return new Person("Roman", "TEST");
+        return new Person("Roman");
     }
 
 }

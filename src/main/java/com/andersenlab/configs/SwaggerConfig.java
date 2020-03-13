@@ -1,6 +1,6 @@
 package com.andersenlab.configs;
 
-import io.swagger.annotations.Contact;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -12,7 +12,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import static springfox.documentation.builders.PathSelectors.regex;
+
 
 /**Класс представляет собой конфигурацию Swagger2
  @author Артемьев Р.А.
@@ -31,7 +31,6 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 контроллеров и методов, документируемых с использованием предикатов String*/
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.andersenlab.controllers"))
-                .paths(regex("/persons.*"))
                 .build()
                 .apiInfo(metaData());
     }

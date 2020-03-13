@@ -1,6 +1,5 @@
 package com.andersenlab.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 import lombok.Data;
@@ -39,8 +38,7 @@ public class Person {
   public Person() {
   }
 
-  public Person(String personName, String encrytedPassword) {
-    this.encrytedPassword = encrytedPassword;
+  public Person(String personName) {
     this.personName = personName;
   }
 

@@ -15,11 +15,15 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "room")
 @EqualsAndHashCode(exclude = {"reservations"})
 @Data
+@NoArgsConstructor
 public class Room {
 
   @Id
@@ -36,14 +40,12 @@ public class Room {
   @JoinColumn(name = "hotel_id")
   private Hotel hotelId;
 
+  @Fetch(FetchMode.JOIN)
   @OneToMany(mappedBy = "room")
   private List<Reservation> reservations;
 
   public Room(String number) {
     this.number = number;
-  }
-
-  public Room() {
   }
 
   /**Метод проверяет забронирован ли номер на указанный период времени
