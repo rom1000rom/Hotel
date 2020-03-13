@@ -2,8 +2,6 @@ package com.andersenlab.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,103 +9,62 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "room")
+@EqualsAndHashCode(exclude = {"reservations"})
 @Data
-@EqualsAndHashCode(exclude = { "version", "reservations" })
+@NoArgsConstructor
 public class Room {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-	@Version
-	private Integer version;
+  @Version
+  private Integer version;
 
-	@Column(name = "room_number", nullable = false)
-	private String number;
+  @Column(name = "room_number", nullable = false)
+  private String number;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "hotel_id")
-	private Hotel hotelId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "hotel_id")
+  private Hotel hotelId;
 
-	@OneToMany(mappedBy = "room")
-	private List<Reservation> reservations;
+  @Fetch(FetchMode.JOIN)
+  @OneToMany(mappedBy = "room")
+  private List<Reservation> reservations;
 
-	public Room(String number) {
-		this.number = number;
-	}
+  public Room(String number) {
+    this.number = number;
+  }
 
-	public Room() {
-	}
+  /**Метод проверяет забронирован ли номер на указанный период времени
+   @param dateBegin начало периода
+   @param dateEnd окончание периода
+   @return true - если забронирован, false - если свободен*/
+  public Boolean isBooked(LocalDate dateBegin, LocalDate dateEnd) {
+    if(this.getReservations() == null)
+      return false;
+    return this.getReservations().stream().anyMatch(res -> {
+      if(res.getDateBegin().isAfter(dateBegin)&&
+            res.getDateBegin().isBefore(dateEnd))
+        return true;
+      if(res.getDateEnd().isAfter(dateBegin)&&
+              res.getDateEnd().isBefore(dateEnd))
+        return true;
 
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
-	}
-
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Hotel getHotelId() {
-		return hotelId;
-	}
-
-	public void setHotelId(Hotel hotelId) {
-		this.hotelId = hotelId;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * Метод проверяет забронирован ли номер на указанный период времени
-	 * 
-	 * @param dateBegin начало периода
-	 * @param dateEnd   окончание периода
-	 * @return true - если забронирован, false - если свободен
-	 */
-	public Boolean isBooked(LocalDate dateBegin, LocalDate dateEnd) {
-		if (this.getReservations() == null)
-			return false;
-		return this.getReservations().stream().anyMatch(res -> {
-			if (res.getDateBegin().isAfter(dateBegin) && res.getDateBegin().isBefore(dateEnd))
-				return true;
-			if (res.getDateEnd().isAfter(dateBegin) && res.getDateEnd().isBefore(dateEnd))
-				return true;
-
-			return false;
-		});
-	}
+      return false;
+    });
+  }
 
 }

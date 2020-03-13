@@ -1,12 +1,19 @@
 package com.andersenlab.services;
 
 import com.andersenlab.dao.PersonRepository;
+import com.andersenlab.dto.PersonDTO;
+import com.andersenlab.dto.PersonUsernameLoginDTO;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**Класс реализует сервисные функции по работе с пользователями.
@@ -16,66 +23,80 @@ import java.util.Optional;
 public class PersonServiceImpl implements PersonService{
 
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
+
+    private static final String EXCEPTION_MESSAGE = "Such a person does not exist";
+
+    private MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 
     @Override
-    public List<Person> findAllPersons() {
-        return (List<Person>)personRepository.findAll();
+    public List<PersonDTO> findAllPersons() {
+        mapperFactory.classMap(Person.class, PersonDTO.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        List<Person> listPerson = (List<Person>)personRepository.findAll();
+        return listPerson.stream().map((person) -> mapper.map(person, PersonDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Person findPersonById(Long id) {
-        if(id == null)
-            return null;
-        return personRepository.findById(id).orElse(null);
+    public PersonDTO findPersonById(Long id) {
+        mapperFactory.classMap(Person.class, PersonDTO.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        Person person = personRepository.findById(id).orElseThrow(() ->
+                new HotelServiceException(EXCEPTION_MESSAGE));
+        return mapper.map(person, PersonDTO.class);
     }
 
     @Override
-    public Person savePerson(Person person) {
-        if(person == null)
-            return null;
-        return personRepository.save(person);
+    public Long savePerson(PersonUsernameLoginDTO personUsernameLoginDTO) {
+        mapperFactory.classMap(PersonUsernameLoginDTO.class, Person.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+        Person person = personRepository.save(mapper.map(personUsernameLoginDTO, Person.class));
+
+        return person.getId();
     }
 
     @Override
     public Long deletePerson(Long id) {
-        if(id == null)
-            return null;
         if(personRepository.findById(id).isPresent()) {//Если Person с таким id существует
             personRepository.deleteById(id);
             return id;
         }
         else {
-            return null;
+            throw new HotelServiceException(EXCEPTION_MESSAGE);
         }
     }
 
     @Override
-    public Long addToBlacklist(Long id) {
-        if(id == null)
-            return null;
-        Optional<Person> person = personRepository.findById(id);
-        if(person.isPresent()) {//Если Person с таким id существует
-            person.get().setBlacklisted(true);
-            return id;
-        }
-        else {
-            return null;
-        }
+    public PersonUsernameLoginDTO updatePerson(PersonUsernameLoginDTO personUsernameLoginDTO) {
+        Person person = personRepository.findById(personUsernameLoginDTO.getId()).orElseThrow(() ->
+                new HotelServiceException(EXCEPTION_MESSAGE));
+
+        mapperFactory.classMap(Person.class, PersonUsernameLoginDTO.class);
+        MapperFacade mapper = mapperFactory.getMapperFacade();
+
+        person.setPersonName(personUsernameLoginDTO.getPersonName());
+        person.setEncrytedPassword(personUsernameLoginDTO.getEncrytedPassword());
+
+            return mapper.map(personRepository.save(person), PersonUsernameLoginDTO.class);
+    }
+
+    @Override
+    public Long addToBlacklist(Long id)  {
+        Person person = personRepository.findById(id).orElseThrow(() ->
+                new HotelServiceException(EXCEPTION_MESSAGE));
+        person.setBlacklisted(true);//Обновили запись
+        personRepository.save(person);//Чтобы обновление сохранилось в базу
+        return id;
     }
 
     @Override
     public Long removeFromBlacklist(Long id) {
-        if(id == null)
-            return null;
-        Optional<Person> person = personRepository.findById(id);
-        if(person.isPresent()) {//Если Person с таким id существует
-            person.get().setBlacklisted(false);
-            return id;
-        }
-        else {
-            return null;
-        }
+        Person person = personRepository.findById(id).orElseThrow(() ->
+                new HotelServiceException(EXCEPTION_MESSAGE));
+        person.setBlacklisted(false);//Обновили запись
+        personRepository.save(person);//Чтобы обновление сохранилось в базу
+        return id;
     }
 
 

@@ -2,6 +2,9 @@ package services;
 
 
 import com.andersenlab.dao.PersonRepository;
+import com.andersenlab.dto.PersonDTO;
+import com.andersenlab.dto.PersonUsernameLoginDTO;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.services.PersonService;
 import com.andersenlab.services.PersonServiceImpl;
@@ -19,8 +22,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class PersonServiceImplTest {
@@ -41,78 +45,104 @@ public class PersonServiceImplTest {
     public void testFindAllPersons() {
         //Подготавливаю ожидаемый результат
         List<Person> listPerson = new ArrayList<>();
-        listPerson.add(new Person("TEST", "TEST"));
-        listPerson.add(new Person("TEST2", "TEST2"));
+        listPerson.add(new Person("TEST"));
+        listPerson.add(new Person("TEST2"));
         //Настраиваю поведение мока
-        Mockito.when(personRepository.findAll()).thenReturn(listPerson);
+        when(personRepository.findAll()).thenReturn(listPerson);
+
+        List<PersonDTO> listPersonDTO = new ArrayList<>();
+        listPersonDTO.add(new PersonDTO("TEST"));
+        listPersonDTO.add(new PersonDTO("TEST2"));
 
         //Проверяю поведение тестируемого объекта
-        assertEquals(listPerson, testObject.findAllPersons());
+        assertEquals(listPersonDTO, testObject.findAllPersons());
     }
 
     @Test
-    public void testFindPersonById() {
+    public void testFindPersonById() throws HotelServiceException {
         Long id = 10L;
-        Person person = new Person("TEST", "TEST");
+        Person person = new Person("TEST");
         person.setId(id);
-        Mockito.when(personRepository.findById(id)).thenReturn(Optional.of(person));
+        when(personRepository.findById(id)).thenReturn(Optional.of(person));
 
-        assertEquals(person, testObject.findPersonById(id));
+        PersonDTO personDTO = new PersonDTO("TEST");
+        personDTO.setId(id);
+        assertEquals(personDTO, testObject.findPersonById(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testFindPersonByIdNotExist() {
         Long id = 10L;
-        Mockito.when(personRepository.findById(id)).thenReturn(Optional.empty());
+        when(personRepository.findById(id)).thenReturn(Optional.empty());
 
-        assertNull(testObject.findPersonById(id));
+        testObject.findPersonById(id);
     }
 
     @Test
     public void testSavePerson() {
         Long id = 12L;
-        Person person = new Person("TEST", "TEST");
-        person.setId(id);
-        Mockito.when(personRepository.save(person)).thenReturn(person);
+        PersonUsernameLoginDTO personUsernameLoginDTO = new PersonUsernameLoginDTO("TEST" );
+        Person person = new Person("TEST");
 
-        assertEquals(person, testObject.savePerson(person));
+        Person personWithId = new Person("TEST");
+        personWithId.setId(id);
+
+        when(personRepository.save(person)).thenReturn(personWithId);
+
+        assertEquals(id, testObject.savePerson(personUsernameLoginDTO));
+    }
+
+    @Test
+    public void testUpdatePerson() {
+        Long id = 12L;
+        PersonUsernameLoginDTO personUsernameLoginDTO = new PersonUsernameLoginDTO("TEST_NEW" );
+        personUsernameLoginDTO.setId(id);
+        Person person = new Person("TEST");
+        person.setId(id);
+
+        when(personRepository.findById(id)).thenReturn(
+                Optional.of(person));
+        person.setPersonName("TEST_NEW");
+        when(personRepository.save(person)).thenReturn(person);
+
+        assertEquals(personUsernameLoginDTO, testObject.updatePerson(personUsernameLoginDTO));
     }
 
     @Test
     public void testDeletePerson() {
         Long id = 12L;
-        Mockito.when(personRepository.findById(id)).thenReturn(
-                Optional.of(new Person("TEST", "TEST")));
-        Mockito.doNothing().when(personRepository).deleteById(id);
+        when(personRepository.findById(id)).thenReturn(
+                Optional.of(new Person("TEST")));
+        doNothing().when(personRepository).deleteById(id);
 
         assertEquals(id, testObject.deletePerson(id));
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testDeletePersonNotExist() {
         Long id = 12L;
-        Mockito.when(personRepository.findById(id)).thenReturn(
+        when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
 
-        assertNull(testObject.deletePerson(id));
+        testObject.deletePerson(id);
     }
 
-    @Test
+    @Test(expected = HotelServiceException.class)
     public void testAddToBlacklistNotExist() {
         Long id = 12L;
-        Mockito.when(personRepository.findById(id)).thenReturn(
+        when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
 
-        assertNull(testObject.addToBlacklist(id));
+        testObject.addToBlacklist(id);
     }
 
     @Test
     public void testAddToBlacklist() {
         Long id = 12L;
-        Person person = new Person("TEST", "TEST");
+        Person person = new Person("TEST");
         person.setId(id);
 
-        Mockito.when(personRepository.findById(id)).thenReturn(Optional.of(person));
+        when(personRepository.findById(id)).thenReturn(Optional.of(person));
 
         assertEquals(id, testObject.addToBlacklist(id));
         assertTrue(person.getBlacklisted());
@@ -121,11 +151,11 @@ public class PersonServiceImplTest {
     @Test
     public void testRemoveFromBlacklist() {
         Long id = 12L;
-        Person person = new Person("TEST", "TEST");
+        Person person = new Person("TEST");
         person.setId(id);
-        person.setBlacklisted(true);
 
-        Mockito.when(personRepository.findById(id)).thenReturn(Optional.of(person));
+        when(personRepository.findById(id)).thenReturn(Optional.of(person));
+
         assertEquals(id, testObject.removeFromBlacklist(id));
         assertFalse(person.getBlacklisted());
     }
