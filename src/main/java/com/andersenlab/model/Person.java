@@ -6,10 +6,14 @@ import javax.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "person")
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = { "version", "reservations", "invoices" })
 public class Person {
 
@@ -31,73 +35,16 @@ public class Person {
 	@Column(name = "person_name")
 	private String personName;
 
+	@Fetch(FetchMode.JOIN)
 	@OneToMany(mappedBy = "person")
 	private List<Reservation> reservations;
 
+	@Fetch(FetchMode.JOIN)
 	@OneToMany(mappedBy = "personId")
 	private Set<Invoice> invoices;
 
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-
-	public Person() {
-	}
-
-	public Person(String personName, String encrytedPassword) {
-		this.encrytedPassword = encrytedPassword;
+	public Person(String personName) {
 		this.personName = personName;
 	}
 
-	public void setReservations(List<Reservation> reservations) {
-		this.reservations = reservations;
-	}
-
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-
-	public String getPersonName() {
-		return personName;
-	}
-
-	public void setPersonName(String personName) {
-		this.personName = personName;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Boolean getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(Boolean admin) {
-		this.admin = admin;
-	}
-
-	public Boolean getBlacklisted() {
-		return blacklisted;
-	}
-
-	public void setBlacklisted(Boolean blacklisted) {
-		this.blacklisted = blacklisted;
-	}
-
-	public String getEncrytedPassword() {
-		return encrytedPassword;
-	}
-
-	public void setEncrytedPassword(String encrytedPassword) {
-		this.encrytedPassword = encrytedPassword;
-	}
 }

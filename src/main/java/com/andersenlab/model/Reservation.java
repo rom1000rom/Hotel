@@ -3,6 +3,7 @@ package com.andersenlab.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "reservation")
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = {"person","room"})
 public class Reservation {
 
@@ -34,9 +36,6 @@ public class Reservation {
     private LocalDate dateBegin;
 
     private LocalDate dateEnd;
-
-    public Reservation() {
-    }
 
     public Reservation(LocalDate dateBegin, LocalDate dateEnd) {
         this.dateBegin = dateBegin;
