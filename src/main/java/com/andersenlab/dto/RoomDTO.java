@@ -1,6 +1,6 @@
 package com.andersenlab.dto;
 
-import com.andersenlab.model.Hotel;
+
 import com.andersenlab.model.Reservation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +17,7 @@ public class RoomDTO {
 
     private String number;
 
-    private Hotel hotelId;
+    private Long hotelid;
 
     private List<Reservation> reservations;
 

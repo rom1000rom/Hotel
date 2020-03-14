@@ -48,6 +48,7 @@ public class RoomController {
     public ResponseEntity<RoomDTO> saveRoom(
             @RequestBody @Valid RoomDTO roomDTO)
     {
+
         roomDTO.setId(roomService.saveRoom(roomDTO));
         return ResponseEntity.status(201).body(roomDTO);
     }
