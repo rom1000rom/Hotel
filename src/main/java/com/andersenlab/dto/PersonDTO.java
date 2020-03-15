@@ -1,7 +1,9 @@
 package com.andersenlab.dto;
 
 
-import com.andersenlab.model.Reservation;
+
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,7 +23,10 @@ public class PersonDTO {
 
     private Boolean admin = false;
 
-    private List<Reservation> reservations;
+    /*Аннотация позволяет избежать бесконечной рекурсии при отображении поля -
+    коллекции(дочернего) в JSON*/
+    @JsonBackReference
+    private List<ReservationDTO> reservations;
 
     public PersonDTO(String personName) {
         this.personName = personName;

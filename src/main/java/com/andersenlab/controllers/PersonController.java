@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.validation.Valid;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class PersonController {
         return ResponseEntity.ok().body(personDTO);
     }
 
-    @PostMapping(produces = "application/json")
+    @PostMapping(produces = "application/json", consumes= "application/json")
     @ApiOperation(value = "Save a new person")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/

@@ -41,14 +41,13 @@ public class RoomController {
         return ResponseEntity.ok().body(roomDTO);
     }
 
-    @PostMapping(produces = "application/json")
+    @PostMapping(produces = "application/json", consumes= "application/json;charset=UTF-8")
     @ApiOperation(value = "Save a new room")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
     public ResponseEntity<RoomDTO> saveRoom(
             @RequestBody @Valid RoomDTO roomDTO)
     {
-
         roomDTO.setId(roomService.saveRoom(roomDTO));
         return ResponseEntity.status(201).body(roomDTO);
     }

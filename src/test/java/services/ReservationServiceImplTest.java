@@ -5,6 +5,7 @@ package services;
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.dto.PersonDTO;
 import com.andersenlab.dto.ReservationDTO;
 import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.exceptions.HotelServiceException;
@@ -100,7 +101,9 @@ public class ReservationServiceImplTest {
     public void testSaveReservationPersonNotExist() {
         Long id = 12L;
         ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setPersonId(id);
+        PersonDTO personDTO = new PersonDTO("TEST");
+        personDTO.setId(id);
+        reservationDTO.setPerson(personDTO);
 
         Mockito.when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
@@ -116,19 +119,24 @@ public class ReservationServiceImplTest {
         ReservationDTO reservationDTO = new ReservationDTO(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        Person person = new Person();
-        person.setId(id);
-        reservationDTO.setPersonId(id);
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setId(id);
+        reservationDTO.setPerson(personDTO);
 
-        Room room = new Room();
-        room.setId(id);
-        reservationDTO.setRoomId(id);
+        RoomDTO roomDTO = new RoomDTO();
+        roomDTO.setId(id);
+        reservationDTO.setRoom(roomDTO);
 
         Reservation reservation = new Reservation(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
         Reservation reservationWithId = new Reservation(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
         reservationWithId.setId(id);
+
+        Person person = new Person();
+        person.setId(id);
+        Room room = new Room();
+        room.setId(id);
 
         Mockito.when(personRepository.findById(id)).thenReturn(
                 Optional.of(person));

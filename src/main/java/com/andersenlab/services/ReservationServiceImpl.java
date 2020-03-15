@@ -4,23 +4,19 @@ import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.ReservationDTO;
-import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.metadata.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +24,7 @@ import java.util.stream.Collectors;
  @author Артемьев Р.А.
  @version 09.03.2020 */
 @Service
+@Transactional
 public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
@@ -41,8 +38,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     private static final String EXCEPTION_MESSAGE = "Such a reservation does not exist";
 
+
     private static MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-    static {
+    static {//Позволяет библиотеке Orika Mapper корректно отображать LocalDate
         mapperFactory.getConverterFactory().registerConverter(
                 new PassThroughConverter(LocalDate.class));
     }
@@ -72,15 +70,16 @@ public class ReservationServiceImpl implements ReservationService {
         mapperFactory.classMap(ReservationDTO.class, Reservation.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
 
-        Person person = personRepository.findById(reservationDTO.getPersonId())
+        Person person = personRepository.findById(reservationDTO.getPerson().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a person does not exist"));
-        Room room = roomRepository.findById(reservationDTO.getRoomId())
+        Room room = roomRepository.findById(reservationDTO.getRoom().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a room does not exist"));
 
         LocalDate dateBegin = reservationDTO.getDateBegin();
         LocalDate dateEnd = reservationDTO.getDateEnd();
         if(room.isBooked(dateBegin, dateEnd))//Если номер забронирован на указанные даты
             throw new HotelServiceException("This room is booked for these dates");
+
         Reservation reservation = mapper.map(reservationDTO, Reservation.class);
         reservation.setPerson(person);
         reservation.setRoom(room);

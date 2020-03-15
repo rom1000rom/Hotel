@@ -79,9 +79,10 @@ public class RoomControllerTest {
     @Test
     public void testSaveRoom() throws Exception
     {
-        Long id = 0L;
+        Long id = 10L;
 
         RoomDTO actual= new RoomDTO("TEST_NAME");
+
         RoomDTO expected  = new RoomDTO("TEST_NAME");
 
         when(roomService.saveRoom(actual)).thenReturn(id);

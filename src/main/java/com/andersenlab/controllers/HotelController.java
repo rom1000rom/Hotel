@@ -34,7 +34,7 @@ public class HotelController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = String.class),
 			@ApiResponse(code = 400, message = "Not found"), @ApiResponse(code = 500, message = "Server failure") })
 	@GetMapping(value = "/list")
-	List<HotelDto> getHotelList() {
+	public List<HotelDto> getHotelList() {
 		return null;
 
 	}
@@ -52,7 +52,7 @@ public class HotelController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = String.class),
 			@ApiResponse(code = 400, message = "Not found"), @ApiResponse(code = 500, message = "Server failure") })
 	@PostMapping(value = "/create")
-	Long createHotel(HotelDto hotelDto) {
+	public Long createHotel(HotelDto hotelDto) {
 		return null;
 
 	}
@@ -61,7 +61,7 @@ public class HotelController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = String.class),
 			@ApiResponse(code = 400, message = "Not found"), @ApiResponse(code = 500, message = "Server failure") })
 	@PutMapping(value = "/update")
-	void updateHotel(HotelDto hotelDto) {
+	public void updateHotel(HotelDto hotelDto) {
 
 	}
 	
@@ -69,7 +69,7 @@ public class HotelController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = String.class),
 			@ApiResponse(code = 400, message = "Not found"), @ApiResponse(code = 500, message = "Server failure") })
 	@DeleteMapping(value = "/delete")
-	void deleteHotel(HotelDto hotelDto) {
+	public void deleteHotel(HotelDto hotelDto) {
 
 	}
 

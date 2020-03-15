@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 /**Класс представляет собой REST-контроллёр, содержащий методы для
@@ -41,7 +40,7 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservationService.findReservationById(reservationId));
     }
 
-    @PostMapping(produces = "application/json")
+    @PostMapping(produces = "application/json", consumes= "application/json")
     @ApiOperation(value = "Save a new reservation")
     public ResponseEntity<ReservationDTO> saveReservation(
             @RequestBody @Valid ReservationDTO reservationDTO)
