@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @EqualsAndHashCode(exclude = {"reservations"})
@@ -16,6 +17,7 @@ public class RoomDTO {
 
     private Long id;
 
+    @NotNull
     private String number;
 
     @JsonIgnore

@@ -5,6 +5,7 @@ package com.andersenlab.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 
 
 
@@ -14,8 +15,10 @@ public class PersonUsernameLoginDTO {
 
     private Long id;
 
+    @NotNull
     private String personName;
 
+    @NotNull
     private String encrytedPassword;
 
     private Boolean blacklisted = false;
