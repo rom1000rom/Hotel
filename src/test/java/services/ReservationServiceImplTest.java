@@ -5,6 +5,9 @@ package services;
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.dto.PersonDTO;
+import com.andersenlab.dto.ReservationDTO;
+import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
@@ -27,6 +30,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReservationServiceImplTest {
@@ -56,20 +60,33 @@ public class ReservationServiceImplTest {
         listReservation.add(new Reservation(LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
         listReservation.add(new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
         //Настраиваю поведение мока
-        Mockito.when(reservationRepository.findAll()).thenReturn(listReservation);
+        when(reservationRepository.findAll()).thenReturn(listReservation);
+
+        List<ReservationDTO> listReservationDTO = new ArrayList<>();
+        listReservationDTO.add(new ReservationDTO(
+                LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
+        listReservationDTO.add(new ReservationDTO(
+                LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
 
         //Проверяю поведение тестируемого объекта
-        assertEquals(listReservation, testObject.findAllReservations());
+        assertEquals(listReservationDTO, testObject.findAllReservations());
+
     }
 
-    @Test
+        @Test
     public void testFindReservationById() {
         Long id = 10L;
-        Reservation reservation = new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23"));
+        Reservation reservation = new Reservation(
+                LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
         reservation.setId(id);
-        Mockito.when(reservationRepository.findById(id)).thenReturn(Optional.of(reservation));
+        when(reservationRepository.findById(id)).thenReturn(Optional.of(reservation));
 
-        assertEquals(reservation, testObject.findReservationById(id));
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setDateBegin(reservation.getDateBegin());
+        reservationDTO.setDateEnd(reservation.getDateEnd());
+        reservationDTO.setId(id);
+
+        assertEquals(reservationDTO, testObject.findReservationById(id));
     }
 
     @Test(expected = HotelServiceException.class)
@@ -80,89 +97,65 @@ public class ReservationServiceImplTest {
         testObject.findReservationById(id);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void testSaveReservationPersonOrRoomIsNull() {
-        Reservation reservation = new Reservation();
-        testObject.saveReservation(reservation);
-    }
-
     @Test(expected = HotelServiceException.class)
     public void testSaveReservationPersonNotExist() {
         Long id = 12L;
-        Reservation reservation = new Reservation();
-        reservation.setRoom(new Room());
-        Person person = new Person();
-        person.setId(id);
-        reservation.setPerson(person);
+        ReservationDTO reservationDTO = new ReservationDTO();
+        PersonDTO personDTO = new PersonDTO("TEST");
+        personDTO.setId(id);
+        reservationDTO.setPerson(personDTO);
 
         Mockito.when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
-        testObject.saveReservation(reservation);
-    }
-
-    @Test(expected = HotelServiceException.class)
-    public void testSaveReservationRoomNotExist() {
-        Long id = 12L;
-        Reservation reservation = new Reservation();
-
-        Person person = new Person();
-        person.setId(id);
-        reservation.setPerson(person);
-
-        Room room = new Room();
-        room.setId(id);
-        reservation.setRoom(room);
-
-        Mockito.when(personRepository.findById(id)).thenReturn(
-                Optional.of(person));
-        Mockito.when(roomRepository.findById(id)).thenReturn(
-                Optional.empty());
-        testObject.saveReservation(reservation);
+        testObject.saveReservation(reservationDTO);
     }
 
     @Test
     public void testSaveReservation() {
         Long id = 12L;
-        Reservation reservation = new Reservation();
-        reservation.setId(id);
-        reservation.setDateBegin(LocalDate.parse("2016-09-23"));
-        reservation.setDateEnd(LocalDate.parse("2016-09-25"));
+        String dateBegin = "2016-09-23";
+        String dateEnd = "2016-09-25";
+
+        ReservationDTO reservationDTO = new ReservationDTO(
+                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setId(id);
+        reservationDTO.setPerson(personDTO);
+
+        RoomDTO roomDTO = new RoomDTO();
+        roomDTO.setId(id);
+        reservationDTO.setRoom(roomDTO);
+
+        Reservation reservation = new Reservation(
+                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+        Reservation reservationWithId = new Reservation(
+                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+        reservationWithId.setId(id);
 
         Person person = new Person();
         person.setId(id);
-        reservation.setPerson(person);
-
         Room room = new Room();
         room.setId(id);
-        reservation.setRoom(room);
 
         Mockito.when(personRepository.findById(id)).thenReturn(
                 Optional.of(person));
         Mockito.when(roomRepository.findById(id)).thenReturn(
                 Optional.of(room));
-        Mockito.when(reservationRepository.save(reservation)).thenReturn(reservation);
+        Mockito.when(reservationRepository.save(reservation)).thenReturn(reservationWithId);
 
-        assertEquals(reservation, testObject.saveReservation(reservation));
+        assertEquals(id, testObject.saveReservation(reservationDTO));
     }
 
 
     @Test
     public void testDeleteReservation() {
         Long id = 12L;
-        Mockito.when(reservationRepository.findById(id)).thenReturn(
-                Optional.of(new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23"))));
+        Mockito.when(reservationRepository.findById(id)).thenReturn(Optional.of(
+                new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23"))));
         Mockito.doNothing().when(reservationRepository).deleteById(id);
 
         assertEquals(id, testObject.deleteReservation(id));
     }
-
-    @Test(expected = HotelServiceException.class)
-    public void testDeleteReservationNotExist() {
-        Long id = 12L;
-        Mockito.when(reservationRepository.findById(id)).thenReturn(
-                Optional.empty());
-        testObject.deleteReservation(id);
-    }
-
 
 }

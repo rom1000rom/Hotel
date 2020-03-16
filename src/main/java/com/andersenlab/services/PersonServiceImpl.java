@@ -7,11 +7,14 @@ import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
  @author Артемьев Р.А.
  @version 09.03.2020 */
 @Service
+@Transactional//Позволяет избежать ошибки "ленивой" инициализации прокси
 public class PersonServiceImpl implements PersonService{
 
     @Autowired
@@ -27,14 +31,18 @@ public class PersonServiceImpl implements PersonService{
 
     private static final String EXCEPTION_MESSAGE = "Such a person does not exist";
 
-    private MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    private static MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    static {//Позволяет библиотеке Orika Mapper корректно отображать LocalDate
+        mapperFactory.getConverterFactory().registerConverter(
+                new PassThroughConverter(LocalDate.class));
+    }
 
     @Override
     public List<PersonDTO> findAllPersons() {
         mapperFactory.classMap(Person.class, PersonDTO.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         List<Person> listPerson = (List<Person>)personRepository.findAll();
-        return listPerson.stream().map((person) -> mapper.map(person, PersonDTO.class))
+        return listPerson.stream().map(person -> mapper.map(person, PersonDTO.class))
                 .collect(Collectors.toList());
     }
 

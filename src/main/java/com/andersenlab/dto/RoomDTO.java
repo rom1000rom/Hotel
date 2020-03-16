@@ -1,7 +1,8 @@
 package com.andersenlab.dto;
 
-import com.andersenlab.model.Hotel;
-import com.andersenlab.model.Reservation;
+
+import com.fasterxml.jackson.annotation.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,12 +18,17 @@ public class RoomDTO {
 
     private String number;
 
-    private Hotel hotelId;
+    @JsonIgnore
+    @JsonManagedReference
+    private HotelDto hotelId;
 
-    private List<Reservation> reservations;
+    @JsonIgnore
+    private List<ReservationDTO> reservations;
 
     public RoomDTO(String number) {
         this.number = number;
     }
+
+
 }
 

@@ -6,10 +6,13 @@ import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Room;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
  @author Артемьев Р.А.
  @version 09.03.2020 */
 @Service
+@Transactional
 public class RoomServiceImpl implements RoomService {
 
     @Autowired
@@ -24,14 +28,18 @@ public class RoomServiceImpl implements RoomService {
 
     private static final String EXCEPTION_MESSAGE = "Such a room does not exist";
 
-    private MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    private static MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+    static {//Позволяет библиотеке Orika Mapper корректно отображать LocalDate
+        mapperFactory.getConverterFactory().registerConverter(
+                new PassThroughConverter(LocalDate.class));
+    }
 
     @Override
     public List<RoomDTO> findAllRooms() {
         mapperFactory.classMap(Room.class, RoomDTO.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         List<Room> listRoom = (List<Room>)roomRepository.findAll();
-        return listRoom.stream().map((room) -> mapper.map(room, RoomDTO.class))
+        return listRoom.stream().map(room -> mapper.map(room, RoomDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -49,7 +57,6 @@ public class RoomServiceImpl implements RoomService {
         mapperFactory.classMap(RoomDTO.class, Room.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         Room room = roomRepository.save(mapper.map(roomDTO, Room.class));
-
         return room.getId();
     }
 
