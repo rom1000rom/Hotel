@@ -42,7 +42,7 @@ public class PersonServiceImpl implements PersonService{
         mapperFactory.classMap(Person.class, PersonDTO.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         List<Person> listPerson = (List<Person>)personRepository.findAll();
-        return listPerson.stream().map((person) -> mapper.map(person, PersonDTO.class))
+        return listPerson.stream().map(person -> mapper.map(person, PersonDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -52,7 +52,6 @@ public class PersonServiceImpl implements PersonService{
         MapperFacade mapper = mapperFactory.getMapperFacade();
         Person person = personRepository.findById(id).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
-        System.out.println(person.getReservations().size());
         return mapper.map(person, PersonDTO.class);
     }
 

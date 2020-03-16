@@ -1,6 +1,7 @@
 package com.andersenlab.dto;
 
 
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

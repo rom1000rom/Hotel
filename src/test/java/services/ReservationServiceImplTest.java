@@ -73,7 +73,7 @@ public class ReservationServiceImplTest {
 
     }
 
-    @Test
+        @Test
     public void testFindReservationById() {
         Long id = 10L;
         Reservation reservation = new Reservation(

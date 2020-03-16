@@ -4,7 +4,9 @@ package controllers;
 
 import com.andersenlab.App;
 import com.andersenlab.controllers.ReservationController;
+import com.andersenlab.dto.PersonDTO;
 import com.andersenlab.dto.ReservationDTO;
+import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.services.ReservationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -97,8 +99,18 @@ public class ReservarionControllerTest {
         Long id = 10L;
         ReservationDTO actual= new ReservationDTO(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
+        actual.setId(0L);
+        PersonDTO personDTO = new PersonDTO("TEST");
+        personDTO.setId(id);
+        RoomDTO roomDTO = new RoomDTO("TEST");
+        roomDTO.setId(id);
+        actual.setRoom(roomDTO);
+        actual.setPerson(personDTO);
+
         ReservationDTO expected  = new ReservationDTO(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
+        expected.setRoom(roomDTO);
+        expected.setPerson(personDTO);
 
         when(reservationService.saveReservation(actual)).thenReturn(id);
         expected.setId(id);

@@ -8,7 +8,7 @@ import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
-import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -38,38 +38,48 @@ public class ReservationServiceImpl implements ReservationService {
 
     private static final String EXCEPTION_MESSAGE = "Such a reservation does not exist";
 
-
     private static MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
+
+    private static BoundMapperFacade<Reservation, ReservationDTO> mapper;//Мэппер работающий в обе стороны
+
     static {//Позволяет библиотеке Orika Mapper корректно отображать LocalDate
         mapperFactory.getConverterFactory().registerConverter(
                 new PassThroughConverter(LocalDate.class));
+        mapper = mapperFactory.getMapperFacade(Reservation.class, ReservationDTO.class);
     }
 
     @Override
     public List<ReservationDTO> findAllReservations() {
-        mapperFactory.classMap(Reservation.class, ReservationDTO.class);
-        MapperFacade mapper = mapperFactory.getMapperFacade();
-
         List<Reservation> listReservation = (List<Reservation>)reservationRepository.findAll();
-        return listReservation.stream().map((reservation) ->
-                mapper.map(reservation, ReservationDTO.class)).collect(Collectors.toList());
+        return listReservation.stream().map(reservation ->
+                mapper.map(reservation)).collect(Collectors.toList());
     }
 
     @Override
     public ReservationDTO findReservationById(Long id) {
-        mapperFactory.classMap(Reservation.class, ReservationDTO.class);
-        MapperFacade mapper = mapperFactory.getMapperFacade();
-
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
-        return mapper.map(reservation, ReservationDTO.class);
+        return mapper.map(reservation);
+    }
+
+    @Override
+    public List<ReservationDTO> findReservationsByPersonId(Long id) {
+        List<Reservation> listReservation = (List<Reservation>)reservationRepository.findAll();
+        return listReservation.stream().filter(resDTO-> resDTO.getPerson().getId().equals(id))
+                .map(reservation -> mapper.map(reservation))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReservationDTO> findReservationsByRoomId(Long id) {
+        List<Reservation> listReservation = (List<Reservation>)reservationRepository.findAll();
+        return listReservation.stream().filter(resDTO-> resDTO.getRoom().getId().equals(id))
+                .map(reservation -> mapper.map(reservation))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Long saveReservation(ReservationDTO reservationDTO) {
-        mapperFactory.classMap(ReservationDTO.class, Reservation.class);
-        MapperFacade mapper = mapperFactory.getMapperFacade();
-
         Person person = personRepository.findById(reservationDTO.getPerson().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a person does not exist"));
         Room room = roomRepository.findById(reservationDTO.getRoom().getId())
@@ -77,10 +87,12 @@ public class ReservationServiceImpl implements ReservationService {
 
         LocalDate dateBegin = reservationDTO.getDateBegin();
         LocalDate dateEnd = reservationDTO.getDateEnd();
+        if(dateBegin.isAfter(dateEnd))//Если номер забронирован на указанные даты
+            throw new HotelServiceException("Incorrect dates");
         if(room.isBooked(dateBegin, dateEnd))//Если номер забронирован на указанные даты
             throw new HotelServiceException("This room is booked for these dates");
 
-        Reservation reservation = mapper.map(reservationDTO, Reservation.class);
+        Reservation reservation = mapper.mapReverse(reservationDTO);
         reservation.setPerson(person);
         reservation.setRoom(room);
 

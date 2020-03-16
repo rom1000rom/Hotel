@@ -39,7 +39,7 @@ public class RoomServiceImpl implements RoomService {
         mapperFactory.classMap(Room.class, RoomDTO.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         List<Room> listRoom = (List<Room>)roomRepository.findAll();
-        return listRoom.stream().map((room) -> mapper.map(room, RoomDTO.class))
+        return listRoom.stream().map(room -> mapper.map(room, RoomDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -49,7 +49,6 @@ public class RoomServiceImpl implements RoomService {
         MapperFacade mapper = mapperFactory.getMapperFacade();
         Room room = roomRepository.findById(id).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
-        System.out.println(room.getReservations().size());
         return mapper.map(room, RoomDTO.class);
     }
 
@@ -58,7 +57,6 @@ public class RoomServiceImpl implements RoomService {
         mapperFactory.classMap(RoomDTO.class, Room.class);
         MapperFacade mapper = mapperFactory.getMapperFacade();
         Room room = roomRepository.save(mapper.map(roomDTO, Room.class));
-
         return room.getId();
     }
 

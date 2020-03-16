@@ -4,17 +4,18 @@ import java.util.Set;
 
 import com.andersenlab.model.Facilities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
-public class HotelDto {
+public class HotelDto  {
 
 	private Long id;
 
 	private String hotelName;
 
-	@JsonBackReference
-	private Set<RoomDTO> roomSet;
+	@JsonIgnore
+	public Set<RoomDTO> roomSet;
 
 	private Set<Facilities> serviceSet;
 

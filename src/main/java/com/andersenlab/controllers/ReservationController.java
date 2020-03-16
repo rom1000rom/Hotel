@@ -43,8 +43,7 @@ public class ReservationController {
     @PostMapping(produces = "application/json", consumes= "application/json")
     @ApiOperation(value = "Save a new reservation")
     public ResponseEntity<ReservationDTO> saveReservation(
-            @RequestBody @Valid ReservationDTO reservationDTO)
-    {
+            @RequestBody @Valid ReservationDTO reservationDTO)  {
         reservationDTO.setId(reservationService.saveReservation(reservationDTO));
         return ResponseEntity.status(201).body(reservationDTO);
     }
@@ -57,4 +56,17 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservationService.deleteReservation(reservationId));
     }
 
+    @GetMapping(value = "findByPersonId/{personId}", produces = "application/json")
+    @ApiOperation(value = "Get a list  reservations by Person id")
+    public ResponseEntity<List<ReservationDTO>> findReservationsByPersonId(
+            @PathVariable("personId") Long personId) {
+        return ResponseEntity.ok().body(reservationService.findReservationsByPersonId(personId));
+    }
+
+    @GetMapping(value = "findByRoomId/{roomId}", produces = "application/json")
+    @ApiOperation(value = "Get a list  reservations by Room id")
+    public ResponseEntity<List<ReservationDTO>> findReservationsByRoomId(
+            @PathVariable("roomId") Long roomId) {
+        return ResponseEntity.ok().body(reservationService.findReservationsByRoomId(roomId));
+    }
 }

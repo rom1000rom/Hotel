@@ -19,6 +19,16 @@ public interface ReservationService {
       @return объект класса ReservationDTO*/
      ReservationDTO findReservationById(Long id);
 
+     /**Метод возвращает список объектов бронирования по id пользователя
+      @param id id пользователя
+      @return список объектов класса ReservationDTO*/
+     List<ReservationDTO> findReservationsByPersonId(Long id);
+
+     /**Метод возвращает список объектов бронирования по id номера в отеле
+      @param id id номера
+      @return список объектов класса ReservationDTO*/
+     List<ReservationDTO> findReservationsByRoomId(Long id);
+
      /**Метод сохраняет бронирование номера
       @param reservationDTO объект бронирования, который нужно сохранить
       @return id объекта бронирования в базе*/

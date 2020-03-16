@@ -7,11 +7,15 @@ import com.andersenlab.services.RoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+
+
 
 /**Класс представляет собой REST-контроллёр, содержащий методы для
   обработки стандартных Http-запросов в отношении номеров отеля.
@@ -41,7 +45,7 @@ public class RoomController {
         return ResponseEntity.ok().body(roomDTO);
     }
 
-    @PostMapping(produces = "application/json", consumes= "application/json;charset=UTF-8")
+    @PostMapping(produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Save a new room")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
