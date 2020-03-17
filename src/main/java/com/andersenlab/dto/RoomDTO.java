@@ -20,11 +20,10 @@ public class RoomDTO {
     @NotNull
     private String number;
 
-    @JsonIgnore
-    @JsonManagedReference
+    @JsonBackReference
     private HotelDto hotelId;
 
-    @JsonIgnore
+    @JsonManagedReference
     private List<ReservationDTO> reservations;
 
     public RoomDTO(String number) {

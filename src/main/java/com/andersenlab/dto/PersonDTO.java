@@ -25,7 +25,7 @@ public class PersonDTO {
 
     /*Аннотация позволяет избежать бесконечной рекурсии при отображении поля -
     коллекции(дочернего) в JSON*/
-    @JsonIgnore
+    @JsonManagedReference
     private List<ReservationDTO> reservations;
 
     public PersonDTO(String personName) {

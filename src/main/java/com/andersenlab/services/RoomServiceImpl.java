@@ -1,8 +1,12 @@
 package com.andersenlab.services;
 
+import com.andersenlab.dao.HotelDao;
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.dto.HotelDto;
 import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.exceptions.HotelServiceException;
+import com.andersenlab.model.Hotel;
+import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,9 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
+    private HotelDao hotelDao;
+
+    @Autowired
     private MapperFacade mapperFacade;
 
     private static final String EXCEPTION_MESSAGE = "Such a room does not exist";
@@ -43,7 +50,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Long saveRoom(RoomDTO roomDTO) {
-        return roomRepository.save(mapperFacade.map(roomDTO, Room.class)).getId();
+
+        Room room = mapperFacade.map(roomDTO, Room.class);
+
+        return roomRepository.save(room).getId();
     }
 
     @Override
