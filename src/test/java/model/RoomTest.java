@@ -24,9 +24,9 @@ public class RoomTest {
                 LocalDate.parse("2016-09-23")));
         assertTrue(testedObject.isBooked(LocalDate.parse("2016-09-28"),
                 LocalDate.parse("2017-10-01")));
-        assertFalse(testedObject.isBooked(LocalDate.parse("2016-09-18"),
+        assertTrue(testedObject.isBooked(LocalDate.parse("2016-09-18"),
                 LocalDate.parse("2016-09-22")));
-        assertFalse(testedObject.isBooked(LocalDate.parse("2016-09-29"),
+        assertTrue(testedObject.isBooked(LocalDate.parse("2016-09-29"),
                 LocalDate.parse("2016-09-30")));
         testedObject.setReservations(null);
         assertFalse(testedObject.isBooked(LocalDate.parse("2016-09-18"),

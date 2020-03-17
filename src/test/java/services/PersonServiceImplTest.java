@@ -8,6 +8,7 @@ import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.services.PersonService;
 import com.andersenlab.services.PersonServiceImpl;
+import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,6 +31,9 @@ import static org.mockito.Mockito.when;
 public class PersonServiceImplTest {
     @Mock
     private PersonRepository personRepository;
+
+    @Mock
+    private MapperFacade mapperFacade;
 
     @InjectMocks
     private PersonService testObject = new PersonServiceImpl();
@@ -54,6 +58,8 @@ public class PersonServiceImplTest {
         listPersonDTO.add(new PersonDTO("TEST"));
         listPersonDTO.add(new PersonDTO("TEST2"));
 
+        when(mapperFacade.mapAsList(listPerson, PersonDTO.class)).thenReturn(listPersonDTO);
+
         //Проверяю поведение тестируемого объекта
         assertEquals(listPersonDTO, testObject.findAllPersons());
     }
@@ -67,6 +73,8 @@ public class PersonServiceImplTest {
 
         PersonDTO personDTO = new PersonDTO("TEST");
         personDTO.setId(id);
+        when(mapperFacade.map(person, PersonDTO.class)).thenReturn(personDTO);
+
         assertEquals(personDTO, testObject.findPersonById(id));
     }
 
@@ -87,6 +95,7 @@ public class PersonServiceImplTest {
         Person personWithId = new Person("TEST");
         personWithId.setId(id);
 
+        when(mapperFacade.map(personUsernameLoginDTO, Person.class)).thenReturn(person);
         when(personRepository.save(person)).thenReturn(personWithId);
 
         assertEquals(id, testObject.savePerson(personUsernameLoginDTO));
@@ -104,6 +113,7 @@ public class PersonServiceImplTest {
                 Optional.of(person));
         person.setPersonName("TEST_NEW");
         when(personRepository.save(person)).thenReturn(person);
+        when(mapperFacade.map(person, PersonUsernameLoginDTO.class)).thenReturn(personUsernameLoginDTO);
 
         assertEquals(personUsernameLoginDTO, testObject.updatePerson(personUsernameLoginDTO));
     }

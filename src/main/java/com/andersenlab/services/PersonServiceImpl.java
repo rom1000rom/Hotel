@@ -29,39 +29,27 @@ public class PersonServiceImpl implements PersonService{
     @Autowired
     private PersonRepository personRepository;
 
-    private static final String EXCEPTION_MESSAGE = "Such a person does not exist";
+    @Autowired
+    private MapperFacade mapperFacade;
 
-    private static MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-    static {//Позволяет библиотеке Orika Mapper корректно отображать LocalDate
-        mapperFactory.getConverterFactory().registerConverter(
-                new PassThroughConverter(LocalDate.class));
-    }
+    private static final String EXCEPTION_MESSAGE = "Such a person does not exist";
 
     @Override
     public List<PersonDTO> findAllPersons() {
-        mapperFactory.classMap(Person.class, PersonDTO.class);
-        MapperFacade mapper = mapperFactory.getMapperFacade();
         List<Person> listPerson = (List<Person>)personRepository.findAll();
-        return listPerson.stream().map(person -> mapper.map(person, PersonDTO.class))
-                .collect(Collectors.toList());
+        return mapperFacade.mapAsList(listPerson, PersonDTO.class);
     }
 
     @Override
     public PersonDTO findPersonById(Long id) {
-        mapperFactory.classMap(Person.class, PersonDTO.class);
-        MapperFacade mapper = mapperFactory.getMapperFacade();
         Person person = personRepository.findById(id).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
-        return mapper.map(person, PersonDTO.class);
+        return mapperFacade.map(person, PersonDTO.class);
     }
 
     @Override
     public Long savePerson(PersonUsernameLoginDTO personUsernameLoginDTO) {
-        mapperFactory.classMap(PersonUsernameLoginDTO.class, Person.class);
-        MapperFacade mapper = mapperFactory.getMapperFacade();
-        Person person = personRepository.save(mapper.map(personUsernameLoginDTO, Person.class));
-
-        return person.getId();
+        return personRepository.save(mapperFacade.map(personUsernameLoginDTO, Person.class)).getId();
     }
 
     @Override
@@ -80,13 +68,10 @@ public class PersonServiceImpl implements PersonService{
         Person person = personRepository.findById(personUsernameLoginDTO.getId()).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
 
-        mapperFactory.classMap(Person.class, PersonUsernameLoginDTO.class);
-        MapperFacade mapper = mapperFactory.getMapperFacade();
-
         person.setPersonName(personUsernameLoginDTO.getPersonName());
         person.setEncrytedPassword(personUsernameLoginDTO.getEncrytedPassword());
 
-            return mapper.map(personRepository.save(person), PersonUsernameLoginDTO.class);
+            return mapperFacade.map(personRepository.save(person), PersonUsernameLoginDTO.class);
     }
 
     @Override

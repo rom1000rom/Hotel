@@ -56,11 +56,11 @@ public class Room {
     if(this.getReservations() == null)
       return false;
     return this.getReservations().stream().anyMatch(res -> {
-      if((res.getDateBegin().compareTo(dateBegin)>0)&&
-              (res.getDateBegin().compareTo(dateEnd)<0))
+      if((res.getDateBegin().compareTo(dateBegin)>=0)&&
+              (res.getDateBegin().compareTo(dateEnd)<=0))
         return true;
-      if((res.getDateEnd().compareTo(dateBegin)>0)&&
-              ( res.getDateEnd().compareTo(dateEnd)<0))
+      if((res.getDateEnd().compareTo(dateBegin)>=0)&&
+              ( res.getDateEnd().compareTo(dateEnd)<=0))
         return true;
       return false;
     });

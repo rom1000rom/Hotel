@@ -14,6 +14,8 @@ import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.ReservationService;
 import com.andersenlab.services.ReservationServiceImpl;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +46,9 @@ public class ReservationServiceImplTest {
     @Mock
     private RoomRepository roomRepository;
 
+    @Mock
+    private MapperFacade mapperFacade;
+
     @InjectMocks
     private ReservationService testObject = new ReservationServiceImpl();
 
@@ -68,6 +73,8 @@ public class ReservationServiceImplTest {
         listReservationDTO.add(new ReservationDTO(
                 LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
 
+        when(mapperFacade.mapAsList(listReservation, ReservationDTO.class))
+                .thenReturn(listReservationDTO);
         //Проверяю поведение тестируемого объекта
         assertEquals(listReservationDTO, testObject.findAllReservations());
 
@@ -85,6 +92,7 @@ public class ReservationServiceImplTest {
         reservationDTO.setDateBegin(reservation.getDateBegin());
         reservationDTO.setDateEnd(reservation.getDateEnd());
         reservationDTO.setId(id);
+        when(mapperFacade.map(reservation, ReservationDTO.class)).thenReturn(reservationDTO);
 
         assertEquals(reservationDTO, testObject.findReservationById(id));
     }
@@ -92,7 +100,7 @@ public class ReservationServiceImplTest {
     @Test(expected = HotelServiceException.class)
     public void testFindReservationByIdNotExist() {
         Long id = 10L;
-        Mockito.when(reservationRepository.findById(id)).thenReturn(Optional.empty());
+        when(reservationRepository.findById(id)).thenReturn(Optional.empty());
 
         testObject.findReservationById(id);
     }
@@ -105,7 +113,7 @@ public class ReservationServiceImplTest {
         personDTO.setId(id);
         reservationDTO.setPerson(personDTO);
 
-        Mockito.when(personRepository.findById(id)).thenReturn(
+        when(personRepository.findById(id)).thenReturn(
                 Optional.empty());
         testObject.saveReservation(reservationDTO);
     }
@@ -138,11 +146,14 @@ public class ReservationServiceImplTest {
         Room room = new Room();
         room.setId(id);
 
-        Mockito.when(personRepository.findById(id)).thenReturn(
+        when(personRepository.findById(id)).thenReturn(
                 Optional.of(person));
-        Mockito.when(roomRepository.findById(id)).thenReturn(
+        when(roomRepository.findById(id)).thenReturn(
                 Optional.of(room));
-        Mockito.when(reservationRepository.save(reservation)).thenReturn(reservationWithId);
+
+        when(mapperFacade.map(reservationDTO, Reservation.class)).thenReturn(reservation);
+
+        when(reservationRepository.save(reservation)).thenReturn(reservationWithId);
 
         assertEquals(id, testObject.saveReservation(reservationDTO));
     }
@@ -151,7 +162,7 @@ public class ReservationServiceImplTest {
     @Test
     public void testDeleteReservation() {
         Long id = 12L;
-        Mockito.when(reservationRepository.findById(id)).thenReturn(Optional.of(
+       when(reservationRepository.findById(id)).thenReturn(Optional.of(
                 new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23"))));
         Mockito.doNothing().when(reservationRepository).deleteById(id);
 

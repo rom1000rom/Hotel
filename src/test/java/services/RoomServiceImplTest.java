@@ -10,6 +10,7 @@ import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.RoomService;
 import com.andersenlab.services.RoomServiceImpl;
+import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,9 @@ public class RoomServiceImplTest {
     @Mock
     RoomRepository roomRepository;
 
+    @Mock
+    MapperFacade mapperFacade;
+
     @InjectMocks
     RoomService testObject = new RoomServiceImpl();
 
@@ -55,6 +59,7 @@ public class RoomServiceImplTest {
         List<RoomDTO> listRoomDTO = new ArrayList<>();
         listRoomDTO.add(new RoomDTO("TEST"));
         listRoomDTO.add(new RoomDTO("TEST2"));
+        when(mapperFacade.mapAsList(listRoom, RoomDTO.class)).thenReturn(listRoomDTO);
 
         //Проверяю поведение тестируемого объекта
         assertEquals(listRoomDTO, testObject.findAllRooms());
@@ -69,6 +74,8 @@ public class RoomServiceImplTest {
 
         RoomDTO roomDTO = new RoomDTO("TEST");
         roomDTO.setId(id);
+        when(mapperFacade.map(room, RoomDTO.class)).thenReturn(roomDTO);
+
         assertEquals(roomDTO, testObject.findRoomById(id));
     }
 
@@ -89,6 +96,7 @@ public class RoomServiceImplTest {
         Room roomWithId = new Room("TEST");
         roomWithId.setId(id);
 
+        when(mapperFacade.map(roomDTO, Room.class)).thenReturn(room);
         when(roomRepository.save(room)).thenReturn(roomWithId);
 
         assertEquals(id, testObject.saveRoom(roomDTO));
@@ -125,6 +133,7 @@ public class RoomServiceImplTest {
                 Optional.of(room));
         room.setNumber("TEST_NEW");
         when(roomRepository.save(room)).thenReturn(room);
+        when(mapperFacade.map(room, RoomDTO.class)).thenReturn(roomDTO);
 
         assertEquals(roomDTO, testObject.updateRoom(roomDTO));
     }
