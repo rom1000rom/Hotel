@@ -6,17 +6,11 @@ import com.andersenlab.dto.PersonUsernameLoginDTO;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.converter.builtin.PassThroughConverter;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**Класс реализует сервисные функции по работе с пользователями.

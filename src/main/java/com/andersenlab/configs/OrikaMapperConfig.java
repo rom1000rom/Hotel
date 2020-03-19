@@ -1,10 +1,7 @@
 package com.andersenlab.configs;
 
 
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.PersonUsernameLoginDTO;
-import com.andersenlab.dto.ReservationDTO;
-import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.*;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
@@ -37,6 +34,10 @@ public class OrikaMapperConfig {
                 .byDefault()
                 .register();
 
+        mapperFactory.classMap(Reservation.class, ReservationPostDTO.class)
+                .byDefault()
+                .register();
+
         mapperFactory.classMap(Person.class, PersonDTO.class)
                 .byDefault()
                 .register();
@@ -46,6 +47,10 @@ public class OrikaMapperConfig {
             .register();
 
         mapperFactory.classMap(Room.class, RoomDTO.class)
+                .byDefault()
+                .register();
+
+        mapperFactory.classMap(Room.class, RoomPostPutDTO.class)
                 .byDefault()
                 .register();
 

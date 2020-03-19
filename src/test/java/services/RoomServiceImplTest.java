@@ -1,11 +1,11 @@
 package services;
 
 
+import com.andersenlab.dao.HotelDao;
 import com.andersenlab.dao.RoomRepository;
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.PersonUsernameLoginDTO;
-import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.*;
 import com.andersenlab.exceptions.HotelServiceException;
+import com.andersenlab.model.Hotel;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.RoomService;
@@ -34,6 +34,9 @@ public class RoomServiceImplTest {
 
     @Mock
     RoomRepository roomRepository;
+
+    @Mock
+    HotelDao hotelDao;
 
     @Mock
     MapperFacade mapperFacade;
@@ -90,16 +93,36 @@ public class RoomServiceImplTest {
     @Test
     public void testSaveRoom() {
         Long id = 12L;
-        RoomDTO roomDTO = new RoomDTO("TEST" );
+
+        Hotel hotel = new Hotel();
+        hotel.setHotelName("TEST");
+        hotel.setId(id);
+
+        HotelPostPutDto hotelPostPutDto = new HotelPostPutDto();
+        hotelPostPutDto.setHotelName("TEST");
+        hotelPostPutDto.setId(id);
+
+        RoomPostPutDTO roomPostPutDTO = new RoomPostPutDTO("TEST" );
+        roomPostPutDTO.setHotelId(hotelPostPutDto);
+
+        RoomPostPutDTO roomPostPutDTOWithId = new RoomPostPutDTO("TEST" );
+        roomPostPutDTOWithId.setId(id);
+        roomPostPutDTOWithId.setHotelId(hotelPostPutDto);
+
         Room room = new Room("TEST");
 
         Room roomWithId = new Room("TEST");
         roomWithId.setId(id);
+        roomWithId.setHotelId(hotel);
 
-        when(mapperFacade.map(roomDTO, Room.class)).thenReturn(room);
+        when(hotelDao.findById(roomPostPutDTO.getHotelId().getId())).thenReturn(
+                Optional.of(hotel));
+        when(mapperFacade.map(roomPostPutDTO, Room.class)).thenReturn(room);
+        room.setHotelId(hotel);
         when(roomRepository.save(room)).thenReturn(roomWithId);
+        when(mapperFacade.map(roomWithId, RoomPostPutDTO.class)).thenReturn(roomPostPutDTOWithId);
 
-        assertEquals(id, testObject.saveRoom(roomDTO));
+        assertEquals(roomPostPutDTOWithId, testObject.saveRoom(roomPostPutDTO));
     }
 
     @Test
@@ -124,8 +147,8 @@ public class RoomServiceImplTest {
     @Test
     public void testUpdateRoom() {
         Long id = 12L;
-        RoomDTO roomDTO = new RoomDTO("TEST_NEW" );
-        roomDTO.setId(id);
+        RoomPostPutDTO roomPostPutDTO = new RoomPostPutDTO("TEST_NEW" );
+        roomPostPutDTO.setId(id);
         Room room = new Room("TEST");
         room.setId(id);
 
@@ -133,9 +156,9 @@ public class RoomServiceImplTest {
                 Optional.of(room));
         room.setNumber("TEST_NEW");
         when(roomRepository.save(room)).thenReturn(room);
-        when(mapperFacade.map(room, RoomDTO.class)).thenReturn(roomDTO);
+        when(mapperFacade.map(room, RoomPostPutDTO.class)).thenReturn(roomPostPutDTO);
 
-        assertEquals(roomDTO, testObject.updateRoom(roomDTO));
+        assertEquals(roomPostPutDTO, testObject.updateRoom(roomPostPutDTO));
     }
 
 }

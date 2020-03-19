@@ -20,8 +20,7 @@ public class RoomDTO {
     @NotNull
     private String number;
 
-    @JsonBackReference
-    private HotelDto hotelId;
+    private HotelPostPutDto hotelId;
 
     @JsonManagedReference
     private List<ReservationDTO> reservations;

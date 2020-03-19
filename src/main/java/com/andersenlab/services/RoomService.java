@@ -3,6 +3,7 @@ package com.andersenlab.services;
 
 
 import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.RoomPostPutDTO;
 
 
 import java.util.List;
@@ -23,13 +24,13 @@ public interface RoomService {
 
      /**Метод сохраняет объект номера отеля
       @param room объект номера, которого нужно сохранить
-      @return id объекта номера в базе*/
-     Long saveRoom(RoomDTO room);
+      @return объект созданного номера*/
+     RoomPostPutDTO saveRoom(RoomPostPutDTO room);
 
      /**Метод обновляет объект номера в отеле
-      @param roomDTO объект с данными номера
+      @param room объект с данными номера
       @return объект обновлённого номера*/
-     RoomDTO updateRoom(RoomDTO roomDTO);
+     RoomPostPutDTO updateRoom(RoomPostPutDTO room);
 
      /**Метод удаляет объект номера по id
       @param id номера, которого нужно удалить

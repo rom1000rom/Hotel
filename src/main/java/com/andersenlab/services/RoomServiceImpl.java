@@ -2,11 +2,10 @@ package com.andersenlab.services;
 
 import com.andersenlab.dao.HotelDao;
 import com.andersenlab.dao.RoomRepository;
-import com.andersenlab.dto.HotelDto;
 import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.RoomPostPutDTO;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Hotel;
-import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,19 +48,20 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Long saveRoom(RoomDTO roomDTO) {
-
-        Room room = mapperFacade.map(roomDTO, Room.class);
-
-        return roomRepository.save(room).getId();
+    public RoomPostPutDTO saveRoom(RoomPostPutDTO roomPostPutDTO) {
+        Hotel hotel = hotelDao.findById(roomPostPutDTO.getHotelId().getId())
+                .orElseThrow(() -> new HotelServiceException("Such a hotel does not exist"));
+        Room room = mapperFacade.map(roomPostPutDTO, Room.class);
+        room.setHotelId(hotel);
+        return mapperFacade.map(roomRepository.save(room), RoomPostPutDTO.class);
     }
 
     @Override
-    public RoomDTO updateRoom(RoomDTO roomDTO) {
-        Room room = roomRepository.findById(roomDTO.getId()).orElseThrow(() ->
+    public RoomPostPutDTO updateRoom(RoomPostPutDTO roomPostPutDTO) {
+        Room room = roomRepository.findById(roomPostPutDTO.getId()).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
-        room.setNumber(roomDTO.getNumber());
-        return mapperFacade.map(roomRepository.save(room), RoomDTO.class);
+        room.setNumber(roomPostPutDTO.getNumber());
+        return mapperFacade.map(roomRepository.save(room), RoomPostPutDTO.class);
     }
 
     @Override

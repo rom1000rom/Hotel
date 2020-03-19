@@ -3,7 +3,6 @@ package com.andersenlab.dto;
 
 
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,12 +12,10 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 
-public class ReservationDTO {
+public class ReservationPostDTO {
 
     private Long id;
 
-    /*Аннотация позволяет избежать бесконечной рекурсии при отображении объектного
-    поля(родительского) в JSON*/
     @NotNull
     private PersonForBookingDTO person;
 
@@ -31,7 +28,7 @@ public class ReservationDTO {
     @NotNull
     private LocalDate dateEnd;
 
-    public ReservationDTO(LocalDate dateBegin, LocalDate dateEnd) {
+    public ReservationPostDTO(LocalDate dateBegin, LocalDate dateEnd) {
         this.dateBegin = dateBegin;
         this.dateEnd = dateEnd;
     }

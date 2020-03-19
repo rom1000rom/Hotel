@@ -3,6 +3,7 @@ package com.andersenlab.controllers;
 
 
 import com.andersenlab.dto.ReservationDTO;
+import com.andersenlab.dto.ReservationPostDTO;
 import com.andersenlab.services.ReservationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,10 +43,10 @@ public class ReservationController {
 
     @PostMapping(produces = "application/json", consumes= "application/json")
     @ApiOperation(value = "Save a new reservation")
-    public ResponseEntity<ReservationDTO> saveReservation(
-            @RequestBody @Valid ReservationDTO reservationDTO)  {
-        reservationDTO.setId(reservationService.saveReservation(reservationDTO));
-        return ResponseEntity.status(201).body(reservationDTO);
+    public ResponseEntity<ReservationPostDTO> saveReservation(
+            @RequestBody @Valid ReservationPostDTO reservationPostDTO)  {
+        return ResponseEntity.status(201).body(
+                reservationService.saveReservation(reservationPostDTO));
     }
 
     @DeleteMapping(value = "/{reservationId}")

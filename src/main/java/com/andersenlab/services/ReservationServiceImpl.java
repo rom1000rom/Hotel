@@ -4,6 +4,7 @@ import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.ReservationDTO;
+import com.andersenlab.dto.ReservationPostDTO;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
@@ -68,24 +69,24 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Long saveReservation(ReservationDTO reservationDTO) {
-        Person person = personRepository.findById(reservationDTO.getPerson().getId())
+    public ReservationPostDTO saveReservation(ReservationPostDTO reservationPostDTO) {
+        Person person = personRepository.findById(reservationPostDTO.getPerson().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a person does not exist"));
-        Room room = roomRepository.findById(reservationDTO.getRoom().getId())
+        Room room = roomRepository.findById(reservationPostDTO.getRoom().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a room does not exist"));
 
-        LocalDate dateBegin = reservationDTO.getDateBegin();
-        LocalDate dateEnd = reservationDTO.getDateEnd();
+        LocalDate dateBegin = reservationPostDTO.getDateBegin();
+        LocalDate dateEnd = reservationPostDTO.getDateEnd();
         if(dateBegin.isAfter(dateEnd))//Если номер забронирован на указанные даты
             throw new HotelServiceException("Incorrect dates");
         if(room.isBooked(dateBegin, dateEnd))//Если номер забронирован на указанные даты
             throw new HotelServiceException("This room is booked for these dates");
 
-        Reservation reservation = mapperFacade.map(reservationDTO, Reservation.class);
+        Reservation reservation = mapperFacade.map(reservationPostDTO, Reservation.class);
         reservation.setPerson(person);
         reservation.setRoom(room);
-
-        return reservationRepository.save(reservation).getId();
+        return mapperFacade.map(
+                reservationRepository.save(reservation), ReservationPostDTO.class);
     }
 
     @Override

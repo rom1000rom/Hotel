@@ -4,9 +4,13 @@ package controllers;
 
 import com.andersenlab.App;
 import com.andersenlab.controllers.RoomController;
+import com.andersenlab.dto.HotelPostPutDto;
 import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.RoomPostPutDTO;
 import com.andersenlab.services.RoomService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,17 +87,16 @@ public class RoomControllerTest {
     {
         Long id = 10L;
 
-        RoomDTO actual= new RoomDTO("TEST_NAME");
-
-        RoomDTO expected  = new RoomDTO("TEST_NAME");
-
-        when(roomService.saveRoom(actual)).thenReturn(id);
+        RoomPostPutDTO actual= new RoomPostPutDTO("TEST_NAME");
+        RoomPostPutDTO expected  = new RoomPostPutDTO("TEST_NAME");
         expected.setId(id);
+
+        when(roomService.saveRoom(actual)).thenReturn(expected);
 
         mockMvc.perform(post("/rooms")
                 .content(objectMapper.writeValueAsString(actual))
-                .contentType(MediaType.APPLICATION_JSON))
-                //.andExpect(status().is(201))//Проверяем Http-ответ
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().is(201))//Проверяем Http-ответ
                 .andExpect(content().string(
                         objectMapper.writeValueAsString(expected)));//Конвертируем в json
     }
@@ -112,7 +117,7 @@ public class RoomControllerTest {
     public void testUpdateRoom() throws Exception
     {
         Long id = 10L;
-        RoomDTO expected  = new RoomDTO("TEST_NUM_NEW");
+        RoomPostPutDTO expected  = new RoomPostPutDTO("TEST_NUM_NEW");
         expected.setId(id);
 
         when(roomService.updateRoom(expected)).thenReturn(expected);
