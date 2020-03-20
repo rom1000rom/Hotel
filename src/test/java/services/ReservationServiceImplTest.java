@@ -1,13 +1,10 @@
 package services;
 
 
-
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.ReservationDTO;
-import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.*;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
@@ -53,8 +50,7 @@ public class ReservationServiceImplTest {
     private ReservationService testObject = new ReservationServiceImpl();
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
     }
 
@@ -80,7 +76,7 @@ public class ReservationServiceImplTest {
 
     }
 
-        @Test
+    @Test
     public void testFindReservationById() {
         Long id = 10L;
         Reservation reservation = new Reservation(
@@ -108,8 +104,8 @@ public class ReservationServiceImplTest {
     @Test(expected = HotelServiceException.class)
     public void testSaveReservationPersonNotExist() {
         Long id = 12L;
-        ReservationDTO reservationDTO = new ReservationDTO();
-        PersonDTO personDTO = new PersonDTO("TEST");
+        ReservationPostDTO reservationDTO = new ReservationPostDTO();
+        PersonForBookingDTO personDTO = new PersonForBookingDTO("TEST");
         personDTO.setId(id);
         reservationDTO.setPerson(personDTO);
 
@@ -124,16 +120,22 @@ public class ReservationServiceImplTest {
         String dateBegin = "2016-09-23";
         String dateEnd = "2016-09-25";
 
-        ReservationDTO reservationDTO = new ReservationDTO(
+        ReservationPostDTO reservationDTO = new ReservationPostDTO(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        PersonDTO personDTO = new PersonDTO();
+        ReservationPostDTO reservationDTOWithId = new ReservationPostDTO(
+                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+
+        PersonForBookingDTO personDTO = new PersonForBookingDTO();
         personDTO.setId(id);
         reservationDTO.setPerson(personDTO);
+        reservationDTOWithId.setPerson(personDTO);
 
-        RoomDTO roomDTO = new RoomDTO();
+        RoomPostPutDTO roomDTO = new RoomPostPutDTO();
         roomDTO.setId(id);
         reservationDTO.setRoom(roomDTO);
+        reservationDTOWithId.setRoom(roomDTO);
+        reservationDTOWithId.setId(id);
 
         Reservation reservation = new Reservation(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
@@ -152,17 +154,23 @@ public class ReservationServiceImplTest {
                 Optional.of(room));
 
         when(mapperFacade.map(reservationDTO, Reservation.class)).thenReturn(reservation);
+        reservation.setPerson(person);
+        reservation.setRoom(room);
 
+        reservationWithId.setPerson(person);
+        reservationWithId.setRoom(room);
         when(reservationRepository.save(reservation)).thenReturn(reservationWithId);
+        when(mapperFacade.map(
+                reservationWithId, ReservationPostDTO.class)).thenReturn(reservationDTOWithId);
 
-        assertEquals(id, testObject.saveReservation(reservationDTO));
+        assertEquals(reservationDTOWithId, testObject.saveReservation(reservationDTO));
     }
 
 
     @Test
     public void testDeleteReservation() {
         Long id = 12L;
-       when(reservationRepository.findById(id)).thenReturn(Optional.of(
+        when(reservationRepository.findById(id)).thenReturn(Optional.of(
                 new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23"))));
         Mockito.doNothing().when(reservationRepository).deleteById(id);
 
