@@ -13,7 +13,7 @@ public class HotelDto  {
 	private String hotelName;
 
 	@JsonManagedReference(value = "hotel - room")
-	public Set<RoomDTO> roomSet;
+	public Set<RoomDto> roomSet;
 
 	@JsonManagedReference(value = "hotel - facilities")
 	private Set<FacilitiesDto> serviceSet;

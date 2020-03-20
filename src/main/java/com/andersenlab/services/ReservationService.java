@@ -2,7 +2,7 @@ package com.andersenlab.services;
 
 
 
-import com.andersenlab.dto.ReservationDTO;
+import com.andersenlab.dto.ReservationDto;
 
 import java.util.List;
 
@@ -13,27 +13,27 @@ public interface ReservationService {
 
      /**Метод возвращает список всех бронирований.
      @return список объектов класса ReservationDTO*/
-     List<ReservationDTO> findAllReservations();
+     List<ReservationDto> findAllReservations();
 
      /**Метод возвращает объект бронирования по его id
       @param id id бронирования
       @return объект класса ReservationDTO*/
-     ReservationDTO findReservationById(Long id);
+     ReservationDto findReservationById(Long id);
 
      /**Метод возвращает список объектов бронирования по id пользователя
       @param id id пользователя
       @return список объектов класса ReservationDTO*/
-     List<ReservationDTO> findReservationsByPersonId(Long id);
+     List<ReservationDto> findReservationsByPersonId(Long id);
 
      /**Метод возвращает список объектов бронирования по id номера в отеле
       @param id id номера
       @return список объектов класса ReservationDTO*/
-     List<ReservationDTO> findReservationsByRoomId(Long id);
+     List<ReservationDto> findReservationsByRoomId(Long id);
 
      /**Метод сохраняет бронирование номера
       @param reservationDTO объект бронирования, который нужно сохранить
       @return id объект бронирования в базе*/
-     Long saveReservation(ReservationDTO reservationDTO);
+     Long saveReservation(ReservationDto reservationDTO);
 
      /**Метод удаляет объект бронирования по id
       @param id бронирования, которого нужно удалить

@@ -9,6 +9,6 @@ public class ProvidedRoomDto {
   private Long id;
   private BigDecimal costRoom;
   private LocalDate dateRoom;
-  private RoomDTO roomId;
+  private RoomDto roomId;
   private InvoiceDto invoiceId;
 }

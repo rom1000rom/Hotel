@@ -2,14 +2,13 @@ package com.andersenlab.controllers;
 
 
 
-import com.andersenlab.dto.ReservationDTO;
+import com.andersenlab.dto.ReservationDto;
 import com.andersenlab.services.ReservationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +33,13 @@ public class ReservationController {
 
     @GetMapping(produces = "application/json")
     @ApiOperation(value = "Get a list of all reservations")
-    public ResponseEntity<List<ReservationDTO>> findAllReservations() {
+    public ResponseEntity<List<ReservationDto>> findAllReservations() {
         return ResponseEntity.ok().body(reservationService.findAllReservations());
     }
 
     @GetMapping(value = "/{reservationId}", produces = "application/json")
     @ApiOperation(value = "Get a reservation by id")
-    public ResponseEntity<ReservationDTO> findReservationById(
+    public ResponseEntity<ReservationDto> findReservationById(
             @PathVariable("reservationId") Long reservationId)
     {
         return ResponseEntity.ok().body(reservationService.findReservationById(reservationId));
@@ -48,8 +47,8 @@ public class ReservationController {
 
     @PostMapping(produces = "application/json", consumes= "application/json")
     @ApiOperation(value = "Save a new reservation")
-    public ResponseEntity<ReservationDTO> saveReservation(
-            @RequestBody @Valid ReservationDTO reservationDTO) {
+    public ResponseEntity<ReservationDto> saveReservation(
+            @RequestBody  ReservationDto reservationDTO) {
         reservationDTO.setId(reservationService.saveReservation(reservationDTO));
         return ResponseEntity.status(201).body(reservationDTO);
     }
@@ -64,14 +63,14 @@ public class ReservationController {
 
     @GetMapping(value = "findByPersonId/{personId}", produces = "application/json")
     @ApiOperation(value = "Get a list  reservations by Person id")
-    public ResponseEntity<List<ReservationDTO>> findReservationsByPersonId(
+    public ResponseEntity<List<ReservationDto>> findReservationsByPersonId(
             @PathVariable("personId") Long personId) {
         return ResponseEntity.ok().body(reservationService.findReservationsByPersonId(personId));
     }
 
     @GetMapping(value = "findByRoomId/{roomId}", produces = "application/json")
     @ApiOperation(value = "Get a list  reservations by Room id")
-    public ResponseEntity<List<ReservationDTO>> findReservationsByRoomId(
+    public ResponseEntity<List<ReservationDto>> findReservationsByRoomId(
             @PathVariable("roomId") Long roomId) {
         return ResponseEntity.ok().body(reservationService.findReservationsByRoomId(roomId));
     }

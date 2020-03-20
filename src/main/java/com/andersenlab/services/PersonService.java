@@ -2,8 +2,8 @@ package com.andersenlab.services;
 
 
 
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.PersonUsernameLoginDTO;
+import com.andersenlab.dto.PersonDto;
+import com.andersenlab.dto.PersonRegistartionDto;
 
 
 import java.util.List;
@@ -15,17 +15,17 @@ public interface PersonService {
 
      /**Метод возвращает список всех пользователей.
      @return список объектов класса PersonDTO*/
-     List<PersonDTO> findAllPersons();
+     List<PersonDto> findAllPersons();
 
      /**Метод возвращает объект пользователя по его id
       @param id id пользователя
       @return объект класса PersonDTO*/
-     PersonDTO findPersonById(Long id);
+     PersonDto findPersonById(Long id);
 
      /**Метод сохраняет объект пользователя
-      @param personUsernameLoginDTO объект с данными пользователя, которого нужно сохранить
+      @param personRegistartionDto объект с данными пользователя, которого нужно сохранить
       @return id объекта пользователя в базе*/
-      Long savePerson(PersonUsernameLoginDTO personUsernameLoginDTO);
+      Long savePerson(PersonRegistartionDto personRegistartionDto);
 
      /**Метод удаляет объект пользователя по id
       @param id пользователя, которого нужно удалить
@@ -33,9 +33,9 @@ public interface PersonService {
       Long deletePerson(Long id);
 
     /**Метод обновляет объект пользователя
-     @param personUsernameLoginDTO объект с данными пользователя, которого нужно обновить
+     @param personRegistartionDto объект с данными пользователя, которого нужно обновить
      @return объект обновлённого пользователя*/
-    PersonUsernameLoginDTO updatePerson(PersonUsernameLoginDTO personUsernameLoginDTO);
+    PersonRegistartionDto updatePerson(PersonRegistartionDto personRegistartionDto);
 
     /**Метод добавляет пользователя в чёрный список по id.
      * Если пользователь уже в списке, метод не сделает ничего.

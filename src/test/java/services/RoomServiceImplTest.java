@@ -4,15 +4,12 @@ package services;
 import com.andersenlab.dao.HotelDao;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.HotelDto;
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.PersonUsernameLoginDTO;
-import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Hotel;
-import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.RoomService;
-import com.andersenlab.services.RoomServiceImpl;
+import com.andersenlab.services.impl.RoomServiceImpl;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,13 +59,13 @@ public class RoomServiceImplTest {
         //Настраиваю поведение мока
         when(roomRepository.findAll()).thenReturn(listRoom);
 
-        List<RoomDTO> listRoomDTO = new ArrayList<>();
-        listRoomDTO.add(new RoomDTO("TEST"));
-        listRoomDTO.add(new RoomDTO("TEST2"));
-        when(mapperFacade.mapAsList(listRoom, RoomDTO.class)).thenReturn(listRoomDTO);
+        List<RoomDto> listRoomDto = new ArrayList<>();
+        listRoomDto.add(new RoomDto("TEST"));
+        listRoomDto.add(new RoomDto("TEST2"));
+        when(mapperFacade.mapAsList(listRoom, RoomDto.class)).thenReturn(listRoomDto);
 
         //Проверяю поведение тестируемого объекта
-        assertEquals(listRoomDTO, testObject.findAllRooms());
+        assertEquals(listRoomDto, testObject.findAllRooms());
     }
 
     @Test
@@ -78,9 +75,9 @@ public class RoomServiceImplTest {
         room.setId(id);
         when(roomRepository.findById(id)).thenReturn(Optional.of(room));
 
-        RoomDTO roomDTO = new RoomDTO("TEST");
+        RoomDto roomDTO = new RoomDto("TEST");
         roomDTO.setId(id);
-        when(mapperFacade.map(room, RoomDTO.class)).thenReturn(roomDTO);
+        when(mapperFacade.map(room, RoomDto.class)).thenReturn(roomDTO);
 
         assertEquals(roomDTO, testObject.findRoomById(id));
     }
@@ -103,7 +100,7 @@ public class RoomServiceImplTest {
         HotelDto hotelDTO = new HotelDto();
         hotelDTO.setId(id);
 
-        RoomDTO roomDTO = new RoomDTO("TEST" );
+        RoomDto roomDTO = new RoomDto("TEST" );
         roomDTO.setHotelId(hotelDTO);
         Room room = new Room("TEST");
 
@@ -141,7 +138,7 @@ public class RoomServiceImplTest {
     @Test
     public void testUpdateRoom() {
         Long id = 12L;
-        RoomDTO roomDTO = new RoomDTO("TEST_NEW" );
+        RoomDto roomDTO = new RoomDto("TEST_NEW" );
         roomDTO.setId(id);
         Room room = new Room("TEST");
         room.setId(id);
@@ -150,7 +147,7 @@ public class RoomServiceImplTest {
                 Optional.of(room));
         room.setNumber("TEST_NEW");
         when(roomRepository.save(room)).thenReturn(room);
-        when(mapperFacade.map(room, RoomDTO.class)).thenReturn(roomDTO);
+        when(mapperFacade.map(room, RoomDto.class)).thenReturn(roomDTO);
 
         assertEquals(roomDTO, testObject.updateRoom(roomDTO));
     }

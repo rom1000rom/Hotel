@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
-public class PersonUsernameLoginDTO {
+public class PersonRegistartionDto {
 
     private Long id;
 
@@ -25,7 +25,7 @@ public class PersonUsernameLoginDTO {
 
     private Boolean admin = false;
 
-    public PersonUsernameLoginDTO(String personName) {
+    public PersonRegistartionDto(String personName) {
         this.personName = personName;
     }
 }

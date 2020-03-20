@@ -49,25 +49,4 @@ public class Room {
         this.number = number;
     }
 
-    /** Метод проверяет забронирован ли номер на указанный период времени
-     * @param dateBegin начало периода
-     * @param dateEnd   окончание периода
-     * @return true - если забронирован, false - если свободен */
-    public Boolean isBooked(LocalDate dateBegin, LocalDate dateEnd) {
-        if (this.getReservations() == null)
-            return false;
-
-        return this.getReservations().stream().anyMatch(res -> {
-            if ((res.getDateBegin().compareTo(dateBegin) >= 0) &&
-                    (res.getDateBegin().compareTo(dateEnd) <= 0))
-                return true;
-
-            if ((res.getDateEnd().compareTo(dateBegin) >= 0) &&
-                    (res.getDateEnd().compareTo(dateEnd) <= 0))
-                return true;
-
-            return false;
-        });
-    }
-
 }

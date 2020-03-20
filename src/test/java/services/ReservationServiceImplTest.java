@@ -10,9 +10,8 @@ import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.ReservationService;
-import com.andersenlab.services.ReservationServiceImpl;
+import com.andersenlab.services.impl.ReservationServiceImpl;
 import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,16 +62,16 @@ public class ReservationServiceImplTest {
         //Настраиваю поведение мока
         when(reservationRepository.findAll()).thenReturn(listReservation);
 
-        List<ReservationDTO> listReservationDTO = new ArrayList<>();
-        listReservationDTO.add(new ReservationDTO(
+        List<ReservationDto> listReservationDto = new ArrayList<>();
+        listReservationDto.add(new ReservationDto(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
-        listReservationDTO.add(new ReservationDTO(
+        listReservationDto.add(new ReservationDto(
                 LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
 
-        when(mapperFacade.mapAsList(listReservation, ReservationDTO.class))
-                .thenReturn(listReservationDTO);
+        when(mapperFacade.mapAsList(listReservation, ReservationDto.class))
+                .thenReturn(listReservationDto);
         //Проверяю поведение тестируемого объекта
-        assertEquals(listReservationDTO, testObject.findAllReservations());
+        assertEquals(listReservationDto, testObject.findAllReservations());
 
     }
 
@@ -84,11 +83,11 @@ public class ReservationServiceImplTest {
         reservation.setId(id);
         when(reservationRepository.findById(id)).thenReturn(Optional.of(reservation));
 
-        ReservationDTO reservationDTO = new ReservationDTO();
+        ReservationDto reservationDTO = new ReservationDto();
         reservationDTO.setDateBegin(reservation.getDateBegin());
         reservationDTO.setDateEnd(reservation.getDateEnd());
         reservationDTO.setId(id);
-        when(mapperFacade.map(reservation, ReservationDTO.class)).thenReturn(reservationDTO);
+        when(mapperFacade.map(reservation, ReservationDto.class)).thenReturn(reservationDTO);
 
         assertEquals(reservationDTO, testObject.findReservationById(id));
     }
@@ -104,8 +103,8 @@ public class ReservationServiceImplTest {
     @Test(expected = HotelServiceException.class)
     public void testSaveReservationPersonNotExist() {
         Long id = 12L;
-        ReservationDTO reservationDTO = new ReservationDTO();
-        PersonDTO personDTO = new PersonDTO("TEST");
+        ReservationDto reservationDTO = new ReservationDto();
+        PersonDto personDTO = new PersonDto("TEST");
         personDTO.setId(id);
         reservationDTO.setPerson(personDTO);
 
@@ -120,22 +119,22 @@ public class ReservationServiceImplTest {
         String dateBegin = "2016-09-23";
         String dateEnd = "2016-09-25";
 
-        ReservationDTO reservationDTO = new ReservationDTO(
+        ReservationDto reservationDTO = new ReservationDto(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        ReservationDTO reservationDTOWithId = new ReservationDTO(
+        ReservationDto reservationDtoWithId = new ReservationDto(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        PersonDTO personDTO = new PersonDTO();
+        PersonDto personDTO = new PersonDto();
         personDTO.setId(id);
         reservationDTO.setPerson(personDTO);
-        reservationDTOWithId.setPerson(personDTO);
+        reservationDtoWithId.setPerson(personDTO);
 
-        RoomDTO roomDTO = new RoomDTO();
+        RoomDto roomDTO = new RoomDto();
         roomDTO.setId(id);
         reservationDTO.setRoom(roomDTO);
-        reservationDTOWithId.setRoom(roomDTO);
-        reservationDTOWithId.setId(id);
+        reservationDtoWithId.setRoom(roomDTO);
+        reservationDtoWithId.setId(id);
 
         Reservation reservation = new Reservation(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
@@ -152,6 +151,8 @@ public class ReservationServiceImplTest {
                 Optional.of(person));
         when(roomRepository.findById(id)).thenReturn(
                 Optional.of(room));
+        when(roomRepository.findIntersectingReservations(
+                room.getId(), reservationDTO.getDateBegin(), reservationDTO.getDateEnd())).thenReturn(0);
 
         when(mapperFacade.map(reservationDTO, Reservation.class)).thenReturn(reservation);
         reservation.setPerson(person);

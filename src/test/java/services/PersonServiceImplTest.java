@@ -2,19 +2,18 @@ package services;
 
 
 import com.andersenlab.dao.PersonRepository;
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.PersonUsernameLoginDTO;
+import com.andersenlab.dto.PersonDto;
+import com.andersenlab.dto.PersonRegistartionDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.services.PersonService;
-import com.andersenlab.services.PersonServiceImpl;
+import com.andersenlab.services.impl.PersonServiceImpl;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -54,14 +53,14 @@ public class PersonServiceImplTest {
         //Настраиваю поведение мока
         when(personRepository.findAll()).thenReturn(listPerson);
 
-        List<PersonDTO> listPersonDTO = new ArrayList<>();
-        listPersonDTO.add(new PersonDTO("TEST"));
-        listPersonDTO.add(new PersonDTO("TEST2"));
+        List<PersonDto> listPersonDto = new ArrayList<>();
+        listPersonDto.add(new PersonDto("TEST"));
+        listPersonDto.add(new PersonDto("TEST2"));
 
-        when(mapperFacade.mapAsList(listPerson, PersonDTO.class)).thenReturn(listPersonDTO);
+        when(mapperFacade.mapAsList(listPerson, PersonDto.class)).thenReturn(listPersonDto);
 
         //Проверяю поведение тестируемого объекта
-        assertEquals(listPersonDTO, testObject.findAllPersons());
+        assertEquals(listPersonDto, testObject.findAllPersons());
     }
 
     @Test
@@ -71,9 +70,9 @@ public class PersonServiceImplTest {
         person.setId(id);
         when(personRepository.findById(id)).thenReturn(Optional.of(person));
 
-        PersonDTO personDTO = new PersonDTO("TEST");
+        PersonDto personDTO = new PersonDto("TEST");
         personDTO.setId(id);
-        when(mapperFacade.map(person, PersonDTO.class)).thenReturn(personDTO);
+        when(mapperFacade.map(person, PersonDto.class)).thenReturn(personDTO);
 
         assertEquals(personDTO, testObject.findPersonById(id));
     }
@@ -89,23 +88,23 @@ public class PersonServiceImplTest {
     @Test
     public void testSavePerson() {
         Long id = 12L;
-        PersonUsernameLoginDTO personUsernameLoginDTO = new PersonUsernameLoginDTO("TEST" );
+        PersonRegistartionDto personRegistartionDto = new PersonRegistartionDto("TEST" );
         Person person = new Person("TEST");
 
         Person personWithId = new Person("TEST");
         personWithId.setId(id);
 
-        when(mapperFacade.map(personUsernameLoginDTO, Person.class)).thenReturn(person);
+        when(mapperFacade.map(personRegistartionDto, Person.class)).thenReturn(person);
         when(personRepository.save(person)).thenReturn(personWithId);
 
-        assertEquals(id, testObject.savePerson(personUsernameLoginDTO));
+        assertEquals(id, testObject.savePerson(personRegistartionDto));
     }
 
     @Test
     public void testUpdatePerson() {
         Long id = 12L;
-        PersonUsernameLoginDTO personUsernameLoginDTO = new PersonUsernameLoginDTO("TEST_NEW" );
-        personUsernameLoginDTO.setId(id);
+        PersonRegistartionDto personRegistartionDto = new PersonRegistartionDto("TEST_NEW" );
+        personRegistartionDto.setId(id);
         Person person = new Person("TEST");
         person.setId(id);
 
@@ -113,9 +112,9 @@ public class PersonServiceImplTest {
                 Optional.of(person));
         person.setPersonName("TEST_NEW");
         when(personRepository.save(person)).thenReturn(person);
-        when(mapperFacade.map(person, PersonUsernameLoginDTO.class)).thenReturn(personUsernameLoginDTO);
+        when(mapperFacade.map(person, PersonRegistartionDto.class)).thenReturn(personRegistartionDto);
 
-        assertEquals(personUsernameLoginDTO, testObject.updatePerson(personUsernameLoginDTO));
+        assertEquals(personRegistartionDto, testObject.updatePerson(personRegistartionDto));
     }
 
     @Test

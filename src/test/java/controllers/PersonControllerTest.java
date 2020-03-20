@@ -4,8 +4,8 @@ package controllers;
 
 import com.andersenlab.App;
 import com.andersenlab.controllers.PersonController;
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.PersonUsernameLoginDTO;
+import com.andersenlab.dto.PersonDto;
+import com.andersenlab.dto.PersonRegistartionDto;
 import com.andersenlab.services.PersonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -54,23 +54,23 @@ public class PersonControllerTest {
     public void testFindAllPersons() throws Exception
     {
         //Подготавливаю ожидаемый результат
-        List<PersonDTO> listPersonDTO = new ArrayList<>();
-        listPersonDTO.add(new PersonDTO("TEST"));
-        listPersonDTO.add(new PersonDTO("TEST2"));
+        List<PersonDto> listPersonDto = new ArrayList<>();
+        listPersonDto.add(new PersonDto("TEST"));
+        listPersonDto.add(new PersonDto("TEST2"));
         //Настраиваю поведение мока
-        when(personService.findAllPersons()).thenReturn(listPersonDTO);
+        when(personService.findAllPersons()).thenReturn(listPersonDto);
 
         mockMvc.perform(get("/persons"))
                 .andExpect(status().isOk())//Проверяем Http-ответ
                 .andExpect(content().string(
-                        objectMapper.writeValueAsString(listPersonDTO)));//Конвертируем в json
+                        objectMapper.writeValueAsString(listPersonDto)));//Конвертируем в json
     }
 
     @Test
     public void testFindPersonById() throws Exception
     {
         Long id = 10L;
-        PersonDTO personDTO = new PersonDTO("TEST");
+        PersonDto personDTO = new PersonDto("TEST");
         personDTO.setId(id);
         when(personService.findPersonById(id)).thenReturn(personDTO);
 
@@ -87,9 +87,9 @@ public class PersonControllerTest {
         String password = "password";
         String encrytedPassword = "ENCR_PASSWORD";
 
-        PersonUsernameLoginDTO actual= new PersonUsernameLoginDTO("TEST_NAME");
+        PersonRegistartionDto actual= new PersonRegistartionDto("TEST_NAME");
         actual.setEncrytedPassword(password);
-        PersonUsernameLoginDTO expected  = new PersonUsernameLoginDTO("TEST_NAME");
+        PersonRegistartionDto expected  = new PersonRegistartionDto("TEST_NAME");
 
         when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);
         expected.setEncrytedPassword(encrytedPassword);
@@ -123,10 +123,10 @@ public class PersonControllerTest {
         String password = "password";
         String encrytedPassword = "ENCR_PASSWORD";
 
-        PersonUsernameLoginDTO actual= new PersonUsernameLoginDTO("TEST_NAME_NEW");
+        PersonRegistartionDto actual= new PersonRegistartionDto("TEST_NAME_NEW");
         actual.setEncrytedPassword(password);
         actual.setId(id);
-        PersonUsernameLoginDTO expected  = new PersonUsernameLoginDTO("TEST_NAME_NEW");
+        PersonRegistartionDto expected  = new PersonRegistartionDto("TEST_NAME_NEW");
         expected.setId(id);
 
         when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);

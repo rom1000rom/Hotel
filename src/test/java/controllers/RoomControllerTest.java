@@ -5,8 +5,7 @@ package controllers;
 import com.andersenlab.App;
 import com.andersenlab.controllers.RoomController;
 import com.andersenlab.dto.HotelDto;
-import com.andersenlab.dto.RoomDTO;
-import com.andersenlab.model.Hotel;
+import com.andersenlab.dto.RoomDto;
 import com.andersenlab.services.RoomService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -52,23 +51,23 @@ public class RoomControllerTest {
     public void testFindAllRooms() throws Exception
     {
         //Подготавливаю ожидаемый результат
-        List<RoomDTO> listRoomDTO = new ArrayList<>();
-        listRoomDTO.add(new RoomDTO("TEST"));
-        listRoomDTO.add(new RoomDTO("TEST2"));
+        List<RoomDto> listRoomDto = new ArrayList<>();
+        listRoomDto.add(new RoomDto("TEST"));
+        listRoomDto.add(new RoomDto("TEST2"));
         //Настраиваю поведение мока
-        when(roomService.findAllRooms()).thenReturn(listRoomDTO);
+        when(roomService.findAllRooms()).thenReturn(listRoomDto);
 
         mockMvc.perform(get("/rooms"))
                 .andExpect(status().isOk())//Проверяем Http-ответ
                 .andExpect(content().string(
-                        objectMapper.writeValueAsString(listRoomDTO)));//Конвертируем в json
+                        objectMapper.writeValueAsString(listRoomDto)));//Конвертируем в json
     }
 
     @Test
     public void testFindRoomById() throws Exception
     {
         Long id = 10L;
-        RoomDTO roomDTO = new RoomDTO("TEST");
+        RoomDto roomDTO = new RoomDto("TEST");
         roomDTO.setId(id);
         when(roomService.findRoomById(id)).thenReturn(roomDTO);
 
@@ -84,10 +83,10 @@ public class RoomControllerTest {
         Long id = 0L;
         HotelDto hotelDto = new HotelDto();
 
-        RoomDTO actual= new RoomDTO("TEST_NAME");
+        RoomDto actual= new RoomDto("TEST_NAME");
         actual.setHotelId(hotelDto);
 
-        RoomDTO expected  = new RoomDTO("TEST_NAME");
+        RoomDto expected  = new RoomDto("TEST_NAME");
 expected.setHotelId(hotelDto);
 
         when(roomService.saveRoom(actual)).thenReturn(id);
@@ -117,7 +116,7 @@ expected.setHotelId(hotelDto);
     public void testUpdateRoom() throws Exception
     {
         Long id = 10L;
-        RoomDTO expected  = new RoomDTO("TEST_NUM_NEW");
+        RoomDto expected  = new RoomDto("TEST_NUM_NEW");
         expected.setId(id);
 
         when(roomService.updateRoom(expected)).thenReturn(expected);

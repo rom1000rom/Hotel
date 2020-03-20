@@ -1,13 +1,12 @@
-package com.andersenlab.services;
+package com.andersenlab.services.impl;
 
 import com.andersenlab.dao.HotelDao;
 import com.andersenlab.dao.RoomRepository;
-import com.andersenlab.dto.HotelDto;
-import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Hotel;
-import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
+import com.andersenlab.services.RoomService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,20 +35,20 @@ public class RoomServiceImpl implements RoomService {
     private static final String EXCEPTION_MESSAGE = "Such a room does not exist";
 
     @Override
-    public List<RoomDTO> findAllRooms() {
+    public List<RoomDto> findAllRooms() {
         List<Room> listRoom = (List<Room>)roomRepository.findAll();
-        return mapperFacade.mapAsList(listRoom, RoomDTO.class);
+        return mapperFacade.mapAsList(listRoom, RoomDto.class);
     }
 
     @Override
-    public RoomDTO findRoomById(Long id) {
+    public RoomDto findRoomById(Long id) {
         Room room = roomRepository.findById(id).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
-        return mapperFacade.map(room, RoomDTO.class);
+        return mapperFacade.map(room, RoomDto.class);
     }
 
     @Override
-    public Long saveRoom(RoomDTO roomDTO) {
+    public Long saveRoom(RoomDto roomDTO) {
        Hotel hotel = hotelDao.findById(roomDTO.getHotelId().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a hotel does not exist"));
         Room room = mapperFacade.map(roomDTO, Room.class);
@@ -58,11 +57,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTO updateRoom(RoomDTO roomDTO) {
+    public RoomDto updateRoom(RoomDto roomDTO) {
         Room room = roomRepository.findById(roomDTO.getId()).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
         room.setNumber(roomDTO.getNumber());
-        return mapperFacade.map(roomRepository.save(room), RoomDTO.class);
+        return mapperFacade.map(roomRepository.save(room), RoomDto.class);
     }
 
     @Override

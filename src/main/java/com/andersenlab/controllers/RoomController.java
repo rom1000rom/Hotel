@@ -2,7 +2,7 @@ package com.andersenlab.controllers;
 
 
 
-import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.RoomDto;
 
 import com.andersenlab.services.RoomService;
 import io.swagger.annotations.Api;
@@ -37,15 +37,15 @@ public class RoomController {
     @GetMapping(produces = "application/json")
     //Swagger-аннотация, задаёт свойства API отдельного метода
     @ApiOperation(value = "Get a list of all rooms")
-    public ResponseEntity<List<RoomDTO>> findAllRooms() {
+    public ResponseEntity<List<RoomDto>> findAllRooms() {
         return ResponseEntity.ok().body(roomService.findAllRooms());
     }
 
     @GetMapping(value = "/{roomId}", produces = "application/json")
     @ApiOperation(value = "Get a room by id")
-    public ResponseEntity<RoomDTO> findRoomById(@PathVariable("roomId") Long roomId)
+    public ResponseEntity<RoomDto> findRoomById(@PathVariable("roomId") Long roomId)
     {
-        RoomDTO roomDTO = roomService.findRoomById(roomId);
+        RoomDto roomDTO = roomService.findRoomById(roomId);
         return ResponseEntity.ok().body(roomDTO);
     }
 
@@ -53,8 +53,8 @@ public class RoomController {
     @ApiOperation(value = "Save a new room")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
-    public ResponseEntity<RoomDTO> saveRoom(
-            @Valid @RequestBody RoomDTO roomDTO)
+    public ResponseEntity<RoomDto> saveRoom(
+             @RequestBody RoomDto roomDTO)
     {
         roomDTO.setId(roomService.saveRoom(roomDTO));
         return ResponseEntity.status(201).body(roomDTO);
@@ -69,8 +69,8 @@ public class RoomController {
 
     @PutMapping(produces = "application/json")
     @ApiOperation(value = "Update the room number")
-    public ResponseEntity<RoomDTO> updateRoom(
-            @RequestBody @Valid RoomDTO roomDTO) {
+    public ResponseEntity<RoomDto> updateRoom(
+            @RequestBody  RoomDto roomDTO) {
         return ResponseEntity.ok().body(roomService.updateRoom(roomDTO));
     }
 

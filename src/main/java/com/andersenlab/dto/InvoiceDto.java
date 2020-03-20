@@ -2,7 +2,7 @@ package com.andersenlab.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-import com.andersenlab.model.Person;
+
 import com.andersenlab.model.ProvidedFacilities;
 import lombok.Data;
 
@@ -12,6 +12,6 @@ public class InvoiceDto {
 	private String invoiceNumber;
 	private LocalDate dateBegin;
 	private LocalDate dateEnd;
-	private PersonDTO personId;
+	private PersonDto personId;
 	private List<ProvidedFacilities> facilities;
 }

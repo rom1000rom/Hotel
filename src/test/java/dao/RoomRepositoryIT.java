@@ -1,45 +1,58 @@
 package dao;
 
-import com.andersenlab.App;
-import com.andersenlab.dao.PersonRepository;
+
+import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
-import com.andersenlab.model.Person;
+import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@ContextConfiguration(loader= AnnotationConfigContextLoader.class,
-        classes = App.class)
-public class RoomRepositoryIT
-{
+
+public class RoomRepositoryIT extends AbstractDaoTest {
     @Autowired
-    private RoomRepository repository;
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     private Room room;
 
     @Before
-    public void setUp(){
-        room = repository.save(createRoom());
+    public void setUp() {
+        room = roomRepository.save(createRoom());
     }
 
     @Test
-    public void saveRoomTest(){
-        assertEquals(room, repository.findById(room.getId()).get());
+    public void saveRoomTest() {
+        assertEquals(room, roomRepository.findById(room.getId()).orElse(new Room()));
     }
 
-    private Room createRoom()
-    {
-        return  new Room("1");
+    @Test
+    public void findIntersectingReservationsTest() {
+        Reservation reservation = new Reservation(
+                LocalDate.parse("2016-09-15"), LocalDate.parse("2016-09-21"));
+
+        List<Reservation> reservationList = new ArrayList<>();
+        reservationList.add(reservationRepository.save(reservation));
+        room.setReservations(reservationList);
+        roomRepository.save(room);
+
+        assertEquals(1, roomRepository.findIntersectingReservations(room.getId()
+                , LocalDate.parse("2016-09-21"), LocalDate.parse("2016-09-23")).intValue());
+
+        assertEquals(0, roomRepository.findIntersectingReservations(room.getId()
+                , LocalDate.parse("2016-09-10"), LocalDate.parse("2016-09-14")).intValue());
+    }
+
+    private Room createRoom() {
+        return new Room("1");
     }
 
 }

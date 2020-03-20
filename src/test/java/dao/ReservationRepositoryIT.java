@@ -1,29 +1,17 @@
 package dao;
 
-import com.andersenlab.App;
-import com.andersenlab.dao.PersonRepository;
+
+
 import com.andersenlab.dao.ReservationRepository;
-import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
-import com.andersenlab.model.Room;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-
 import java.time.LocalDate;
-
 import static junit.framework.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@ContextConfiguration(loader= AnnotationConfigContextLoader.class,
-        classes = App.class)
-public class ReservationRepositoryIT
+
+public class ReservationRepositoryIT extends AbstractDaoTest
 {
     @Autowired
     private ReservationRepository repository;

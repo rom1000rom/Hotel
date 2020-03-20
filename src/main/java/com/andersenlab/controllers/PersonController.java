@@ -1,8 +1,8 @@
 package com.andersenlab.controllers;
 
 
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.PersonUsernameLoginDTO;
+import com.andersenlab.dto.PersonDto;
+import com.andersenlab.dto.PersonRegistartionDto;
 import com.andersenlab.services.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,15 +33,15 @@ public class PersonController {
     @GetMapping(produces = "application/json")
     //Swagger-аннотация, задаёт свойства API отдельного метода
     @ApiOperation(value = "Get a list of all persons")
-    public ResponseEntity<List<PersonDTO>> findAllPersons() {
+    public ResponseEntity<List<PersonDto>> findAllPersons() {
         return ResponseEntity.ok().body(personService.findAllPersons());
     }
 
     @GetMapping(value = "/{personId}", produces = "application/json")
     @ApiOperation(value = "Get a person by id")
-    public ResponseEntity<PersonDTO> findPersonById(@PathVariable("personId") Long personId)
+    public ResponseEntity<PersonDto> findPersonById(@PathVariable("personId") Long personId)
     {
-        PersonDTO personDTO = personService.findPersonById(personId);
+        PersonDto personDTO = personService.findPersonById(personId);
         return ResponseEntity.ok().body(personDTO);
     }
 
@@ -49,14 +49,14 @@ public class PersonController {
     @ApiOperation(value = "Save a new person")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
-    public ResponseEntity<PersonUsernameLoginDTO> savePerson(
-            @RequestBody @Valid PersonUsernameLoginDTO personUsernameLoginDTO)
+    public ResponseEntity<PersonRegistartionDto> savePerson(
+            @RequestBody @Valid PersonRegistartionDto personRegistartionDto)
     {
         //Кодируем пароль перед добавлением в базу
-        personUsernameLoginDTO.setEncrytedPassword(passwordEncoder.encode(
-                personUsernameLoginDTO.getEncrytedPassword()));
-        personUsernameLoginDTO.setId(personService.savePerson(personUsernameLoginDTO));
-        return ResponseEntity.status(201).body(personUsernameLoginDTO);
+        personRegistartionDto.setEncrytedPassword(passwordEncoder.encode(
+                personRegistartionDto.getEncrytedPassword()));
+        personRegistartionDto.setId(personService.savePerson(personRegistartionDto));
+        return ResponseEntity.status(201).body(personRegistartionDto);
     }
 
     @DeleteMapping(value = "/{personId}")
@@ -68,12 +68,12 @@ public class PersonController {
 
     @PutMapping(produces = "application/json")
     @ApiOperation(value = "Update the person name and password")
-    public ResponseEntity<PersonUsernameLoginDTO> updatePerson(
-            @RequestBody @Valid PersonUsernameLoginDTO personUsernameLoginDTO) {
-        personUsernameLoginDTO.setEncrytedPassword(passwordEncoder.encode(
-                personUsernameLoginDTO.getEncrytedPassword()));
+    public ResponseEntity<PersonRegistartionDto> updatePerson(
+            @RequestBody @Valid PersonRegistartionDto personRegistartionDto) {
+        personRegistartionDto.setEncrytedPassword(passwordEncoder.encode(
+                personRegistartionDto.getEncrytedPassword()));
 
-        return ResponseEntity.ok().body(personService.updatePerson(personUsernameLoginDTO));
+        return ResponseEntity.ok().body(personService.updatePerson(personRegistartionDto));
     }
 
     @PutMapping(value = "addToBlacklist/{personId}", produces = "application/json")

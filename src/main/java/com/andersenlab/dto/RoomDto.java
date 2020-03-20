@@ -12,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode(exclude = {"reservations"})
 @Data
 @NoArgsConstructor
-public class RoomDTO {
+public class RoomDto {
 
     private Long id;
 
@@ -20,12 +20,13 @@ public class RoomDTO {
     private String number;
 
     @JsonBackReference(value = "hotel - room")
+    @NotNull
     private HotelDto hotelId;
 
     @JsonManagedReference (value = "room - reservation")
-    private List<ReservationDTO> reservations;
+    private List<ReservationDto> reservations;
 
-    public RoomDTO(String number) {
+    public RoomDto(String number) {
         this.number = number;
     }
 

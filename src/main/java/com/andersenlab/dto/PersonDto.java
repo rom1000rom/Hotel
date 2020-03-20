@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"reservations"})
-public class PersonDTO {
+public class PersonDto {
 
     private Long id;
 
@@ -28,9 +28,9 @@ public class PersonDTO {
     /*Аннотация позволяет избежать бесконечной рекурсии при отображении поля -
     коллекции(дочернего) в JSON*/
     @JsonManagedReference(value = "person - reservation")
-    private List<ReservationDTO> reservations;
+    private List<ReservationDto> reservations;
 
-    public PersonDTO(String personName) {
+    public PersonDto(String personName) {
         this.personName = personName;
     }
 }

@@ -4,21 +4,17 @@ package controllers;
 
 import com.andersenlab.App;
 import com.andersenlab.controllers.ReservationController;
-import com.andersenlab.dto.PersonDTO;
-import com.andersenlab.dto.ReservationDTO;
-import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.dto.PersonDto;
+import com.andersenlab.dto.ReservationDto;
+import com.andersenlab.dto.RoomDto;
 import com.andersenlab.services.ReservationService;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -67,25 +63,25 @@ public class ReservarionControllerTest {
     public void testFindAllReservations() throws Exception
     {
         //Подготавливаю ожидаемый результат
-        List<ReservationDTO> listReservationDTO = new ArrayList<>();
-        listReservationDTO.add(new ReservationDTO(
+        List<ReservationDto> listReservationDto = new ArrayList<>();
+        listReservationDto.add(new ReservationDto(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
-        listReservationDTO.add(new ReservationDTO(
+        listReservationDto.add(new ReservationDto(
                 LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-24")));
         //Настраиваю поведение мока
-        when(reservationService.findAllReservations()).thenReturn(listReservationDTO);
+        when(reservationService.findAllReservations()).thenReturn(listReservationDto);
 
         mockMvc.perform(get("/reservations"))
                 .andExpect(status().isOk())//Проверяем Http-ответ
                 .andExpect(content().string(
-                        objectMapper.writeValueAsString(listReservationDTO)));//Конвертируем в json
+                        objectMapper.writeValueAsString(listReservationDto)));//Конвертируем в json
     }
 
     @Test
     public void testFindReservationById() throws Exception
     {
         Long id = 10L;
-        ReservationDTO reservationDTO = new ReservationDTO(
+        ReservationDto reservationDTO = new ReservationDto(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
         reservationDTO.setId(id);
         when(reservationService.findReservationById(id)).thenReturn(reservationDTO);
@@ -100,19 +96,19 @@ public class ReservarionControllerTest {
     public void testSaveReservation() throws Exception
     {
         Long id = 0L;
-        ReservationDTO actual= new ReservationDTO(
+        ReservationDto actual= new ReservationDto(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
 
-        PersonDTO personDTO = new PersonDTO("TEST");
+        PersonDto personDTO = new PersonDto("TEST");
         personDTO.setId(id);
 
-        RoomDTO roomDTO = new RoomDTO("TEST");
+        RoomDto roomDTO = new RoomDto("TEST");
         roomDTO.setId(id);
 
         actual.setRoom(roomDTO);
         actual.setPerson(personDTO);
 
-        ReservationDTO expected  = new ReservationDTO(
+        ReservationDto expected  = new ReservationDto(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
         expected.setRoom(roomDTO);
         expected.setPerson(personDTO);

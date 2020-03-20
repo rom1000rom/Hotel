@@ -30,19 +30,19 @@ public class OrikaMapperConfig {
         mapperFactory.getConverterFactory().registerConverter(
                 new PassThroughConverter(LocalDate.class));
 
-        mapperFactory.classMap(Reservation.class, ReservationDTO.class)
+        mapperFactory.classMap(Reservation.class, ReservationDto.class)
                 .byDefault()
                 .register();
 
-        mapperFactory.classMap(Person.class, PersonDTO.class)
+        mapperFactory.classMap(Person.class, PersonDto.class)
                 .byDefault()
                 .register();
 
-        mapperFactory.classMap(Person.class, PersonUsernameLoginDTO.class)
+        mapperFactory.classMap(Person.class, PersonRegistartionDto.class)
             .byDefault()
             .register();
 
-        mapperFactory.classMap(Room.class, RoomDTO.class)
+        mapperFactory.classMap(Room.class, RoomDto.class)
                 .byDefault()
                 .register();
 

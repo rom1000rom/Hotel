@@ -1,4 +1,4 @@
-package com.andersenlab.services;
+package com.andersenlab.services.impl;
 
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.model.Person;
