@@ -81,7 +81,7 @@ public class RoomControllerTest {
     @Test
     public void testSaveRoom() throws Exception
     {
-        Long id = 10L;
+        Long id = 0L;
         HotelDto hotelDto = new HotelDto();
 
         RoomDTO actual= new RoomDTO("TEST_NAME");

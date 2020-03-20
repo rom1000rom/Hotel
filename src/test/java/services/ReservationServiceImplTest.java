@@ -104,8 +104,8 @@ public class ReservationServiceImplTest {
     @Test(expected = HotelServiceException.class)
     public void testSaveReservationPersonNotExist() {
         Long id = 12L;
-        ReservationPostDTO reservationDTO = new ReservationPostDTO();
-        PersonForBookingDTO personDTO = new PersonForBookingDTO("TEST");
+        ReservationDTO reservationDTO = new ReservationDTO();
+        PersonDTO personDTO = new PersonDTO("TEST");
         personDTO.setId(id);
         reservationDTO.setPerson(personDTO);
 
@@ -120,18 +120,18 @@ public class ReservationServiceImplTest {
         String dateBegin = "2016-09-23";
         String dateEnd = "2016-09-25";
 
-        ReservationPostDTO reservationDTO = new ReservationPostDTO(
+        ReservationDTO reservationDTO = new ReservationDTO(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        ReservationPostDTO reservationDTOWithId = new ReservationPostDTO(
+        ReservationDTO reservationDTOWithId = new ReservationDTO(
                 LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        PersonForBookingDTO personDTO = new PersonForBookingDTO();
+        PersonDTO personDTO = new PersonDTO();
         personDTO.setId(id);
         reservationDTO.setPerson(personDTO);
         reservationDTOWithId.setPerson(personDTO);
 
-        RoomPostPutDTO roomDTO = new RoomPostPutDTO();
+        RoomDTO roomDTO = new RoomDTO();
         roomDTO.setId(id);
         reservationDTO.setRoom(roomDTO);
         reservationDTOWithId.setRoom(roomDTO);
@@ -160,10 +160,8 @@ public class ReservationServiceImplTest {
         reservationWithId.setPerson(person);
         reservationWithId.setRoom(room);
         when(reservationRepository.save(reservation)).thenReturn(reservationWithId);
-        when(mapperFacade.map(
-                reservationWithId, ReservationPostDTO.class)).thenReturn(reservationDTOWithId);
 
-        assertEquals(reservationDTOWithId, testObject.saveReservation(reservationDTO));
+        assertEquals(id, testObject.saveReservation(reservationDTO));
     }
 
 

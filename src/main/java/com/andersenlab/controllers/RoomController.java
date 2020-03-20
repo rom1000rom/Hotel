@@ -3,7 +3,7 @@ package com.andersenlab.controllers;
 
 
 import com.andersenlab.dto.RoomDTO;
-import com.andersenlab.dto.RoomPostPutDTO;
+
 import com.andersenlab.services.RoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,10 +53,11 @@ public class RoomController {
     @ApiOperation(value = "Save a new room")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
-    public ResponseEntity<RoomPostPutDTO> saveRoom(
-            @Valid @RequestBody RoomPostPutDTO roomPostPutDTO)
+    public ResponseEntity<RoomDTO> saveRoom(
+            @Valid @RequestBody RoomDTO roomDTO)
     {
-        return ResponseEntity.status(201).body(roomService.saveRoom(roomPostPutDTO));
+        roomDTO.setId(roomService.saveRoom(roomDTO));
+        return ResponseEntity.status(201).body(roomDTO);
     }
 
     @DeleteMapping(value = "/{roomId}")
@@ -68,9 +69,9 @@ public class RoomController {
 
     @PutMapping(produces = "application/json")
     @ApiOperation(value = "Update the room number")
-    public ResponseEntity<RoomPostPutDTO> updateRoom(
-            @RequestBody @Valid RoomPostPutDTO roomPostPutDTO) {
-        return ResponseEntity.ok().body(roomService.updateRoom(roomPostPutDTO));
+    public ResponseEntity<RoomDTO> updateRoom(
+            @RequestBody @Valid RoomDTO roomDTO) {
+        return ResponseEntity.ok().body(roomService.updateRoom(roomDTO));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

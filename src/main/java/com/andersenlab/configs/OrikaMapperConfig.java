@@ -34,10 +34,6 @@ public class OrikaMapperConfig {
                 .byDefault()
                 .register();
 
-        mapperFactory.classMap(Reservation.class, ReservationPostDTO.class)
-                .byDefault()
-                .register();
-
         mapperFactory.classMap(Person.class, PersonDTO.class)
                 .byDefault()
                 .register();
@@ -47,10 +43,6 @@ public class OrikaMapperConfig {
             .register();
 
         mapperFactory.classMap(Room.class, RoomDTO.class)
-                .byDefault()
-                .register();
-
-        mapperFactory.classMap(Room.class, RoomPostPutDTO.class)
                 .byDefault()
                 .register();
 
