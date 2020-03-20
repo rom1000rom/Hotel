@@ -69,15 +69,19 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Long saveReservation(ReservationDTO reservationDTO) {
+
         Person person = personRepository.findById(reservationDTO.getPerson().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a person does not exist"));
+
         Room room = roomRepository.findById(reservationDTO.getRoom().getId())
                 .orElseThrow(() -> new HotelServiceException("Such a room does not exist"));
 
         LocalDate dateBegin = reservationDTO.getDateBegin();
         LocalDate dateEnd = reservationDTO.getDateEnd();
-        if(dateBegin.isAfter(dateEnd))//Если номер забронирован на указанные даты
+
+        if(dateBegin.isAfter(dateEnd))
             throw new HotelServiceException("Incorrect dates");
+
         if(room.isBooked(dateBegin, dateEnd))//Если номер забронирован на указанные даты
             throw new HotelServiceException("This room is booked for these dates");
 

@@ -4,7 +4,9 @@ package controllers;
 
 import com.andersenlab.App;
 import com.andersenlab.controllers.RoomController;
+import com.andersenlab.dto.HotelDto;
 import com.andersenlab.dto.RoomDTO;
+import com.andersenlab.model.Hotel;
 import com.andersenlab.services.RoomService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -80,10 +82,13 @@ public class RoomControllerTest {
     public void testSaveRoom() throws Exception
     {
         Long id = 10L;
+        HotelDto hotelDto = new HotelDto();
 
         RoomDTO actual= new RoomDTO("TEST_NAME");
+        actual.setHotelId(hotelDto);
 
         RoomDTO expected  = new RoomDTO("TEST_NAME");
+expected.setHotelId(hotelDto);
 
         when(roomService.saveRoom(actual)).thenReturn(id);
         expected.setId(id);

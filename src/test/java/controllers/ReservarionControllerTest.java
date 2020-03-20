@@ -8,9 +8,12 @@ import com.andersenlab.dto.PersonDTO;
 import com.andersenlab.dto.ReservationDTO;
 import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.services.ReservationService;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -96,14 +99,16 @@ public class ReservarionControllerTest {
     @Test
     public void testSaveReservation() throws Exception
     {
-        Long id = 10L;
+        Long id = 0L;
         ReservationDTO actual= new ReservationDTO(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
-        actual.setId(0L);
+
         PersonDTO personDTO = new PersonDTO("TEST");
         personDTO.setId(id);
+
         RoomDTO roomDTO = new RoomDTO("TEST");
         roomDTO.setId(id);
+
         actual.setRoom(roomDTO);
         actual.setPerson(personDTO);
 
@@ -114,10 +119,13 @@ public class ReservarionControllerTest {
 
         when(reservationService.saveReservation(actual)).thenReturn(id);
         expected.setId(id);
+        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
+
+        System.out.println(ow.writeValueAsString(actual));
 
         mockMvc.perform(post("/reservations")
                 .content(objectMapper.writeValueAsString(actual))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
                 //.andExpect(status().is(201))//Проверяем Http-ответ
                 .andExpect(content().string(
                         objectMapper.writeValueAsString(expected)));//Конвертируем в json

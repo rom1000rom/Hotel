@@ -45,7 +45,7 @@ public class RoomController {
         return ResponseEntity.ok().body(roomDTO);
     }
 
-    @PostMapping(produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = "application/json", consumes = "application/json")
     @ApiOperation(value = "Save a new room")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/

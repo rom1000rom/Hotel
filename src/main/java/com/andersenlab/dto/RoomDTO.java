@@ -2,7 +2,6 @@ package com.andersenlab.dto;
 
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,10 +19,10 @@ public class RoomDTO {
     @NotNull
     private String number;
 
-    @JsonBackReference
+    @JsonBackReference(value = "hotel - room")
     private HotelDto hotelId;
 
-    @JsonManagedReference
+    @JsonManagedReference (value = "room - reservation")
     private List<ReservationDTO> reservations;
 
     public RoomDTO(String number) {

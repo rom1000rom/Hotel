@@ -9,6 +9,7 @@ package com.andersenlab.dto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,12 +25,11 @@ public class ReservationDTO {
 
     /*Аннотация позволяет избежать бесконечной рекурсии при отображении объектного
     поля(родительского) в JSON*/
-    @JsonBackReference
-    @NotNull
+    @JsonBackReference(value = "person - reservation")
     private PersonDTO person;
 
-    @JsonBackReference
-    @NotNull
+    @JsonBackReference(value = "room - reservation")
+
     private RoomDTO room;
 
     @NotNull

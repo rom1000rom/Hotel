@@ -1,11 +1,14 @@
 package services;
 
 
+import com.andersenlab.dao.HotelDao;
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.dto.HotelDto;
 import com.andersenlab.dto.PersonDTO;
 import com.andersenlab.dto.PersonUsernameLoginDTO;
 import com.andersenlab.dto.RoomDTO;
 import com.andersenlab.exceptions.HotelServiceException;
+import com.andersenlab.model.Hotel;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import com.andersenlab.services.RoomService;
@@ -34,6 +37,9 @@ public class RoomServiceImplTest {
 
     @Mock
     RoomRepository roomRepository;
+
+    @Mock
+    HotelDao hotelDao;
 
     @Mock
     MapperFacade mapperFacade;
@@ -90,13 +96,24 @@ public class RoomServiceImplTest {
     @Test
     public void testSaveRoom() {
         Long id = 12L;
+
+        Hotel hotel = new Hotel();
+        hotel.setId(id);
+
+        HotelDto hotelDTO = new HotelDto();
+        hotelDTO.setId(id);
+
         RoomDTO roomDTO = new RoomDTO("TEST" );
+        roomDTO.setHotelId(hotelDTO);
         Room room = new Room("TEST");
 
         Room roomWithId = new Room("TEST");
         roomWithId.setId(id);
+        roomWithId.setHotelId(hotel);
 
+        when(hotelDao.findById(roomDTO.getHotelId().getId())).thenReturn(Optional.of(hotel));
         when(mapperFacade.map(roomDTO, Room.class)).thenReturn(room);
+        room.setHotelId(hotel);
         when(roomRepository.save(room)).thenReturn(roomWithId);
 
         assertEquals(id, testObject.saveRoom(roomDTO));

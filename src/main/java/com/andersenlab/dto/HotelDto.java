@@ -2,7 +2,6 @@ package com.andersenlab.dto;
 
 import java.util.Set;
 
-import com.andersenlab.model.Facilities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
@@ -13,10 +12,10 @@ public class HotelDto  {
 
 	private String hotelName;
 
-	@JsonManagedReference
+	@JsonManagedReference(value = "hotel - room")
 	public Set<RoomDTO> roomSet;
 
-	@JsonManagedReference
-	private Set<Facilities> serviceSet;
+	@JsonManagedReference(value = "hotel - facilities")
+	private Set<FacilitiesDto> serviceSet;
 
 }

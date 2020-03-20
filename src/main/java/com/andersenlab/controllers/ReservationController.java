@@ -7,11 +7,17 @@ import com.andersenlab.services.ReservationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**Класс представляет собой REST-контроллёр, содержащий методы для
   обработки стандартных Http-запросов в отношении юронирований номеров отеля.
@@ -43,7 +49,7 @@ public class ReservationController {
     @PostMapping(produces = "application/json", consumes= "application/json")
     @ApiOperation(value = "Save a new reservation")
     public ResponseEntity<ReservationDTO> saveReservation(
-            @RequestBody @Valid ReservationDTO reservationDTO)  {
+            @RequestBody @Valid ReservationDTO reservationDTO) {
         reservationDTO.setId(reservationService.saveReservation(reservationDTO));
         return ResponseEntity.status(201).body(reservationDTO);
     }
@@ -68,5 +74,18 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDTO>> findReservationsByRoomId(
             @PathVariable("roomId") Long roomId) {
         return ResponseEntity.ok().body(reservationService.findReservationsByRoomId(roomId));
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

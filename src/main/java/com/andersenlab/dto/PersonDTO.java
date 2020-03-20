@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -17,6 +18,7 @@ public class PersonDTO {
 
     private Long id;
 
+    @NotNull
     private String personName;
 
     private Boolean blacklisted = false;
@@ -25,7 +27,7 @@ public class PersonDTO {
 
     /*Аннотация позволяет избежать бесконечной рекурсии при отображении поля -
     коллекции(дочернего) в JSON*/
-    @JsonManagedReference
+    @JsonManagedReference(value = "person - reservation")
     private List<ReservationDTO> reservations;
 
     public PersonDTO(String personName) {

@@ -50,9 +50,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Long saveRoom(RoomDTO roomDTO) {
-
+       Hotel hotel = hotelDao.findById(roomDTO.getHotelId().getId())
+                .orElseThrow(() -> new HotelServiceException("Such a hotel does not exist"));
         Room room = mapperFacade.map(roomDTO, Room.class);
-
+        room.setHotelId(hotel);
         return roomRepository.save(room).getId();
     }
 
