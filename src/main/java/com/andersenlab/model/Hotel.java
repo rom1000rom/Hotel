@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "hotel")
 @Data
-@EqualsAndHashCode(exclude = { "id", "roomSet", "serviceSet", "version" })
+@EqualsAndHashCode(exclude = { "id", "roomSet", "facilitiesSet", "version" })
 public class Hotel {
 
 	@Id
@@ -34,6 +34,6 @@ public class Hotel {
 	private Set<Room> roomSet;
 
 	@OneToMany(mappedBy = "hotelId")
-	private Set<Facilities> serviceSet;
+	private Set<Facilities> facilitiesSet;
 
 }

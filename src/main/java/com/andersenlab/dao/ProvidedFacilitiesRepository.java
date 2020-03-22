@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.andersenlab.model.ProvidedFacilities;
 
-public interface ProvidedFacilitiesDao extends JpaRepository<ProvidedFacilities, Long> {
+public interface ProvidedFacilitiesRepository extends JpaRepository<ProvidedFacilities, Long> {
 
 	Page<ProvidedFacilities> findAll(Pageable pageable);
 }

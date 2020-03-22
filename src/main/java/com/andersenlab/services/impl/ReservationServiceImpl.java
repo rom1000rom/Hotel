@@ -84,8 +84,9 @@ public class ReservationServiceImpl implements ReservationService {
             throw new HotelServiceException("Incorrect dates");
 
         if(roomRepository.findIntersectingReservations(room.getId(), dateBegin, dateEnd)
-                > 0)//Если номер забронирован на указанные даты
+                > 0) {//Если номер забронирован на указанные даты
             throw new HotelServiceException("This room is booked for these dates");
+        }
 
         Reservation reservation = mapperFacade.map(reservationDTO, Reservation.class);
         reservation.setPerson(person);

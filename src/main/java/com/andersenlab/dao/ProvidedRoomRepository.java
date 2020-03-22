@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.andersenlab.model.ProvidedRoom;
 
-public interface ProvidedRoomDao extends JpaRepository<ProvidedRoom, Long> {
+public interface ProvidedRoomRepository extends JpaRepository<ProvidedRoom, Long> {
 
 	Page<ProvidedRoom> findAll(Pageable pageable);
 }

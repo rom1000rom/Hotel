@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.andersenlab.model.Facilities;
 
-interface ServiceDao extends JpaRepository<Facilities, Long> {
+interface FacilitiesRepository extends JpaRepository<Facilities, Long> {
 
 	Page<Facilities> findAll(Pageable pageable);
 

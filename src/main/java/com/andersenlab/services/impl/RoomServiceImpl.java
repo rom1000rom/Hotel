@@ -1,6 +1,6 @@
 package com.andersenlab.services.impl;
 
-import com.andersenlab.dao.HotelDao;
+import com.andersenlab.dao.HotelRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
@@ -27,7 +27,7 @@ public class RoomServiceImpl implements RoomService {
     private RoomRepository roomRepository;
 
     @Autowired
-    private HotelDao hotelDao;
+    private HotelRepository hotelDao;
 
     @Autowired
     private MapperFacade mapperFacade;

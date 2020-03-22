@@ -1,7 +1,7 @@
 package services;
 
 
-import com.andersenlab.dao.HotelDao;
+import com.andersenlab.dao.HotelRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.HotelDto;
 import com.andersenlab.dto.RoomDto;
@@ -36,7 +36,7 @@ public class RoomServiceImplTest {
     RoomRepository roomRepository;
 
     @Mock
-    HotelDao hotelDao;
+    HotelRepository hotelDao;
 
     @Mock
     MapperFacade mapperFacade;
