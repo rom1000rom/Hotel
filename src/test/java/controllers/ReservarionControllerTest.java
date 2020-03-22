@@ -7,7 +7,9 @@ import com.andersenlab.controllers.ReservationController;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.ReservationDto;
 import com.andersenlab.dto.RoomDto;
+import com.andersenlab.security.JwtTokenUtil;
 import com.andersenlab.services.ReservationService;
+import com.andersenlab.services.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -43,6 +45,12 @@ public class ReservarionControllerTest {
 
     @MockBean
     private ReservationService reservationService;
+
+    @MockBean
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private MockMvc mockMvc;

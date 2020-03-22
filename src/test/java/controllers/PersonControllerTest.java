@@ -6,7 +6,9 @@ import com.andersenlab.App;
 import com.andersenlab.controllers.PersonController;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.security.JwtTokenUtil;
 import com.andersenlab.services.PersonService;
+import com.andersenlab.services.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,6 +46,12 @@ public class PersonControllerTest {
 
     @MockBean
     private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private MockMvc mockMvc;

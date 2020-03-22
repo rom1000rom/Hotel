@@ -7,6 +7,7 @@ import javax.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -15,6 +16,7 @@ import org.hibernate.annotations.FetchMode;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = { "version", "reservations", "invoices" })
+@ToString(exclude = { "reservations", "invoices" })
 public class Person {
 
 	@Id
