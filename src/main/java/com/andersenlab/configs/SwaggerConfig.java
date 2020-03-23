@@ -14,6 +14,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 
@@ -35,7 +36,14 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.andersenlab.controllers"))
                 .build()
-                .apiInfo(metaData());
+                .apiInfo(metaData())
+                //Позволяет использовать аутинтификацию в SwaggerUI
+                .securitySchemes(Arrays.asList(apiKey()));
+    }
+
+    private ApiKey apiKey() {
+        //apiKey is the name of the APIKey, `Authorization` is the key in the request header
+        return new ApiKey("apiKey", "Authorization", "header");
     }
 
     /*Метод metaData возвращает объект ApiInfo, инициализированный информацией о нашем API*/

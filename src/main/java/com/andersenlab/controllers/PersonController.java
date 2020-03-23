@@ -7,6 +7,7 @@ import com.andersenlab.services.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,19 +34,13 @@ public class PersonController {
 
     @GetMapping(produces = "application/json")
     //Swagger-аннотация, задаёт свойства API отдельного метода
-    @ApiOperation(value = "Get a list of all persons")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Get a list of all persons", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<PersonDto>> findAllPersons() {
         return ResponseEntity.ok().body(personService.findAllPersons());
     }
 
     @GetMapping(value = "/{personId}", produces = "application/json")
-    @ApiOperation(value = "Get a person by id")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Get a person by id", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<PersonDto> findPersonById(@PathVariable("personId") Long personId)
     {
         PersonDto personDTO = personService.findPersonById(personId);
@@ -53,10 +48,7 @@ public class PersonController {
     }
 
     @PostMapping(produces = "application/json", consumes= "application/json")
-    @ApiOperation(value = "Save a new person")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Save a new person", authorizations = { @Authorization(value="apiKey") })
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
     public ResponseEntity<PersonRegistartionDto> savePerson(
@@ -70,20 +62,15 @@ public class PersonController {
     }
 
     @DeleteMapping(value = "/{personId}")
-    @ApiOperation(value = "Delete person")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Delete person", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<Long> deletePerson(@PathVariable("personId") Long personId)
     {
         return ResponseEntity.ok().body(personService.deletePerson(personId));
     }
 
     @PutMapping(produces = "application/json")
-    @ApiOperation(value = "Update the person name and password")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Update the person name and password",
+            authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<PersonRegistartionDto> updatePerson(
             @RequestBody @Valid PersonRegistartionDto personRegistartionDto) {
         personRegistartionDto.setEncrytedPassword(passwordEncoder.encode(
@@ -93,19 +80,14 @@ public class PersonController {
     }
 
     @PutMapping(value = "addToBlacklist/{personId}", produces = "application/json")
-    @ApiOperation(value = "Add user to the black list")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Add user to the black list", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<Long> addToBlacklist(@PathVariable("personId") Long personId) {
         return ResponseEntity.ok().body(personService.addToBlacklist(personId));
     }
 
     @PutMapping(value = "removeFromBlacklist/{personId}", produces = "application/json")
-    @ApiOperation(value = "Remove user from the black list")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Remove user from the black list",
+            authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<Long> removeFromBlacklist(@PathVariable("personId") Long personId) {
         return ResponseEntity.ok().body(personService.removeFromBlacklist(personId));
     }

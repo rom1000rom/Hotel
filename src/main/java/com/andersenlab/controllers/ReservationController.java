@@ -7,6 +7,7 @@ import com.andersenlab.services.ReservationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,19 +27,13 @@ public class ReservationController {
     private ReservationService reservationService;
 
     @GetMapping(produces = "application/json")
-    @ApiOperation(value = "Get a list of all reservations")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Get a list of all reservations", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<ReservationDto>> findAllReservations() {
         return ResponseEntity.ok().body(reservationService.findAllReservations());
     }
 
     @GetMapping(value = "/{reservationId}", produces = "application/json")
-    @ApiOperation(value = "Get a reservation by id")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Get a reservation by id", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<ReservationDto> findReservationById(
             @PathVariable("reservationId") Long reservationId)
     {
@@ -46,10 +41,7 @@ public class ReservationController {
     }
 
     @PostMapping(produces = "application/json", consumes= "application/json")
-    @ApiOperation(value = "Save a new reservation")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Save a new reservation", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<ReservationDto> saveReservation(
             @RequestBody  ReservationDto reservationDTO) {
         reservationDTO.setId(reservationService.saveReservation(reservationDTO));
@@ -57,10 +49,7 @@ public class ReservationController {
     }
 
     @DeleteMapping(value = "/{reservationId}")
-    @ApiOperation(value = "Delete reservation")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Delete reservation", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<Long> deleteReservation(
             @PathVariable("reservationId") Long reservationId)
     {
@@ -68,20 +57,16 @@ public class ReservationController {
     }
 
     @GetMapping(value = "findByPersonId/{personId}", produces = "application/json")
-    @ApiOperation(value = "Get a list  reservations by Person id")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Get a list  reservations by Person id",
+            authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<ReservationDto>> findReservationsByPersonId(
             @PathVariable("personId") Long personId) {
         return ResponseEntity.ok().body(reservationService.findReservationsByPersonId(personId));
     }
 
     @GetMapping(value = "findByRoomId/{roomId}", produces = "application/json")
-    @ApiOperation(value = "Get a list  reservations by Room id")
-    @ApiImplicitParam(name = "Authorization", paramType = "header",
-            dataType = "string",required = true,
-            defaultValue = "Token <paste_token_here>")
+    @ApiOperation(value = "Get a list  reservations by Room id",
+            authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<ReservationDto>> findReservationsByRoomId(
             @PathVariable("roomId") Long roomId) {
         return ResponseEntity.ok().body(reservationService.findReservationsByRoomId(roomId));
