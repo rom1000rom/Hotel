@@ -1,7 +1,7 @@
 package com.andersenlab.model;
 
 import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,23 +17,23 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "hotel")
 @Data
-@EqualsAndHashCode(exclude = { "id", "roomSet", "serviceSet", "version" })
+@EqualsAndHashCode(exclude = {"id", "roomSet", "facilitiesSet", "version"})
 public class Hotel {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-	@Version
-	private Integer version;
+  @Version
+  private Integer version;
 
-	@Column(name = "hotel_name")
-	private String hotelName;
+  @Column(name = "hotel_name")
+  private String hotelName;
 
-	@OneToMany(mappedBy = "hotelId")
-	private Set<Room> roomSet;
+  @OneToMany(mappedBy = "hotelId", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Room> roomSet;
 
-	@OneToMany(mappedBy = "hotelId")
-	private Set<Facilities> serviceSet;
+  @OneToMany(mappedBy = "hotelId", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Facilities> facilitiesSet;
 
 }

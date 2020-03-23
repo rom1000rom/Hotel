@@ -7,7 +7,7 @@ import com.andersenlab.model.Hotel;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface HotelDao extends JpaRepository<Hotel, Long> {
+public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
   Page<Hotel> findAll(Pageable pageable);
 

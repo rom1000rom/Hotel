@@ -26,13 +26,13 @@ import com.andersenlab.model.Hotel;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = App.class)
-public class HotelDaoTest {
+public class HotelRepositoryTest {
 
 	@Autowired
 	TestEntityManager entityManager;
 
 	@Autowired
-	HotelDao hotelDao;
+	HotelRepository hotelDao;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

@@ -22,7 +22,7 @@ import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "room")
-@EqualsAndHashCode(exclude = {"reservations"})
+@EqualsAndHashCode(exclude = {"id","version","reservations"})
 @Data
 @NoArgsConstructor
 public class Room {

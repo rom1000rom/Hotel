@@ -3,15 +3,16 @@ package com.andersenlab.dao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.stereotype.Repository;
 import com.andersenlab.model.Facilities;
 
-interface ServiceDao extends JpaRepository<Facilities, Long> {
+@Repository
+public interface FacilitiesRepository extends JpaRepository<Facilities, Long> {
 
 	Page<Facilities> findAll(Pageable pageable);
 
-	Facilities findByServiceName(String serviceName);
+	Facilities findByFacilitiesName(String facilitiesName);
 
-	Facilities findByServiceNumber(String serviceNumber);
+	Facilities findByFacilitiesNumber(String facilitiesName);
 
 }
