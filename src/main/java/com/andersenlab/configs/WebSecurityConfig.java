@@ -56,10 +56,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
-        httpSecurity.csrf().disable();
+        httpSecurity.csrf().disable()
+                // dont authenticate this particular request
+                .authorizeRequests().antMatchers("/authenticate").permitAll().
+                // all other requests need to be authenticated
+                        anyRequest().authenticated().and().
+                // убедитесь, что мы используем сессию без сохранения состояния;
+                // сессия не будет использоваться для хранения состояния пользователя.
+                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Добавить фильтр для проверки токенов при каждом запросе
-       
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
 
