@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -58,9 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate").permitAll().
-                // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
+                .authorizeRequests().antMatchers("/authenticate")
+                .permitAll()
+                .anyRequest().authenticated().and().
                 // убедитесь, что мы используем сессию без сохранения состояния;
                 // сессия не будет использоваться для хранения состояния пользователя.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
@@ -68,6 +69,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Добавить фильтр для проверки токенов при каждом запросе
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+                "/configuration/**", "/swagger-ui.html", "/webjars/**", "classpath:/META-INF/resources/",
+        "/META-INF/resources/webjars/");
     }
 }
 

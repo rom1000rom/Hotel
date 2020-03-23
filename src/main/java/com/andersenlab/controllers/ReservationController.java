@@ -5,18 +5,12 @@ package com.andersenlab.controllers;
 import com.andersenlab.dto.ReservationDto;
 import com.andersenlab.services.ReservationService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**Класс представляет собой REST-контроллёр, содержащий методы для
   обработки стандартных Http-запросов в отношении юронирований номеров отеля.
@@ -33,12 +27,18 @@ public class ReservationController {
 
     @GetMapping(produces = "application/json")
     @ApiOperation(value = "Get a list of all reservations")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<List<ReservationDto>> findAllReservations() {
         return ResponseEntity.ok().body(reservationService.findAllReservations());
     }
 
     @GetMapping(value = "/{reservationId}", produces = "application/json")
     @ApiOperation(value = "Get a reservation by id")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<ReservationDto> findReservationById(
             @PathVariable("reservationId") Long reservationId)
     {
@@ -47,6 +47,9 @@ public class ReservationController {
 
     @PostMapping(produces = "application/json", consumes= "application/json")
     @ApiOperation(value = "Save a new reservation")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<ReservationDto> saveReservation(
             @RequestBody  ReservationDto reservationDTO) {
         reservationDTO.setId(reservationService.saveReservation(reservationDTO));
@@ -55,6 +58,9 @@ public class ReservationController {
 
     @DeleteMapping(value = "/{reservationId}")
     @ApiOperation(value = "Delete reservation")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<Long> deleteReservation(
             @PathVariable("reservationId") Long reservationId)
     {
@@ -63,6 +69,9 @@ public class ReservationController {
 
     @GetMapping(value = "findByPersonId/{personId}", produces = "application/json")
     @ApiOperation(value = "Get a list  reservations by Person id")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<List<ReservationDto>> findReservationsByPersonId(
             @PathVariable("personId") Long personId) {
         return ResponseEntity.ok().body(reservationService.findReservationsByPersonId(personId));
@@ -70,21 +79,12 @@ public class ReservationController {
 
     @GetMapping(value = "findByRoomId/{roomId}", produces = "application/json")
     @ApiOperation(value = "Get a list  reservations by Room id")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<List<ReservationDto>> findReservationsByRoomId(
             @PathVariable("roomId") Long roomId) {
         return ResponseEntity.ok().body(reservationService.findReservationsByRoomId(roomId));
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
 }
