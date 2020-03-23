@@ -6,6 +6,8 @@ import com.andersenlab.dto.RoomDto;
 
 import com.andersenlab.services.RoomService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,12 +39,18 @@ public class RoomController {
     @GetMapping(produces = "application/json")
     //Swagger-аннотация, задаёт свойства API отдельного метода
     @ApiOperation(value = "Get a list of all rooms")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<List<RoomDto>> findAllRooms() {
         return ResponseEntity.ok().body(roomService.findAllRooms());
     }
 
     @GetMapping(value = "/{roomId}", produces = "application/json")
     @ApiOperation(value = "Get a room by id")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<RoomDto> findRoomById(@PathVariable("roomId") Long roomId)
     {
         RoomDto roomDTO = roomService.findRoomById(roomId);
@@ -51,6 +59,9 @@ public class RoomController {
 
     @PostMapping(produces = "application/json", consumes = "application/json")
     @ApiOperation(value = "Save a new room")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
     public ResponseEntity<RoomDto> saveRoom(
@@ -62,6 +73,9 @@ public class RoomController {
 
     @DeleteMapping(value = "/{roomId}")
     @ApiOperation(value = "Delete room")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<Long> deleteRoom(@PathVariable("roomId") Long roomId)
     {
         return ResponseEntity.ok().body(roomService.deleteRoom(roomId));
@@ -69,22 +83,12 @@ public class RoomController {
 
     @PutMapping(produces = "application/json")
     @ApiOperation(value = "Update the room number")
+    @ApiImplicitParam(name = "Authorization", paramType = "header",
+            dataType = "string",required = true,
+            defaultValue = "Token <paste_token_here>")
     public ResponseEntity<RoomDto> updateRoom(
             @RequestBody  RoomDto roomDTO) {
         return ResponseEntity.ok().body(roomService.updateRoom(roomDTO));
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
     }
 
 }
