@@ -104,7 +104,7 @@ public class PersonControllerTest {
         when(personService.savePerson(actual)).thenReturn(id);
         expected.setId(id);
 
-        mockMvc.perform(post("/persons")
+        mockMvc.perform(post("/persons/registration")
                 .content(objectMapper.writeValueAsString(actual))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(201))//Проверяем Http-ответ

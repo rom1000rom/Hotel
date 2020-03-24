@@ -30,6 +30,15 @@ public class JwtTokenUtil implements Serializable {
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${jwt.logoutSecret}")
+    private String logoutSecret;
+
+    public void changeSecret() {
+        String buf = secret;
+        secret = logoutSecret;
+        logoutSecret = buf;
+    }
+
     // получить имя пользователя из токена jwt
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);

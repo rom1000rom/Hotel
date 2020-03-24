@@ -3,9 +3,9 @@ package com.andersenlab.controllers;
 
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.security.JwtTokenUtil;
 import com.andersenlab.services.PersonService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**Класс представляет собой REST-контроллёр, содержащий методы для
   обработки стандартных Http-запросов в отношении пользователей приложения.
@@ -30,7 +31,12 @@ public class PersonController {
     private PersonService personService;
 
     @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    private static final Logger log = Logger.getLogger(PersonController.class.getName());
 
     @GetMapping(produces = "application/json")
     //Swagger-аннотация, задаёт свойства API отдельного метода
@@ -43,12 +49,23 @@ public class PersonController {
     @ApiOperation(value = "Get a person by id", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<PersonDto> findPersonById(@PathVariable("personId") Long personId)
     {
+
         PersonDto personDTO = personService.findPersonById(personId);
         return ResponseEntity.ok().body(personDTO);
     }
 
-    @PostMapping(produces = "application/json", consumes= "application/json")
-    @ApiOperation(value = "Save a new person", authorizations = { @Authorization(value="apiKey") })
+    @PostMapping(value = "logout")
+    @ApiOperation(value = "Lets log out", authorizations = { @Authorization(value="apiKey") })
+    /*@RequestBody говорит, что параметр будет именно в теле запроса
+      @Valid - аннотация, которая активирует механизм валидации для данного бина*/
+    public ResponseEntity<String> logoutPerson()
+    {
+        jwtTokenUtil.changeSecret();
+        return ResponseEntity.status(201).body("You are logged out");
+    }
+
+    @PostMapping(value = "registration",produces = "application/json", consumes= "application/json")
+    @ApiOperation(value = "Save a new person")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
     public ResponseEntity<PersonRegistartionDto> savePerson(
@@ -91,4 +108,6 @@ public class PersonController {
     public ResponseEntity<Long> removeFromBlacklist(@PathVariable("personId") Long personId) {
         return ResponseEntity.ok().body(personService.removeFromBlacklist(personId));
     }
+
+
 }
