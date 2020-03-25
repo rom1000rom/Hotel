@@ -2,6 +2,7 @@ package dao;
 
 
 import com.andersenlab.dao.PersonRepository;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,7 +24,8 @@ public class PersonRepositoryIT extends AbstractDaoTest
 
     @Test
     public void savePersonTest(){
-        assertEquals(person, repository.findById(person.getId()).get());
+        assertEquals(person, repository.findById(person.getId()).orElseThrow(() ->
+                new HotelServiceException("Such a person does not exist")));
     }
 
     @Test

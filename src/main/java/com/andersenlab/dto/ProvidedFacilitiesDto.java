@@ -2,7 +2,6 @@ package com.andersenlab.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Set;
 import lombok.Data;
 
 @Data

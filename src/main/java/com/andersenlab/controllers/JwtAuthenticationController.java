@@ -4,7 +4,7 @@ package com.andersenlab.controllers;
 import com.andersenlab.security.JwtRequest;
 import com.andersenlab.security.JwtResponse;
 import com.andersenlab.security.JwtTokenUtil;
-import com.andersenlab.services.impl.UserDetailsServiceImpl;
+import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;

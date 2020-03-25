@@ -1,6 +1,6 @@
-package com.andersenlab.services.impl;
+package com.andersenlab.service.impl;
 
-import com.andersenlab.services.HotelService;
+import com.andersenlab.service.HotelService;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
 
+import com.andersenlab.exceptions.HotelServiceException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -105,7 +106,8 @@ public class HotelDaoTest {
 		entityManager.flush();
 
 		Optional<Hotel> findByHotelNameResult = hotelDao.findById(hotel.getId());
-		entityManager.remove(findByHotelNameResult.get());
+		entityManager.remove(findByHotelNameResult.orElseThrow(() ->
+				new HotelServiceException("Such a hotel does not exist")));
 		entityManager.flush();
 
 		assertTrue(null == hotelDao.findByHotelName(hotel.getHotelName()));

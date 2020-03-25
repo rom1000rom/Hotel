@@ -4,7 +4,7 @@ package com.andersenlab.controllers;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
 import com.andersenlab.security.JwtTokenUtil;
-import com.andersenlab.services.PersonService;
+import com.andersenlab.service.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -12,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 /**Класс представляет собой REST-контроллёр, содержащий методы для
   обработки стандартных Http-запросов в отношении пользователей приложения.
@@ -35,8 +34,6 @@ public class PersonController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    private static final Logger log = Logger.getLogger(PersonController.class.getName());
 
     @GetMapping(produces = "application/json")
     //Swagger-аннотация, задаёт свойства API отдельного метода

@@ -1,8 +1,10 @@
 package com.andersenlab.security;
 
 
-import com.andersenlab.services.impl.UserDetailsServiceImpl;
+import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
+
 
 
 /**Фильтр определяемый данным классом выполняется для любого входящего запроса.
@@ -34,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    private static final Logger log = Logger.getLogger(JwtRequestFilter.class.getName());
+    private static final Logger log = LogManager.getLogger(JwtRequestFilter.class);
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -50,12 +52,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                log.info("Unable to get JWT Token");
+                log.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
-                log.info("JWT Token has expired");
+                log.error("JWT Token has expired");
             }
         } else {
-            logger.warn("JWT Token does not begin with Bearer String");
+            logger.error("JWT Token does not begin with Bearer String");
         }
 
         // Как только мы получим токен, подтвердите его.

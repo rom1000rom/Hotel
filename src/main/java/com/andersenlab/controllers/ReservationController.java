@@ -3,9 +3,8 @@ package com.andersenlab.controllers;
 
 
 import com.andersenlab.dto.ReservationDto;
-import com.andersenlab.services.ReservationService;
+import com.andersenlab.service.ReservationService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;

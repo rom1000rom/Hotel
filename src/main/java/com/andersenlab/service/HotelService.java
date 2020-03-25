@@ -1,4 +1,4 @@
-package com.andersenlab.services;
+package com.andersenlab.service;
 
 public interface HotelService {
 

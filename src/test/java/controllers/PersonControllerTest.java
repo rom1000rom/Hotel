@@ -7,8 +7,8 @@ import com.andersenlab.controllers.PersonController;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
 import com.andersenlab.security.JwtTokenUtil;
-import com.andersenlab.services.PersonService;
-import com.andersenlab.services.impl.UserDetailsServiceImpl;
+import com.andersenlab.service.PersonService;
+import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -92,15 +92,15 @@ public class PersonControllerTest {
     public void testSavePerson() throws Exception
     {
         Long id = 0L;
-        String password = "password";
-        String encrytedPassword = "ENCR_PASSWORD";
+        String pas = "password";
+        String encrytedPas = "ENCR_PASSWORD";
 
         PersonRegistartionDto actual= new PersonRegistartionDto("TEST_NAME");
-        actual.setEncrytedPassword(password);
+        actual.setEncrytedPassword(pas);
         PersonRegistartionDto expected  = new PersonRegistartionDto("TEST_NAME");
 
-        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);
-        expected.setEncrytedPassword(encrytedPassword);
+        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPas);
+        expected.setEncrytedPassword(encrytedPas);
         when(personService.savePerson(actual)).thenReturn(id);
         expected.setId(id);
 
@@ -128,17 +128,17 @@ public class PersonControllerTest {
     public void testUpdatePerson() throws Exception
     {
         Long id = 10L;
-        String password = "password";
-        String encrytedPassword = "ENCR_PASSWORD";
+        String pas = "password";
+        String encrytedPas = "ENCR_PASSWORD";
 
         PersonRegistartionDto actual= new PersonRegistartionDto("TEST_NAME_NEW");
-        actual.setEncrytedPassword(password);
+        actual.setEncrytedPassword(pas);
         actual.setId(id);
         PersonRegistartionDto expected  = new PersonRegistartionDto("TEST_NAME_NEW");
         expected.setId(id);
 
-        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);
-        expected.setEncrytedPassword(encrytedPassword);
+        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPas);
+        expected.setEncrytedPassword(encrytedPas);
         when(personService.updatePerson(expected)).thenReturn(expected);
 
         mockMvc.perform(put("/persons")
