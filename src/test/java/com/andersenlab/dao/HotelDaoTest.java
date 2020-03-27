@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Optional;
 
 import com.andersenlab.exceptions.HotelServiceException;
+import dao.AbstractDaoTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,10 +25,8 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import com.andersenlab.App;
 import com.andersenlab.model.Hotel;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = App.class)
-public class HotelDaoTest {
+
+public class HotelDaoTest extends AbstractDaoTest {
 
 	@Autowired
 	TestEntityManager entityManager;

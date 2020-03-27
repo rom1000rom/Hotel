@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static junit.framework.Assert.assertEquals;
 
 
-public class PersonRepositoryIT extends AbstractDaoTest
+public class PersonRepositoryTest extends AbstractDaoTest
 {
     @Autowired
     private PersonRepository repository;

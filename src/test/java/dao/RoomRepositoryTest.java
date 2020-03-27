@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import static junit.framework.Assert.assertEquals;
 
 
-public class RoomRepositoryIT extends AbstractDaoTest {
+public class RoomRepositoryTest extends AbstractDaoTest {
     @Autowired
     private RoomRepository roomRepository;
 
