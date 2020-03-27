@@ -44,7 +44,7 @@ public class JwtAuthenticationController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST,
+    @PostMapping(value = "/authenticate",
             produces = "application/json", consumes = "application/json")
     @ApiOperation(value = "Request for authorization token")
     public ResponseEntity<JwtResponse> createAuthenticationToken(

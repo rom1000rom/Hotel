@@ -178,7 +178,7 @@
 				<artifactId>liquibase-maven-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<propertyFile>C:/Users/Роман/IdeaProjects/hotel/src/main/resources/liquibase-maven-plugin.properties</propertyFile>
+					<propertyFile>src\main\resources\liquibase-maven-plugin.properties</propertyFile>
 					<systemProperties>
 						<user.name>admin</user.name>
 					</systemProperties>

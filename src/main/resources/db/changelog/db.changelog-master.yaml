@@ -1,12 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      id: 1585224021527-1
+      id: 1585300623795-1
       author: admin (generated)
       changes:
         - createSequence:
             sequenceName: hibernate_sequence
   - changeSet:
-      id: 1585224021527-2
+      id: 1585300623795-2
       author: admin (generated)
       changes:
         - createTable:
@@ -35,7 +35,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: facilities
   - changeSet:
-      id: 1585224021527-3
+      id: 1585300623795-3
       author: admin (generated)
       changes:
         - createTable:
@@ -55,7 +55,7 @@ databaseChangeLog:
                   type: INTEGER
             tableName: hotel
   - changeSet:
-      id: 1585224021527-4
+      id: 1585300623795-4
       author: admin (generated)
       changes:
         - createTable:
@@ -69,10 +69,10 @@ databaseChangeLog:
                   type: BIGINT
               - column:
                   name: date_begin
-                  type: BYTEA
+                  type: DATE
               - column:
                   name: date_end
-                  type: BYTEA
+                  type: DATE
               - column:
                   name: invoice_number
                   type: VARCHAR(255)
@@ -84,7 +84,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: invoice
   - changeSet:
-      id: 1585224021527-5
+      id: 1585300623795-5
       author: admin (generated)
       changes:
         - createTable:
@@ -113,7 +113,7 @@ databaseChangeLog:
                   type: INTEGER
             tableName: person
   - changeSet:
-      id: 1585224021527-6
+      id: 1585300623795-6
       author: admin (generated)
       changes:
         - createTable:
@@ -145,7 +145,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: provided_facilities
   - changeSet:
-      id: 1585224021527-7
+      id: 1585300623795-7
       author: admin (generated)
       changes:
         - createTable:
@@ -174,7 +174,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: provided_room
   - changeSet:
-      id: 1585224021527-8
+      id: 1585300623795-8
       author: admin (generated)
       changes:
         - createTable:
@@ -187,10 +187,10 @@ databaseChangeLog:
                   name: id
                   type: BIGINT
               - column:
-                  name: dateBegin
+                  name: date_begin
                   type: BYTEA
               - column:
-                  name: dateEnd
+                  name: date_end
                   type: BYTEA
               - column:
                   name: version
@@ -203,7 +203,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: reservation
   - changeSet:
-      id: 1585224021527-9
+      id: 1585300623795-9
       author: admin (generated)
       changes:
         - createTable:
@@ -228,7 +228,7 @@ databaseChangeLog:
                   type: BIGINT
             tableName: room
   - changeSet:
-      id: 1585224021527-10
+      id: 1585300623795-10
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -241,7 +241,7 @@ databaseChangeLog:
             referencedTableName: room
             validate: true
   - changeSet:
-      id: 1585224021527-11
+      id: 1585300623795-11
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -254,7 +254,7 @@ databaseChangeLog:
             referencedTableName: hotel
             validate: true
   - changeSet:
-      id: 1585224021527-12
+      id: 1585300623795-12
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -267,7 +267,7 @@ databaseChangeLog:
             referencedTableName: hotel
             validate: true
   - changeSet:
-      id: 1585224021527-13
+      id: 1585300623795-13
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -280,7 +280,7 @@ databaseChangeLog:
             referencedTableName: invoice
             validate: true
   - changeSet:
-      id: 1585224021527-14
+      id: 1585300623795-14
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -293,7 +293,7 @@ databaseChangeLog:
             referencedTableName: person
             validate: true
   - changeSet:
-      id: 1585224021527-15
+      id: 1585300623795-15
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -306,7 +306,7 @@ databaseChangeLog:
             referencedTableName: room
             validate: true
   - changeSet:
-      id: 1585224021527-16
+      id: 1585300623795-16
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -319,7 +319,7 @@ databaseChangeLog:
             referencedTableName: person
             validate: true
   - changeSet:
-      id: 1585224021527-17
+      id: 1585300623795-17
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
@@ -332,7 +332,7 @@ databaseChangeLog:
             referencedTableName: invoice
             validate: true
   - changeSet:
-      id: 1585224021527-18
+      id: 1585300623795-18
       author: admin (generated)
       changes:
         - addForeignKeyConstraint:
