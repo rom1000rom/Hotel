@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import static junit.framework.Assert.assertEquals;
 
 
-public class ReservationRepositoryIT extends AbstractDaoTest
+public class ReservationRepositoryTest extends AbstractDaoTest
 {
     @Autowired
     private ReservationRepository repository;

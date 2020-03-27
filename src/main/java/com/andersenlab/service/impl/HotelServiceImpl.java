@@ -1,9 +1,11 @@
-package com.andersenlab.services;
+package com.andersenlab.service.impl;
 
-import java.util.Collections;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import com.andersenlab.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +13,11 @@ import com.andersenlab.dao.FacilitiesRepository;
 import com.andersenlab.dao.HotelRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.HotelDto;
-import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Facilities;
 import com.andersenlab.model.Hotel;
 import com.andersenlab.model.Room;
 import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
 
 @Service
 public class HotelServiceImpl implements HotelService {

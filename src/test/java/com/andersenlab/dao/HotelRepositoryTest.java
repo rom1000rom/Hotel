@@ -5,29 +5,22 @@ import static org.junit.Assert.assertTrue;
 import java.util.Optional;
 
 import com.andersenlab.exceptions.HotelServiceException;
+import dao.AbstractDaoTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.andersenlab.App;
 import com.andersenlab.model.Hotel;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@ContextConfiguration(loader = AnnotationConfigContextLoader.class, classes = App.class)
-public class HotelRepositoryTest {
+
+public class HotelRepositoryTest extends AbstractDaoTest {
 
 	@Autowired
 	TestEntityManager entityManager;

@@ -1,6 +1,5 @@
 package dao;
 
-
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.model.Reservation;
@@ -14,7 +13,7 @@ import java.time.LocalDate;
 import static junit.framework.Assert.assertEquals;
 
 
-public class RoomRepositoryIT extends AbstractDaoTest {
+public class RoomRepositoryTest extends AbstractDaoTest {
     @Autowired
     private RoomRepository roomRepository;
 

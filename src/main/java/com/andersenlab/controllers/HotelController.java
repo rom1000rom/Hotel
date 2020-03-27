@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.util.List;
 
+import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,8 @@ public class HotelController {
     this.hotelService = hotelService;
   }
 
-  @ApiOperation(value = "Resource to get hotel list", nickname = "getHotelList", httpMethod = "GET")
+  @ApiOperation(value = "Resource to get hotel list", nickname = "getHotelList", httpMethod = "GET",
+          authorizations = { @Authorization(value="apiKey") })
   @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = String.class),
       @ApiResponse(code = 400, message = "Not found"),
       @ApiResponse(code = 500, message = "Server failure")})
@@ -43,7 +45,7 @@ public class HotelController {
   }
 
   @ApiOperation(value = "Resource to get hotel by id", nickname = "getHotelById",
-      httpMethod = "GET")
+      httpMethod = "GET", authorizations = { @Authorization(value="apiKey") })
   @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = String.class),
       @ApiResponse(code = 400, message = "Not found"),
       @ApiResponse(code = 500, message = "Server failure")})
@@ -53,7 +55,8 @@ public class HotelController {
 
   }
 
-  @ApiOperation(value = "Resource to create hotel", nickname = "createHotel", httpMethod = "POST")
+  @ApiOperation(value = "Resource to create hotel", nickname = "createHotel", httpMethod = "POST",
+          authorizations = { @Authorization(value="apiKey") })
   @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = String.class),
       @ApiResponse(code = 400, message = "Not found"),
       @ApiResponse(code = 500, message = "Server failure")})
@@ -63,7 +66,8 @@ public class HotelController {
 
   }
 
-  @ApiOperation(value = "Resource to update hotel", nickname = "updateHotel", httpMethod = "PUT")
+  @ApiOperation(value = "Resource to update hotel", nickname = "updateHotel", httpMethod = "PUT",
+          authorizations = { @Authorization(value="apiKey") })
   @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = String.class),
       @ApiResponse(code = 400, message = "Not found"),
       @ApiResponse(code = 500, message = "Server failure")})
@@ -72,7 +76,8 @@ public class HotelController {
     hotelService.updateHotel(hotelDto);
   }
 
-  @ApiOperation(value = "Resource to delete hotel", nickname = "deleteHotel", httpMethod = "DELETE")
+  @ApiOperation(value = "Resource to delete hotel", nickname = "deleteHotel", httpMethod = "DELETE",
+          authorizations = { @Authorization(value="apiKey") })
   @ApiResponses(value = {@ApiResponse(code = 200, message = "Success", response = String.class),
       @ApiResponse(code = 400, message = "Not found"),
       @ApiResponse(code = 500, message = "Server failure")})
