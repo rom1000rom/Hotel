@@ -1,11 +1,11 @@
-package com.andersenlab.services.impl;
+package com.andersenlab.service.impl;
 
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
-import com.andersenlab.services.PersonService;
+import com.andersenlab.service.PersonService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

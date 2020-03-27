@@ -9,8 +9,8 @@ import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
-import com.andersenlab.services.ReservationService;
-import com.andersenlab.services.impl.ReservationServiceImpl;
+import com.andersenlab.service.ReservationService;
+import com.andersenlab.service.impl.ReservationServiceImpl;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)

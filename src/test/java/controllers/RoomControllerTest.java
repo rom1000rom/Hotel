@@ -6,7 +6,9 @@ import com.andersenlab.App;
 import com.andersenlab.controllers.RoomController;
 import com.andersenlab.dto.HotelDto;
 import com.andersenlab.dto.RoomDto;
-import com.andersenlab.services.RoomService;
+import com.andersenlab.security.JwtTokenUtil;
+import com.andersenlab.service.RoomService;
+import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +43,12 @@ public class RoomControllerTest {
 
     @MockBean
     private RoomService roomService;
+
+    @MockBean
+    private UserDetailsServiceImpl userDetailsServiceImpl;
+
+    @MockBean
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private MockMvc mockMvc;

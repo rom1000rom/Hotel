@@ -1,4 +1,4 @@
-package com.andersenlab.services;
+package com.andersenlab.service;
 
 import java.util.List;
 import com.andersenlab.dto.HotelDto;
