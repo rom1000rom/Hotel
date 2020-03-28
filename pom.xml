@@ -184,6 +184,7 @@
 					</systemProperties>
 					<logging>info</logging>
 				</configuration>
+
 				<dependencies>
 					<dependency>
 						<groupId>org.liquibase.ext</groupId>

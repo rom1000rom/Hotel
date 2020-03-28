@@ -27,14 +27,14 @@ public class Facilities {
   @Version
   private Integer version;
   
-  @Column(name = "service_number")
-  private String serviceNumber;
+  @Column(name = "facilities_number")
+  private String facilitiesNumber;
   
-  @Column(name = "service_name")
-  private String serviceName;
+  @Column(name = "facilities_name")
+  private String facilitiesName;
   
-  @Column(name = "service_price")
-  private BigDecimal servicePrice;
+  @Column(name = "facilities_price")
+  private BigDecimal facilitiesPrice;
   
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "hotel_id")

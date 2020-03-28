@@ -10,9 +10,9 @@ import javax.validation.constraints.NotNull;
 @Data
 public class FacilitiesDto {
 	private Long id;
-	private String serviceNumber;
-	private String serviceName;
-	private BigDecimal servicePrice;
+	private String facilitiesNumber;
+	private String facilitiesName;
+	private BigDecimal facilitiesPrice;
 
 	@JsonBackReference(value = "hotel - facilities")
 	@NotNull

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="admin" id="1585308384353-10">
+        <addForeignKeyConstraint baseColumnNames="room_id" baseTableName="provided_room" constraintName="FK8cbf2sytrmkch04arnbrft5l8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="room" />
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-11">
+        <addForeignKeyConstraint baseColumnNames="hotel_id" baseTableName="room" constraintName="FKdosq3ww4h9m2osim6o0lugng8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="hotel"/>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-12">
+        <addForeignKeyConstraint baseColumnNames="hotel_id" baseTableName="facilities" constraintName="FKeye13xdpn0stvtejuu35pt2qh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="hotel" />
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-13">
+        <addForeignKeyConstraint baseColumnNames="invoice_id" baseTableName="provided_room" constraintName="FKidvi3j30wrsl9cvs00pi6206q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="invoice" />
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-14">
+        <addForeignKeyConstraint baseColumnNames="person_id" baseTableName="reservation" constraintName="FKif7cbbdjfxjdtu7dnqks3r8lt" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="person" />
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-15">
+        <addForeignKeyConstraint baseColumnNames="room_id" baseTableName="reservation" constraintName="FKm8xumi0g23038cw32oiva2ymw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="room"/>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-16">
+        <addForeignKeyConstraint baseColumnNames="person_id" baseTableName="invoice" constraintName="FKmhvmee8jxfysywy9xqpobqbfj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="person" />
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-17">
+        <addForeignKeyConstraint baseColumnNames="invoice_id" baseTableName="provided_facilities" constraintName="FKnu93x4s59g88cha5gkeyy1sos" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="invoice" />
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-18">
+        <addForeignKeyConstraint baseColumnNames="facilities_id" baseTableName="provided_facilities" constraintName="FKr47m1d8m4mnkppffsgy9gs5ej" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="facilities" />
+    </changeSet>
+
+</databaseChangeLog>

@@ -10,8 +10,8 @@ interface ServiceDao extends JpaRepository<Facilities, Long> {
 
 	Page<Facilities> findAll(Pageable pageable);
 
-	Facilities findByServiceName(String serviceName);
+	Facilities findByFacilitiesName(String facilitiesName);
 
-	Facilities findByServiceNumber(String serviceNumber);
+	Facilities findByFacilitiesNumber(String facilitiesNumber);
 
 }
