@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -43,7 +44,7 @@ public class JwtAuthenticationController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST,
+    @PostMapping(value = "/authenticate",
             produces = "application/json", consumes = "application/json")
     @ApiOperation(value = "Request for authorization token")
     public ResponseEntity<JwtResponse> createAuthenticationToken(

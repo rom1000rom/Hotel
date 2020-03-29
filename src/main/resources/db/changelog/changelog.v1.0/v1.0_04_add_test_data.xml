@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- PERSON DATA -->
+    <changeSet id="1585308384353-19" author="admin" >
+        <insert tableName="person">
+            <column name="id" value="1"/>
+            <column name="admin" value="true"/>
+            <column name="blacklisted" value="false"/>
+            <column name="encryted_password"
+                    value="$2a$10$aaoYJSmCZLiePRfUEV2MpuLODan4VtZejfEfAkR2gCrXINwe6KpDq"/>
+            <column name="person_name" value="admin"/>
+            <column name="version" value="0"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="person">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-20" author="admin" >
+        <insert tableName="person">
+            <column name="id" value="2"/>
+            <column name="admin" value="false"/>
+            <column name="blacklisted" value="false"/>
+            <column name="encryted_password"
+                    value="$2a$10$osqrS7sBs4rUNs4CFtHemezeBOUK6ibrsN5unwKDJylNsKyXLZP2G"/>
+            <column name="person_name" value="user"/>
+            <column name="version" value="0"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="person">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- HOTEL DATA -->
+    <changeSet id="1585308384353-21" author="admin" >
+        <insert tableName="hotel">
+            <column name="id" value="1"/>
+            <column name="hotel_name" value="Grand"/>
+            <column name="version" value="0"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="hotel">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-22" author="admin" >
+        <insert tableName="hotel">
+            <column name="id" value="2"/>
+            <column name="hotel_name" value="Eleon"/>
+            <column name="version" value="0"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="hotel">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- FACILITIES DATA -->
+    <changeSet id="1585308384353-23" author="admin" >
+        <insert tableName="facilities">
+            <column name="id" value="1"/>
+            <column name="facilities_name" value="cleaning"/>
+            <column name="facilities_number" value="001"/>
+            <column name="facilities_price" value="10"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="facilities">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-24" author="admin" >
+        <insert tableName="facilities">
+            <column name="id" value="2"/>
+            <column name="facilities_name" value="washing"/>
+            <column name="facilities_number" value="002"/>
+            <column name="facilities_price" value="50"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="facilities">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-25" author="admin" >
+        <insert tableName="facilities">
+            <column name="id" value="3"/>
+            <column name="facilities_name" value="allinc"/>
+            <column name="facilities_number" value="003"/>
+            <column name="facilities_price" value="200"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="facilities">
+                <where>id = "3"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- ROOM DATA -->
+    <changeSet id="1585308384353-26" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="1"/>
+            <column name="room_number" value="001"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-27" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="2"/>
+            <column name="room_number" value="002"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-28" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="3"/>
+            <column name="room_number" value="003"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "3"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-29" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="4"/>
+            <column name="room_number" value="004"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "4"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-30" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="5"/>
+            <column name="room_number" value="005"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "5"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-31" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="6"/>
+            <column name="room_number" value="001"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "6"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-32" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="7"/>
+            <column name="room_number" value="002"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "7"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-33" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="8"/>
+            <column name="room_number" value="003"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "8"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-34" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="9"/>
+            <column name="room_number" value="004"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "9"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-35" author="admin" >
+        <insert tableName="room">
+            <column name="id" value="10"/>
+            <column name="room_number" value="005"/>
+            <column name="version" value="0"/>
+            <column name="hotel_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="room">
+                <where>id = "10"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- INVOICE DATA -->
+    <changeSet id="1585308384353-36" author="admin" >
+        <insert tableName="invoice">
+            <column name="id" value="1"/>
+            <column name="date_begin" value="2019-01-01"/>
+            <column name="date_end" value="2019-01-03"/>
+            <column name="invoice_number" value="100"/>
+            <column name="version" value="0"/>
+            <column name="person_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="invoice">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-37" author="admin" >
+        <insert tableName="invoice">
+            <column name="id" value="2"/>
+            <column name="date_begin" value="2019-02-01"/>
+            <column name="date_end" value="2019-02-03"/>
+            <column name="invoice_number" value="101"/>
+            <column name="version" value="0"/>
+            <column name="person_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="invoice">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- PROVIDED FACILITIES -->
+    <changeSet id="1585308384353-38" author="admin" >
+        <insert tableName="provided_facilities">
+            <column name="id" value="1"/>
+            <column name="cost_facilities" value="10"/>
+            <column name="count_facilities" value="1"/>
+            <column name="date_facilities" value="2019-01-01"/>
+            <column name="version" value="0"/>
+            <column name="facilities_id" value="1"/>
+            <column name="invoice_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-39" author="admin" >
+        <insert tableName="provided_facilities">
+            <column name="id" value="2"/>
+            <column name="cost_facilities" value="10"/>
+            <column name="count_facilities" value="1"/>
+            <column name="date_facilities" value="2019-01-02"/>
+            <column name="version" value="0"/>
+            <column name="facilities_id" value="1"/>
+            <column name="invoice_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-40" author="admin" >
+        <insert tableName="provided_facilities">
+            <column name="id" value="3"/>
+            <column name="cost_facilities" value="50"/>
+            <column name="count_facilities" value="1"/>
+            <column name="date_facilities" value="2019-01-01"/>
+            <column name="version" value="0"/>
+            <column name="facilities_id" value="2"/>
+            <column name="invoice_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "3"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-41" author="admin" >
+        <insert tableName="provided_facilities">
+            <column name="id" value="4"/>
+            <column name="cost_facilities" value="10"/>
+            <column name="count_facilities" value="1"/>
+            <column name="date_facilities" value="2019-01-03"/>
+            <column name="version" value="0"/>
+            <column name="facilities_id" value="1"/>
+            <column name="invoice_id" value="1"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "4"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-42" author="admin" >
+        <insert tableName="provided_facilities">
+            <column name="id" value="5"/>
+            <column name="cost_facilities" value="10"/>
+            <column name="count_facilities" value="1"/>
+            <column name="date_facilities" value="2019-02-01"/>
+            <column name="version" value="0"/>
+            <column name="facilities_id" value="1"/>
+            <column name="invoice_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "5"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-43" author="admin" >
+        <insert tableName="provided_facilities">
+            <column name="id" value="6"/>
+            <column name="cost_facilities" value="200"/>
+            <column name="count_facilities" value="1"/>
+            <column name="date_facilities" value="2019-02-02"/>
+            <column name="version" value="0"/>
+            <column name="facilities_id" value="3"/>
+            <column name="invoice_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "6"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-44" author="admin" >
+    <insert tableName="provided_facilities">
+        <column name="id" value="7"/>
+        <column name="cost_facilities" value="50"/>
+        <column name="count_facilities" value="1"/>
+        <column name="date_facilities" value="2019-02-01"/>
+        <column name="version" value="0"/>
+        <column name="facilities_id" value="2"/>
+        <column name="invoice_id" value="2"/>
+    </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "7"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-45" author="admin" >
+        <insert tableName="provided_facilities">
+            <column name="id" value="8"/>
+            <column name="cost_facilities" value="10"/>
+            <column name="count_facilities" value="1"/>
+            <column name="date_facilities" value="2019-02-03"/>
+            <column name="version" value="0"/>
+            <column name="facilities_id" value="1"/>
+            <column name="invoice_id" value="2"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_facilities">
+                <where>id = "8"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- PROVIDED ROOMS -->
+    <changeSet id="1585308384353-46" author="admin" >
+        <insert tableName="provided_room">
+            <column name="id" value="1"/>
+            <column name="cost_room" value="500"/>
+            <column name="date_room" value="2019-01-01"/>
+            <column name="version" value="0"/>
+            <column name="invoice_id" value="1"/>
+            <column name="room_id" value="3"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_room">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-47" author="admin" >
+        <insert tableName="provided_room">
+            <column name="id" value="2"/>
+            <column name="cost_room" value="500"/>
+            <column name="date_room" value="2019-01-02"/>
+            <column name="version" value="0"/>
+            <column name="invoice_id" value="1"/>
+            <column name="room_id" value="3"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_room">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-48" author="admin" >
+        <insert tableName="provided_room">
+            <column name="id" value="3"/>
+            <column name="cost_room" value="500"/>
+            <column name="date_room" value="2019-01-03"/>
+            <column name="version" value="0"/>
+            <column name="invoice_id" value="1"/>
+            <column name="room_id" value="3"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_room">
+                <where>id = "3"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-49" author="admin" >
+        <insert tableName="provided_room">
+            <column name="id" value="4"/>
+            <column name="cost_room" value="400"/>
+            <column name="date_room" value="2019-02-01"/>
+            <column name="version" value="0"/>
+            <column name="invoice_id" value="2"/>
+            <column name="room_id" value="4"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_room">
+                <where>id = "4"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-50" author="admin" >
+        <insert tableName="provided_room">
+            <column name="id" value="5"/>
+            <column name="cost_room" value="400"/>
+            <column name="date_room" value="2019-02-02"/>
+            <column name="version" value="0"/>
+            <column name="invoice_id" value="2"/>
+            <column name="room_id" value="4"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_room">
+                <where>id = "5"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-51" author="admin" >
+        <insert tableName="provided_room">
+            <column name="id" value="6"/>
+            <column name="cost_room" value="400"/>
+            <column name="date_room" value="2019-02-03"/>
+            <column name="version" value="0"/>
+            <column name="invoice_id" value="2"/>
+            <column name="room_id" value="4"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="provided_room">
+                <where>id = "6"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <!-- RESERVATION DATA -->
+    <changeSet id="1585308384353-52" author="admin" >
+        <insert tableName="reservation">
+            <column name="id" value="1"/>
+            <column name="date_begin" value="2020-06-06"/>
+            <column name="date_end" value="2020-06-12"/>
+            <column name="version" value="0"/>
+            <column name="person_id" value="2"/>
+            <column name="room_id" value="7"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="reservation">
+                <where>id = "1"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-53" author="admin" >
+        <insert tableName="reservation ">
+            <column name="id" value="2"/>
+            <column name="date_begin" value="2020-06-06"/>
+            <column name="date_end" value="2020-06-12"/>
+            <column name="version" value="0"/>
+            <column name="person_id" value="2"/>
+            <column name="room_id" value="9"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="reservation">
+                <where>id = "2"</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

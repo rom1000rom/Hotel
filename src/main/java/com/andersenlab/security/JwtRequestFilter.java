@@ -20,13 +20,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-
-/**Фильтр определяемый данным классом выполняется для любого входящего запроса.
+/**
+ * Фильтр определяемый данным классом выполняется для любого входящего запроса.
  * Он проверяет, есть ли в запросе действительный токен JWT.
  * Если у него есть действительный токен JWT, он устанавливает Аутентификацию
  * в контексте, чтобы указать, что текущий пользователь аутентифицирован.
- @author Артемьев Р.А.
- @version 22.03.2020 */
+ *
+ * @author Артемьев Р.А.
+ * @version 22.03.2020
+ */
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -70,7 +72,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                                userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 /* После установки аутентификации в контексте, мы указываем

@@ -26,6 +26,7 @@ public class Person {
 	@Version
 	private Integer version;
 
+	@Column(name = "encryted_password")
 	private String encrytedPassword;
 
 	/** Находится ли пользователь в "черном" списке */

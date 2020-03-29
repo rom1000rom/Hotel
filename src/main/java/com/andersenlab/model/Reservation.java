@@ -34,8 +34,10 @@ public class Reservation {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @Column(name = "date_begin")
     private LocalDate dateBegin;
 
+    @Column(name = "date_end")
     private LocalDate dateEnd;
 
     public Reservation(LocalDate dateBegin, LocalDate dateEnd) {
