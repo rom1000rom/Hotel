@@ -16,6 +16,10 @@
             <column name="version" type="INTEGER"/>
             <column name="hotel_id" type="BIGINT"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="facilities"/>
+        </rollback>
     </changeSet>
 
     <changeSet author="admin" id="1585308384353-3">
@@ -26,6 +30,10 @@
             <column name="hotel_name" type="VARCHAR(255)"/>
             <column name="version" type="INTEGER"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="hotel"/>
+        </rollback>
     </changeSet>
 
     <changeSet author="admin" id="1585308384353-4">
@@ -39,6 +47,10 @@
             <column name="version" type="INTEGER"/>
             <column name="person_id" type="BIGINT"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="invoice"/>
+        </rollback>
     </changeSet>
 
     <changeSet author="admin" id="1585308384353-5">
@@ -52,6 +64,10 @@
             <column name="person_name" type="VARCHAR(255)"/>
             <column name="version" type="INTEGER"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="person"/>
+        </rollback>
     </changeSet>
 
     <changeSet author="admin" id="1585308384353-6">
@@ -66,6 +82,10 @@
             <column name="facilities_id" type="BIGINT"/>
             <column name="invoice_id" type="BIGINT"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="provided_facilities"/>
+        </rollback>
     </changeSet>
 
     <changeSet author="admin" id="1585308384353-7">
@@ -79,6 +99,10 @@
             <column name="invoice_id" type="BIGINT"/>
             <column name="room_id" type="BIGINT"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="provided_room"/>
+        </rollback>
     </changeSet>
 
     <changeSet author="admin" id="1585308384353-8">
@@ -92,6 +116,10 @@
             <column name="person_id" type="BIGINT"/>
             <column name="room_id" type="BIGINT"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="reservation"/>
+        </rollback>
     </changeSet>
 
     <changeSet author="admin" id="1585308384353-9">
@@ -105,6 +133,10 @@
             <column name="version" type="INTEGER"/>
             <column name="hotel_id" type="BIGINT"/>
         </createTable>
+
+        <rollback>
+            <dropTable tableName="room"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>

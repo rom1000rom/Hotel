@@ -7,6 +7,10 @@
 
     <changeSet author="admin" id="1585308384353-1">
         <createSequence sequenceName="hibernate_sequence"/>
+
+        <rollback>
+            <dropSequence sequenceName="hibernate_sequence"/>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>
