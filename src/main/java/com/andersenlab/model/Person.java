@@ -20,7 +20,7 @@ import org.hibernate.annotations.FetchMode;
 public class Person {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Version

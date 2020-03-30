@@ -80,7 +80,7 @@ public class HotelServiceImpl implements HotelService {
     // }
 
 
-    hotelRepository.save(newHotel);
+    //hotelRepository.save(newHotel);
 
     return newHotel.getId();
   }

@@ -8,7 +8,6 @@
     <!-- PERSON DATA -->
     <changeSet id="1585308384353-19" author="admin" >
         <insert tableName="person">
-            <column name="id" value="1"/>
             <column name="admin" value="true"/>
             <column name="blacklisted" value="false"/>
             <column name="encryted_password"
@@ -26,7 +25,6 @@
 
     <changeSet id="1585308384353-20" author="admin" >
         <insert tableName="person">
-            <column name="id" value="2"/>
             <column name="admin" value="false"/>
             <column name="blacklisted" value="false"/>
             <column name="encryted_password"
@@ -45,7 +43,6 @@
     <!-- HOTEL DATA -->
     <changeSet id="1585308384353-21" author="admin" >
         <insert tableName="hotel">
-            <column name="id" value="1"/>
             <column name="hotel_name" value="Grand"/>
             <column name="version" value="0"/>
         </insert>
@@ -59,7 +56,6 @@
 
     <changeSet id="1585308384353-22" author="admin" >
         <insert tableName="hotel">
-            <column name="id" value="2"/>
             <column name="hotel_name" value="Eleon"/>
             <column name="version" value="0"/>
         </insert>
@@ -74,7 +70,6 @@
     <!-- FACILITIES DATA -->
     <changeSet id="1585308384353-23" author="admin" >
         <insert tableName="facilities">
-            <column name="id" value="1"/>
             <column name="facilities_name" value="cleaning"/>
             <column name="facilities_number" value="001"/>
             <column name="facilities_price" value="10"/>
@@ -91,7 +86,6 @@
 
     <changeSet id="1585308384353-24" author="admin" >
         <insert tableName="facilities">
-            <column name="id" value="2"/>
             <column name="facilities_name" value="washing"/>
             <column name="facilities_number" value="002"/>
             <column name="facilities_price" value="50"/>
@@ -108,7 +102,6 @@
 
     <changeSet id="1585308384353-25" author="admin" >
         <insert tableName="facilities">
-            <column name="id" value="3"/>
             <column name="facilities_name" value="allinc"/>
             <column name="facilities_number" value="003"/>
             <column name="facilities_price" value="200"/>
@@ -126,7 +119,6 @@
     <!-- ROOM DATA -->
     <changeSet id="1585308384353-26" author="admin" >
         <insert tableName="room">
-            <column name="id" value="1"/>
             <column name="room_number" value="001"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="1"/>
@@ -141,7 +133,6 @@
 
     <changeSet id="1585308384353-27" author="admin" >
         <insert tableName="room">
-            <column name="id" value="2"/>
             <column name="room_number" value="002"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="1"/>
@@ -156,7 +147,6 @@
 
     <changeSet id="1585308384353-28" author="admin" >
         <insert tableName="room">
-            <column name="id" value="3"/>
             <column name="room_number" value="003"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="1"/>
@@ -171,7 +161,6 @@
 
     <changeSet id="1585308384353-29" author="admin" >
         <insert tableName="room">
-            <column name="id" value="4"/>
             <column name="room_number" value="004"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="1"/>
@@ -186,7 +175,6 @@
 
     <changeSet id="1585308384353-30" author="admin" >
         <insert tableName="room">
-            <column name="id" value="5"/>
             <column name="room_number" value="005"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="1"/>
@@ -201,7 +189,6 @@
 
     <changeSet id="1585308384353-31" author="admin" >
         <insert tableName="room">
-            <column name="id" value="6"/>
             <column name="room_number" value="001"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="2"/>
@@ -216,7 +203,6 @@
 
     <changeSet id="1585308384353-32" author="admin" >
         <insert tableName="room">
-            <column name="id" value="7"/>
             <column name="room_number" value="002"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="2"/>
@@ -231,7 +217,6 @@
 
     <changeSet id="1585308384353-33" author="admin" >
         <insert tableName="room">
-            <column name="id" value="8"/>
             <column name="room_number" value="003"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="2"/>
@@ -246,7 +231,6 @@
 
     <changeSet id="1585308384353-34" author="admin" >
         <insert tableName="room">
-            <column name="id" value="9"/>
             <column name="room_number" value="004"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="2"/>
@@ -261,7 +245,6 @@
 
     <changeSet id="1585308384353-35" author="admin" >
         <insert tableName="room">
-            <column name="id" value="10"/>
             <column name="room_number" value="005"/>
             <column name="version" value="0"/>
             <column name="hotel_id" value="2"/>
@@ -277,7 +260,6 @@
     <!-- INVOICE DATA -->
     <changeSet id="1585308384353-36" author="admin" >
         <insert tableName="invoice">
-            <column name="id" value="1"/>
             <column name="date_begin" value="2019-01-01"/>
             <column name="date_end" value="2019-01-03"/>
             <column name="invoice_number" value="100"/>
@@ -294,7 +276,6 @@
 
     <changeSet id="1585308384353-37" author="admin" >
         <insert tableName="invoice">
-            <column name="id" value="2"/>
             <column name="date_begin" value="2019-02-01"/>
             <column name="date_end" value="2019-02-03"/>
             <column name="invoice_number" value="101"/>
@@ -312,7 +293,6 @@
     <!-- PROVIDED FACILITIES -->
     <changeSet id="1585308384353-38" author="admin" >
         <insert tableName="provided_facilities">
-            <column name="id" value="1"/>
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
             <column name="date_facilities" value="2019-01-01"/>
@@ -330,7 +310,6 @@
 
     <changeSet id="1585308384353-39" author="admin" >
         <insert tableName="provided_facilities">
-            <column name="id" value="2"/>
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
             <column name="date_facilities" value="2019-01-02"/>
@@ -348,7 +327,6 @@
 
     <changeSet id="1585308384353-40" author="admin" >
         <insert tableName="provided_facilities">
-            <column name="id" value="3"/>
             <column name="cost_facilities" value="50"/>
             <column name="count_facilities" value="1"/>
             <column name="date_facilities" value="2019-01-01"/>
@@ -366,7 +344,6 @@
 
     <changeSet id="1585308384353-41" author="admin" >
         <insert tableName="provided_facilities">
-            <column name="id" value="4"/>
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
             <column name="date_facilities" value="2019-01-03"/>
@@ -384,7 +361,6 @@
 
     <changeSet id="1585308384353-42" author="admin" >
         <insert tableName="provided_facilities">
-            <column name="id" value="5"/>
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
             <column name="date_facilities" value="2019-02-01"/>
@@ -402,7 +378,6 @@
 
     <changeSet id="1585308384353-43" author="admin" >
         <insert tableName="provided_facilities">
-            <column name="id" value="6"/>
             <column name="cost_facilities" value="200"/>
             <column name="count_facilities" value="1"/>
             <column name="date_facilities" value="2019-02-02"/>
@@ -420,7 +395,6 @@
 
     <changeSet id="1585308384353-44" author="admin" >
     <insert tableName="provided_facilities">
-        <column name="id" value="7"/>
         <column name="cost_facilities" value="50"/>
         <column name="count_facilities" value="1"/>
         <column name="date_facilities" value="2019-02-01"/>
@@ -438,7 +412,6 @@
 
     <changeSet id="1585308384353-45" author="admin" >
         <insert tableName="provided_facilities">
-            <column name="id" value="8"/>
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
             <column name="date_facilities" value="2019-02-03"/>
@@ -457,7 +430,6 @@
     <!-- PROVIDED ROOMS -->
     <changeSet id="1585308384353-46" author="admin" >
         <insert tableName="provided_room">
-            <column name="id" value="1"/>
             <column name="cost_room" value="500"/>
             <column name="date_room" value="2019-01-01"/>
             <column name="version" value="0"/>
@@ -474,7 +446,6 @@
 
     <changeSet id="1585308384353-47" author="admin" >
         <insert tableName="provided_room">
-            <column name="id" value="2"/>
             <column name="cost_room" value="500"/>
             <column name="date_room" value="2019-01-02"/>
             <column name="version" value="0"/>
@@ -491,7 +462,6 @@
 
     <changeSet id="1585308384353-48" author="admin" >
         <insert tableName="provided_room">
-            <column name="id" value="3"/>
             <column name="cost_room" value="500"/>
             <column name="date_room" value="2019-01-03"/>
             <column name="version" value="0"/>
@@ -508,7 +478,6 @@
 
     <changeSet id="1585308384353-49" author="admin" >
         <insert tableName="provided_room">
-            <column name="id" value="4"/>
             <column name="cost_room" value="400"/>
             <column name="date_room" value="2019-02-01"/>
             <column name="version" value="0"/>
@@ -525,7 +494,6 @@
 
     <changeSet id="1585308384353-50" author="admin" >
         <insert tableName="provided_room">
-            <column name="id" value="5"/>
             <column name="cost_room" value="400"/>
             <column name="date_room" value="2019-02-02"/>
             <column name="version" value="0"/>
@@ -542,7 +510,6 @@
 
     <changeSet id="1585308384353-51" author="admin" >
         <insert tableName="provided_room">
-            <column name="id" value="6"/>
             <column name="cost_room" value="400"/>
             <column name="date_room" value="2019-02-03"/>
             <column name="version" value="0"/>
@@ -560,7 +527,6 @@
     <!-- RESERVATION DATA -->
     <changeSet id="1585308384353-52" author="admin" >
         <insert tableName="reservation">
-            <column name="id" value="1"/>
             <column name="date_begin" value="2020-06-06"/>
             <column name="date_end" value="2020-06-12"/>
             <column name="version" value="0"/>
@@ -577,7 +543,6 @@
 
     <changeSet id="1585308384353-53" author="admin" >
         <insert tableName="reservation ">
-            <column name="id" value="2"/>
             <column name="date_begin" value="2020-06-06"/>
             <column name="date_end" value="2020-06-12"/>
             <column name="version" value="0"/>
