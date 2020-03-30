@@ -64,7 +64,7 @@ public class HotelRepositoryTest extends AbstractDaoTest {
 		Pageable firstPageWithFiveElements = PageRequest.of(0, 10);
 		Page<Hotel> findAll = hotelDao.findAll(firstPageWithFiveElements);
 
-		assertTrue(3 == findAll.getNumberOfElements());
+		assertTrue(5 == findAll.getNumberOfElements());
 	}
 
 	@Test

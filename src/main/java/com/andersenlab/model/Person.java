@@ -20,7 +20,8 @@ import org.hibernate.annotations.FetchMode;
 public class Person {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator( name = "personSeq", sequenceName = "person_seq", allocationSize = 1, initialValue = 3 )
+	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "personSeq")
 	private Long id;
 
 	@Version

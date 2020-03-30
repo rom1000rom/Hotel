@@ -7,9 +7,88 @@
 
     <changeSet author="admin" id="1585308384353-1">
         <createSequence sequenceName="hibernate_sequence"/>
-
         <rollback>
             <dropSequence sequenceName="hibernate_sequence"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384353-0">
+        <createSequence
+                        incrementBy="1"
+                        sequenceName="person_seq"
+                        startValue="3"/>
+        <rollback>
+            <dropSequence sequenceName="person_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384352-99">
+        <createSequence
+                incrementBy="1"
+                sequenceName="hotel_seq"
+                startValue="3"/>
+        <rollback>
+            <dropSequence sequenceName="hotel_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384352-98">
+        <createSequence
+                incrementBy="1"
+                sequenceName="room_seq"
+                startValue="11"/>
+        <rollback>
+            <dropSequence sequenceName="room_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384352-97">
+        <createSequence
+                incrementBy="1"
+                sequenceName="reservation_seq"
+                startValue="3"/>
+        <rollback>
+            <dropSequence sequenceName="reservation_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384352-96">
+        <createSequence
+                incrementBy="1"
+                sequenceName="facilities_seq"
+                startValue="4"/>
+        <rollback>
+            <dropSequence sequenceName="facilities_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384352-95">
+        <createSequence
+                incrementBy="1"
+                sequenceName="invoice_seq"
+                startValue="3"/>
+        <rollback>
+            <dropSequence sequenceName="invoice_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384352-94">
+        <createSequence
+                incrementBy="1"
+                sequenceName="provided_facilities_seq"
+                startValue="9"/>
+        <rollback>
+            <dropSequence sequenceName="provided_facilities_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="admin" id="1585308384352-93">
+        <createSequence
+                incrementBy="1"
+                sequenceName="provided_room_seq"
+                startValue="7"/>
+        <rollback>
+            <dropSequence sequenceName="provided_room_seq"/>
         </rollback>
     </changeSet>
 

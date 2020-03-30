@@ -20,7 +20,9 @@ import java.time.LocalDate;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "reservationSeq", sequenceName = "reservation_seq",
+            allocationSize = 1, initialValue = 3 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservationSeq")
     private Long id;
 
     @Version
