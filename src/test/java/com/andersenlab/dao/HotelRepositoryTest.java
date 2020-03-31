@@ -1,5 +1,7 @@
 package com.andersenlab.dao;
 
+import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Optional;
@@ -64,7 +66,7 @@ public class HotelRepositoryTest extends AbstractDaoTest {
 		Pageable firstPageWithFiveElements = PageRequest.of(0, 10);
 		Page<Hotel> findAll = hotelDao.findAll(firstPageWithFiveElements);
 
-		assertTrue(5 == findAll.getNumberOfElements());
+		assertEquals(5, findAll.getNumberOfElements());
 	}
 
 	@Test
@@ -76,7 +78,7 @@ public class HotelRepositoryTest extends AbstractDaoTest {
 
 		Hotel findByHotelName = hotelDao.findByHotelName("Grand Hotel 1");
 
-		assertTrue(hotelTest.equals(findByHotelName));
+		assertEquals(hotelTest, findByHotelName);
 	}
 
 	@Test
@@ -88,7 +90,7 @@ public class HotelRepositoryTest extends AbstractDaoTest {
 
 		Hotel findByHotelNameResult = hotelDao.findByHotelName(hotel.getHotelName());
 
-		assertTrue(findByHotelNameResult.getHotelName().equals(hotel.getHotelName()));
+		assertEquals(findByHotelNameResult.getHotelName(), hotel.getHotelName());
 	}
 
 	@Test
@@ -103,7 +105,7 @@ public class HotelRepositoryTest extends AbstractDaoTest {
 				new HotelServiceException("Such a hotel does not exist")));
 		entityManager.flush();
 
-		assertTrue(null == hotelDao.findByHotelName(hotel.getHotelName()));
+		assertNull(hotelDao.findByHotelName(hotel.getHotelName()));
 	}
 
 	@Test
@@ -117,8 +119,7 @@ public class HotelRepositoryTest extends AbstractDaoTest {
 		entityManager.remove(findByHotelNameResult);
 		entityManager.flush();
 
-		assertTrue(null == hotelDao.findByHotelName(hotel.getHotelName()));
-
+		assertNull( hotelDao.findByHotelName(hotel.getHotelName()));
 	}
 }
 

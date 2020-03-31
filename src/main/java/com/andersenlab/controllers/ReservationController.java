@@ -19,19 +19,19 @@ import java.util.List;
 @RestController
 //Swagger-аннотация, задаёт свойства API контроллёра
 @Api(description = "Operations pertaining to hotel room booking")
-@RequestMapping("/reservations")
+@RequestMapping(value = "/reservations", produces = "application/json")
 public class ReservationController {
 
     @Autowired
     private ReservationService reservationService;
 
-    @GetMapping(produces = "application/json")
+    @GetMapping
     @ApiOperation(value = "Get a list of all reservations", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<ReservationDto>> findAllReservations() {
         return ResponseEntity.ok().body(reservationService.findAllReservations());
     }
 
-    @GetMapping(value = "/{reservationId}", produces = "application/json")
+    @GetMapping(value = "/{reservationId}")
     @ApiOperation(value = "Get a reservation by id", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<ReservationDto> findReservationById(
             @PathVariable("reservationId") Long reservationId)
@@ -39,7 +39,7 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservationService.findReservationById(reservationId));
     }
 
-    @PostMapping(produces = "application/json", consumes= "application/json")
+    @PostMapping
     @ApiOperation(value = "Save a new reservation", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<ReservationDto> saveReservation(
             @RequestBody  ReservationDto reservationDTO) {
@@ -55,7 +55,7 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservationService.deleteReservation(reservationId));
     }
 
-    @GetMapping(value = "findByPersonId/{personId}", produces = "application/json")
+    @GetMapping(value = "findByPersonId/{personId}")
     @ApiOperation(value = "Get a list  reservations by Person id",
             authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<ReservationDto>> findReservationsByPersonId(
@@ -63,7 +63,7 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservationService.findReservationsByPersonId(personId));
     }
 
-    @GetMapping(value = "findByRoomId/{roomId}", produces = "application/json")
+    @GetMapping(value = "findByRoomId/{roomId}")
     @ApiOperation(value = "Get a list  reservations by Room id",
             authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<ReservationDto>> findReservationsByRoomId(

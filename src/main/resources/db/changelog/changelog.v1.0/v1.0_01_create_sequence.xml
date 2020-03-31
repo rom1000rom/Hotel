@@ -5,14 +5,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet author="admin" id="1585308384353-1">
+    <changeSet author="roman_artemev" id="1585308384353-1">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence sequenceName="hibernate_sequence"/>
         <rollback>
             <dropSequence sequenceName="hibernate_sequence"/>
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-0">
+    <changeSet author="roman_artemev" id="1585308384353-0">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                         incrementBy="1"
                         sequenceName="person_seq"
@@ -22,7 +24,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384352-99">
+    <changeSet author="roman_artemev" id="1585308384352-99">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                 incrementBy="1"
                 sequenceName="hotel_seq"
@@ -32,7 +35,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384352-98">
+    <changeSet author="roman_artemev" id="1585308384352-98">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                 incrementBy="1"
                 sequenceName="room_seq"
@@ -42,7 +46,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384352-97">
+    <changeSet author="roman_artemev" id="1585308384352-97">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                 incrementBy="1"
                 sequenceName="reservation_seq"
@@ -52,7 +57,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384352-96">
+    <changeSet author="roman_artemev" id="1585308384352-96">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                 incrementBy="1"
                 sequenceName="facilities_seq"
@@ -62,7 +68,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384352-95">
+    <changeSet author="roman_artemev" id="1585308384352-95">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                 incrementBy="1"
                 sequenceName="invoice_seq"
@@ -72,7 +79,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384352-94">
+    <changeSet author="roman_artemev" id="1585308384352-94">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                 incrementBy="1"
                 sequenceName="provided_facilities_seq"
@@ -82,7 +90,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384352-93">
+    <changeSet author="roman_artemev" id="1585308384352-93">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createSequence
                 incrementBy="1"
                 sequenceName="provided_room_seq"

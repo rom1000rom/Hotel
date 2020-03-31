@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 //Swagger-аннотация, задаёт свойства API контроллёра
 @Api(description = "Operations pertaining to persons in Hotel")
-@RequestMapping("/persons")
+@RequestMapping(value = "/persons", produces = "application/json")
 public class PersonController {
 
     @Autowired
@@ -35,14 +35,14 @@ public class PersonController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping(produces = "application/json")
+    @GetMapping
     //Swagger-аннотация, задаёт свойства API отдельного метода
     @ApiOperation(value = "Get a list of all persons", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<List<PersonDto>> findAllPersons() {
         return ResponseEntity.ok().body(personService.findAllPersons());
     }
 
-    @GetMapping(value = "/{personId}", produces = "application/json")
+    @GetMapping(value = "/{personId}")
     @ApiOperation(value = "Get a person by id", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<PersonDto> findPersonById(@PathVariable("personId") Long personId)
     {
@@ -61,7 +61,7 @@ public class PersonController {
         return ResponseEntity.status(201).body("You are logged out");
     }
 
-    @PostMapping(value = "registration",produces = "application/json", consumes= "application/json")
+    @PostMapping(value = "registration")
     @ApiOperation(value = "Save a new person")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
@@ -82,7 +82,7 @@ public class PersonController {
         return ResponseEntity.ok().body(personService.deletePerson(personId));
     }
 
-    @PutMapping(produces = "application/json")
+    @PutMapping
     @ApiOperation(value = "Update the person name and password",
             authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<PersonRegistartionDto> updatePerson(
@@ -93,13 +93,13 @@ public class PersonController {
         return ResponseEntity.ok().body(personService.updatePerson(personRegistartionDto));
     }
 
-    @PutMapping(value = "addToBlacklist/{personId}", produces = "application/json")
+    @PutMapping(value = "addToBlacklist/{personId}")
     @ApiOperation(value = "Add user to the black list", authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<Long> addToBlacklist(@PathVariable("personId") Long personId) {
         return ResponseEntity.ok().body(personService.addToBlacklist(personId));
     }
 
-    @PutMapping(value = "removeFromBlacklist/{personId}", produces = "application/json")
+    @PutMapping(value = "removeFromBlacklist/{personId}")
     @ApiOperation(value = "Remove user from the black list",
             authorizations = { @Authorization(value="apiKey") })
     public ResponseEntity<Long> removeFromBlacklist(@PathVariable("personId") Long personId) {

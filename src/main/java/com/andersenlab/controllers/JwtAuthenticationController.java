@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @CrossOrigin
 @Api(description = "Operations pertaining to authorization")
+@RequestMapping(consumes = "application/json", produces = "application/json")
 public class JwtAuthenticationController {
 
     @Autowired
@@ -44,8 +45,7 @@ public class JwtAuthenticationController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @PostMapping(value = "/authenticate",
-            produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/authenticate")
     @ApiOperation(value = "Request for authorization token")
     public ResponseEntity<JwtResponse> createAuthenticationToken(
             @RequestBody JwtRequest authenticationRequest) throws Exception {

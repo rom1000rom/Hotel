@@ -20,6 +20,7 @@ import com.andersenlab.model.Room;
 import ma.glasnost.orika.MapperFacade;
 
 @Service
+@Transactional
 public class HotelServiceImpl implements HotelService {
 
   private static final String EXCEPTION_HOTEL_NOT_FOUND = "Hotel is not found";
@@ -40,7 +41,6 @@ public class HotelServiceImpl implements HotelService {
 
 
   @Override
-  @Transactional
   public List<HotelDto> findAllHotel() {
 
     List<Hotel> findAllHotel = hotelRepository.findAll();
@@ -51,7 +51,6 @@ public class HotelServiceImpl implements HotelService {
 
 
   @Override
-  @Transactional
   public HotelDto findHotelById(Long id) {
     Hotel findById = hotelRepository.findById(id)
         .orElseThrow(() -> new HotelServiceException(EXCEPTION_HOTEL_NOT_FOUND));
@@ -59,7 +58,6 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
-  @Transactional
   public Long saveHotel(HotelDto hotelDto) {
 
     Hotel existedHotel = hotelRepository.findByHotelName(hotelDto.getHotelName());
@@ -86,7 +84,6 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
-  @Transactional
   public Long updateHotel(HotelDto hotelDto) {
 
     Hotel existedHotel = hotelRepository.findById(hotelDto.getId())
@@ -141,7 +138,6 @@ public class HotelServiceImpl implements HotelService {
   }
 
   @Override
-  @Transactional
   public Long deleteHotel(Long id) {
 
     if (hotelRepository.findById(id).isPresent()) {

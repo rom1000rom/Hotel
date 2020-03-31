@@ -5,7 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet author="admin" id="1585308384353-2">
+    <changeSet author="roman_artemev" id="1585308384353-2">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="facilities">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="facilitiesPK"/>
@@ -22,7 +23,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-3">
+    <changeSet author="roman_artemev" id="1585308384353-3">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="hotel">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="hotelPK"/>
@@ -36,7 +38,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-4">
+    <changeSet author="roman_artemev" id="1585308384353-4">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="invoice">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="invoicePK"/>
@@ -53,7 +56,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-5">
+    <changeSet author="roman_artemev" id="1585308384353-5">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="person">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="personPK"/>
@@ -70,7 +74,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-6">
+    <changeSet author="roman_artemev" id="1585308384353-6">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="provided_facilities">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="provided_facilitiesPK"/>
@@ -88,7 +93,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-7">
+    <changeSet author="roman_artemev" id="1585308384353-7">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="provided_room">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="provided_roomPK"/>
@@ -105,7 +111,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-8">
+    <changeSet author="roman_artemev" id="1585308384353-8">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="reservation">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="reservationPK"/>
@@ -122,7 +129,8 @@
         </rollback>
     </changeSet>
 
-    <changeSet author="admin" id="1585308384353-9">
+    <changeSet author="roman_artemev" id="1585308384353-9">
+        <preConditions onFail="MARK_RAN"> </preConditions>
         <createTable tableName="room">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="roomPK"/>

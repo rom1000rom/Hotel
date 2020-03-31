@@ -15,8 +15,7 @@ public class ReservationDto {
 
   /*
    * Аннотация позволяет избежать бесконечной рекурсии при отображении объектного
-   * поля(родительского) в JSON
-   */
+   * поля(родительского) в JSON */
   @JsonBackReference(value = "person - reservation")
   @NotNull
   private PersonDto person;

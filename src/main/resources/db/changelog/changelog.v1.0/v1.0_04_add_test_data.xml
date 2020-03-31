@@ -5,8 +5,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
+
+
     <!-- PERSON DATA -->
-    <changeSet id="1585308384353-19" author="admin" >
+    <changeSet id="1585308384353-19" author="roman_artemev" >
         <insert tableName="person">
             <column name="admin" value="true"/>
             <column name="blacklisted" value="false"/>
@@ -23,7 +25,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-20" author="admin" >
+    <changeSet id="1585308384353-20" author="roman_artemev" >
         <insert tableName="person">
             <column name="admin" value="false"/>
             <column name="blacklisted" value="false"/>
@@ -41,7 +43,7 @@
     </changeSet>
 
     <!-- HOTEL DATA -->
-    <changeSet id="1585308384353-21" author="admin" >
+    <changeSet id="1585308384353-21" author="roman_artemev" >
         <insert tableName="hotel">
             <column name="hotel_name" value="Grand"/>
             <column name="version" value="0"/>
@@ -54,7 +56,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-22" author="admin" >
+    <changeSet id="1585308384353-22" author="roman_artemev" >
         <insert tableName="hotel">
             <column name="hotel_name" value="Eleon"/>
             <column name="version" value="0"/>
@@ -68,7 +70,7 @@
     </changeSet>
 
     <!-- FACILITIES DATA -->
-    <changeSet id="1585308384353-23" author="admin" >
+    <changeSet id="1585308384353-23" author="roman_artemev" >
         <insert tableName="facilities">
             <column name="facilities_name" value="cleaning"/>
             <column name="facilities_number" value="001"/>
@@ -84,7 +86,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-24" author="admin" >
+    <changeSet id="1585308384353-24" author="roman_artemev" >
         <insert tableName="facilities">
             <column name="facilities_name" value="washing"/>
             <column name="facilities_number" value="002"/>
@@ -100,7 +102,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-25" author="admin" >
+    <changeSet id="1585308384353-25" author="roman_artemev" >
         <insert tableName="facilities">
             <column name="facilities_name" value="allinc"/>
             <column name="facilities_number" value="003"/>
@@ -117,7 +119,7 @@
     </changeSet>
 
     <!-- ROOM DATA -->
-    <changeSet id="1585308384353-26" author="admin" >
+    <changeSet id="1585308384353-26" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="001"/>
             <column name="version" value="0"/>
@@ -131,7 +133,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-27" author="admin" >
+    <changeSet id="1585308384353-27" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="002"/>
             <column name="version" value="0"/>
@@ -145,7 +147,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-28" author="admin" >
+    <changeSet id="1585308384353-28" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="003"/>
             <column name="version" value="0"/>
@@ -159,7 +161,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-29" author="admin" >
+    <changeSet id="1585308384353-29" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="004"/>
             <column name="version" value="0"/>
@@ -173,7 +175,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-30" author="admin" >
+    <changeSet id="1585308384353-30" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="005"/>
             <column name="version" value="0"/>
@@ -187,7 +189,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-31" author="admin" >
+    <changeSet id="1585308384353-31" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="001"/>
             <column name="version" value="0"/>
@@ -201,7 +203,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-32" author="admin" >
+    <changeSet id="1585308384353-32" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="002"/>
             <column name="version" value="0"/>
@@ -215,7 +217,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-33" author="admin" >
+    <changeSet id="1585308384353-33" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="003"/>
             <column name="version" value="0"/>
@@ -229,7 +231,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-34" author="admin" >
+    <changeSet id="1585308384353-34" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="004"/>
             <column name="version" value="0"/>
@@ -243,7 +245,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-35" author="admin" >
+    <changeSet id="1585308384353-35" author="roman_artemev" >
         <insert tableName="room">
             <column name="room_number" value="005"/>
             <column name="version" value="0"/>
@@ -258,7 +260,7 @@
     </changeSet>
 
     <!-- INVOICE DATA -->
-    <changeSet id="1585308384353-36" author="admin" >
+    <changeSet id="1585308384353-36" author="roman_artemev" >
         <insert tableName="invoice">
             <column name="date_begin" value="2019-01-01"/>
             <column name="date_end" value="2019-01-03"/>
@@ -274,7 +276,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-37" author="admin" >
+    <changeSet id="1585308384353-37" author="roman_artemev" >
         <insert tableName="invoice">
             <column name="date_begin" value="2019-02-01"/>
             <column name="date_end" value="2019-02-03"/>
@@ -291,7 +293,7 @@
     </changeSet>
 
     <!-- PROVIDED FACILITIES -->
-    <changeSet id="1585308384353-38" author="admin" >
+    <changeSet id="1585308384353-38" author="roman_artemev" >
         <insert tableName="provided_facilities">
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
@@ -308,7 +310,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-39" author="admin" >
+    <changeSet id="1585308384353-39" author="roman_artemev" >
         <insert tableName="provided_facilities">
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
@@ -325,7 +327,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-40" author="admin" >
+    <changeSet id="1585308384353-40" author="roman_artemev" >
         <insert tableName="provided_facilities">
             <column name="cost_facilities" value="50"/>
             <column name="count_facilities" value="1"/>
@@ -342,7 +344,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-41" author="admin" >
+    <changeSet id="1585308384353-41" author="roman_artemev" >
         <insert tableName="provided_facilities">
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
@@ -359,7 +361,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-42" author="admin" >
+    <changeSet id="1585308384353-42" author="roman_artemev" >
         <insert tableName="provided_facilities">
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
@@ -376,7 +378,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-43" author="admin" >
+    <changeSet id="1585308384353-43" author="roman_artemev" >
         <insert tableName="provided_facilities">
             <column name="cost_facilities" value="200"/>
             <column name="count_facilities" value="1"/>
@@ -393,7 +395,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-44" author="admin" >
+    <changeSet id="1585308384353-44" author="roman_artemev" >
     <insert tableName="provided_facilities">
         <column name="cost_facilities" value="50"/>
         <column name="count_facilities" value="1"/>
@@ -410,7 +412,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-45" author="admin" >
+    <changeSet id="1585308384353-45" author="roman_artemev" >
         <insert tableName="provided_facilities">
             <column name="cost_facilities" value="10"/>
             <column name="count_facilities" value="1"/>
@@ -428,7 +430,7 @@
     </changeSet>
 
     <!-- PROVIDED ROOMS -->
-    <changeSet id="1585308384353-46" author="admin" >
+    <changeSet id="1585308384353-46" author="roman_artemev" >
         <insert tableName="provided_room">
             <column name="cost_room" value="500"/>
             <column name="date_room" value="2019-01-01"/>
@@ -444,7 +446,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-47" author="admin" >
+    <changeSet id="1585308384353-47" author="roman_artemev" >
         <insert tableName="provided_room">
             <column name="cost_room" value="500"/>
             <column name="date_room" value="2019-01-02"/>
@@ -460,7 +462,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-48" author="admin" >
+    <changeSet id="1585308384353-48" author="roman_artemev" >
         <insert tableName="provided_room">
             <column name="cost_room" value="500"/>
             <column name="date_room" value="2019-01-03"/>
@@ -476,7 +478,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-49" author="admin" >
+    <changeSet id="1585308384353-49" author="roman_artemev" >
         <insert tableName="provided_room">
             <column name="cost_room" value="400"/>
             <column name="date_room" value="2019-02-01"/>
@@ -492,7 +494,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-50" author="admin" >
+    <changeSet id="1585308384353-50" author="roman_artemev" >
         <insert tableName="provided_room">
             <column name="cost_room" value="400"/>
             <column name="date_room" value="2019-02-02"/>
@@ -508,7 +510,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-51" author="admin" >
+    <changeSet id="1585308384353-51" author="roman_artemev" >
         <insert tableName="provided_room">
             <column name="cost_room" value="400"/>
             <column name="date_room" value="2019-02-03"/>
@@ -525,7 +527,7 @@
     </changeSet>
 
     <!-- RESERVATION DATA -->
-    <changeSet id="1585308384353-52" author="admin" >
+    <changeSet id="1585308384353-52" author="roman_artemev" >
         <insert tableName="reservation">
             <column name="date_begin" value="2020-06-06"/>
             <column name="date_end" value="2020-06-12"/>
@@ -541,7 +543,7 @@
         </rollback>
     </changeSet>
 
-    <changeSet id="1585308384353-53" author="admin" >
+    <changeSet id="1585308384353-53" author="roman_artemev" >
         <insert tableName="reservation ">
             <column name="date_begin" value="2020-06-06"/>
             <column name="date_end" value="2020-06-12"/>
