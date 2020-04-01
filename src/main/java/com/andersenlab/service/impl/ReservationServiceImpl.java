@@ -4,6 +4,7 @@ import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dao.ReservationRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.ReservationDto;
+import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private MapperFacade mapperFacade;
+
+    private static final Integer DEVIATION = 3;
 
     private static final String EXCEPTION_MESSAGE = "Such a reservation does not exist";
 
@@ -85,7 +89,21 @@ public class ReservationServiceImpl implements ReservationService {
 
         if(roomRepository.findIntersectingReservations(room.getId(), dateBegin, dateEnd)
                 > 0) {//Если номер забронирован на указанные даты
-            throw new HotelServiceException("This room is booked for these dates");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("This room is booked for these dates. ");
+            stringBuilder.append("Free dates: ");
+
+            LocalDate checkDataBegin = dateBegin.minusDays(DEVIATION);
+            Period period = Period.between(
+                    checkDataBegin, dateEnd.plusDays(DEVIATION + 1));
+            for(int i = 0; i < period.getDays(); i++) {
+                if(roomRepository.findIntersectingReservations(room.getId(),
+                        checkDataBegin.plusDays(i), checkDataBegin.plusDays(i)) < 1) {
+                    stringBuilder.append(checkDataBegin.plusDays(i) + ", ");
+                }
+            }
+            throw new HotelServiceException(stringBuilder.substring(
+                    0, stringBuilder.length() - 2));
         }
 
         Reservation reservation = mapperFacade.map(reservationDTO, Reservation.class);
@@ -93,6 +111,46 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setRoom(room);
 
         return reservationRepository.save(reservation).getId();
+    }
+
+    @Override
+    public ReservationDto updateReservation(ReservationDto reservationDto) {
+        Reservation reservation = reservationRepository.findById(reservationDto.getId()).
+                orElseThrow(() -> new HotelServiceException(EXCEPTION_MESSAGE));
+
+        Room room = roomRepository.findById(reservationDto.getRoom().getId())
+                .orElseThrow(() -> new HotelServiceException("Such a room does not exist"));
+
+        LocalDate dateBegin = reservationDto.getDateBegin();
+        LocalDate dateEnd = reservationDto.getDateEnd();
+        if (dateBegin.isAfter(dateEnd))
+            throw new HotelServiceException("Incorrect dates");
+
+        if (roomRepository.findIntersectingReservations(
+                room.getId(), dateBegin, dateEnd)
+                > 0) {//Если номер забронирован на указанные даты
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Room is booked for these dates. ");
+            stringBuilder.append("Free dates: ");
+
+            LocalDate checkDataBegin = dateBegin.minusDays(DEVIATION);
+            Period period = Period.between(
+                    checkDataBegin, dateEnd.plusDays(DEVIATION + 1));
+            for (int y = 0; y < period.getDays(); y++) {
+                if (roomRepository.findIntersectingReservations(room.getId(),
+                        checkDataBegin.plusDays(y), checkDataBegin.plusDays(y)) <= 0) {
+                    stringBuilder.append(checkDataBegin.plusDays(y) + ", ");
+                }
+            }
+            throw new HotelServiceException(stringBuilder.substring(
+                    0, stringBuilder.length() - 2));
+        }
+            reservation.setDateBegin(dateBegin);
+            reservation.setDateEnd(dateEnd);
+            reservation.setRoom(room);
+
+            return mapperFacade.map(reservationRepository.save(
+                    reservation), ReservationDto.class);
     }
 
     @Override

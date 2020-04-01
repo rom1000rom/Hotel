@@ -40,10 +40,14 @@ public class RoomRepositoryTest extends AbstractDaoTest {
         reservationRepository.save(reservation);
 
         assertEquals(1, roomRepository.findIntersectingReservations(room.getId()
-                , LocalDate.parse("2016-09-20"), LocalDate.parse("2016-09-23")).intValue());
+                , LocalDate.parse("2016-09-20"), LocalDate.parse("2016-09-20")).intValue());
 
         assertEquals(0, roomRepository.findIntersectingReservations(room.getId()
                 , LocalDate.parse("2016-09-10"), LocalDate.parse("2016-09-14")).intValue());
+
+        assertEquals(1, roomRepository.findIntersectingReservations(room.getId()
+                , LocalDate.parse("2016-09-20"), LocalDate.parse("2016-09-22")).intValue());
+
     }
 
     private Room createRoom() {

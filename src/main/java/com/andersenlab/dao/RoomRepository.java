@@ -20,11 +20,11 @@ public interface RoomRepository extends CrudRepository<Room, Long>
      * @param dateBegin начало периода
      * @param dateEnd   окончание периода
      * @return число Reservations, пересекающих указанный период */
-    @Query(value = "SELECT count(*) FROM reservation WHERE room_id = ?1 AND (\n" +
-            "date_begin BETWEEN ?2 AND ?3\n" +
-            "OR\n" +
-            "date_end BETWEEN ?2 AND ?3)",
-            nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM reservation WHERE room_id = ?1 AND \n" +
+            "            ((date_begin <= ?2 AND date_end >= ?2)\n" +
+            "            OR\n" +
+            "            (date_begin <= ?3 AND date_end >= ?3));\n",
+    nativeQuery = true)
     Integer findIntersectingReservations(Long roomId, LocalDate dateBegin,
                                                    LocalDate dateEnd);
 }

@@ -11,7 +11,6 @@ import com.andersenlab.security.JwtTokenUtil;
 import com.andersenlab.service.ReservationService;
 import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.BeforeClass;
@@ -123,14 +122,27 @@ public class ReservarionControllerTest {
 
         when(reservationService.saveReservation(actual)).thenReturn(id);
         expected.setId(id);
-        ObjectWriter ow = objectMapper.writer().withDefaultPrettyPrinter();
-
-        System.out.println(ow.writeValueAsString(actual));
 
         mockMvc.perform(post("/reservations")
                 .content(objectMapper.writeValueAsString(actual))
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                //.andExpect(status().is(201))//Проверяем Http-ответ
+                .andExpect(status().isOk())//Проверяем Http-ответ
+                .andExpect(content().string(
+                        objectMapper.writeValueAsString(expected)));//Конвертируем в json
+    }
+
+    @Test
+    public void testUpdateReservation() throws Exception
+    {
+        Long id = 10L;
+        ReservationDto expected  = new ReservationDto(
+                LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
+        expected.setId(id);
+        when(reservationService.updateReservation(expected)).thenReturn(expected);
+
+        mockMvc.perform(put("/reservations")
+                .content(objectMapper.writeValueAsString(expected))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(
                         objectMapper.writeValueAsString(expected)));//Конвертируем в json
     }

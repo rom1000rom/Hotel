@@ -4,6 +4,7 @@ package com.andersenlab.service;
 
 import com.andersenlab.dto.ReservationDto;
 
+
 import java.util.List;
 
 /**Интерфейс служит для определения сервисных функций по работе с бронированиями.
@@ -34,6 +35,11 @@ public interface ReservationService {
       @param reservationDTO объект бронирования, который нужно сохранить
       @return id объект бронирования в базе*/
      Long saveReservation(ReservationDto reservationDTO);
+
+     /**Метод обновляет объект бронирования
+      @param reservationDto объект с данными бронирования
+      @return объект обновлённого бронирования*/
+     ReservationDto updateReservation(ReservationDto reservationDto);
 
      /**Метод удаляет объект бронирования по id
       @param id бронирования, которого нужно удалить

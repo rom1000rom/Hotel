@@ -44,7 +44,16 @@ public class ReservationController {
     public ResponseEntity<ReservationDto> saveReservation(
             @RequestBody  ReservationDto reservationDTO) {
         reservationDTO.setId(reservationService.saveReservation(reservationDTO));
-        return ResponseEntity.status(201).body(reservationDTO);
+        return ResponseEntity.ok().body(reservationDTO);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "Update the reservation DateBegin, DateEnd and Room",
+            authorizations = { @Authorization(value="apiKey") })
+    public ResponseEntity<ReservationDto> updateReservation(
+            @RequestBody  ReservationDto reservationDto) {
+        return ResponseEntity.ok().body(
+                reservationService.updateReservation(reservationDto));
     }
 
     @DeleteMapping(value = "/{reservationId}")
