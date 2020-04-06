@@ -3,8 +3,8 @@ package com.andersenlab.dao;
 
 
 import com.andersenlab.model.Room;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 
@@ -13,18 +13,16 @@ import java.time.LocalDate;
  @author Артемьев Р.А.
  @version 05.03.2020 */
 @Repository
-public interface RoomRepository extends CrudRepository<Room, Long>
+public interface RoomRepository extends JpaRepository<Room, Long>
 {
     /** Метод проверяет забронирован ли номер на указанный период времени
-     * @param roomId id номера
+     * @param room номер
      * @param dateBegin начало периода
      * @param dateEnd   окончание периода
      * @return число Reservations, пересекающих указанный период */
-    @Query(value = "SELECT count(*) FROM reservation WHERE room_id = ?1 AND \n" +
-            "            ((date_begin <= ?2 AND date_end >= ?2)\n" +
-            "            OR\n" +
-            "            (date_begin <= ?3 AND date_end >= ?3));\n",
-    nativeQuery = true)
-    Integer findIntersectingReservations(Long roomId, LocalDate dateBegin,
-                                                   LocalDate dateEnd);
+    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.room = ?1 AND \n" +
+            "            ((r.dateBegin <= ?2 AND r.dateEnd >= ?2)\n" +
+            "            OR (r.dateBegin <= ?3 AND r.dateEnd >= ?3))")
+    Integer findIntersectingReservation(Room room, LocalDate dateBegin,
+                                         LocalDate dateEnd);
 }

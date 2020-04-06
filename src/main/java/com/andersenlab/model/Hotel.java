@@ -29,4 +29,6 @@ public class Hotel {
   @OneToMany(mappedBy = "hotelId", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Facilities> facilitiesSet;
 
+
+
 }

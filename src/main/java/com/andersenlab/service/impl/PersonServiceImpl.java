@@ -31,7 +31,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<PersonDto> findAllPersons() {
-        List<Person> listPerson = (List<Person>)personRepository.findAll();
+        List<Person> listPerson = personRepository.findAll();
         return mapperFacade.mapAsList(listPerson, PersonDto.class);
     }
 

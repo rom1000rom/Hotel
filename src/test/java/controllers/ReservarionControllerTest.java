@@ -102,7 +102,7 @@ public class ReservarionControllerTest {
     @Test
     public void testSaveReservation() throws Exception
     {
-        Long id = 0L;
+        Long id = 10L;
         ReservationDto actual= new ReservationDto(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
 

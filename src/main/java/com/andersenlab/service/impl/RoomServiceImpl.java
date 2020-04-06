@@ -36,7 +36,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDto> findAllRooms() {
-        List<Room> listRoom = (List<Room>)roomRepository.findAll();
+        List<Room> listRoom = roomRepository.findAll();
         return mapperFacade.mapAsList(listRoom, RoomDto.class);
     }
 

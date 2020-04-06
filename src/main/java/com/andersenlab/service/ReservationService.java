@@ -27,9 +27,9 @@ public interface ReservationService {
      List<ReservationDto> findReservationsByPersonId(Long id);
 
      /**Метод возвращает список объектов бронирования по id номера в отеле
-      @param id id номера
+      @param roomId id номера в отеле
       @return список объектов класса ReservationDTO*/
-     List<ReservationDto> findReservationsByRoomId(Long id);
+     List<ReservationDto> findReservationsByRoomId(Long roomId);
 
      /**Метод сохраняет бронирование номера
       @param reservationDTO объект бронирования, который нужно сохранить

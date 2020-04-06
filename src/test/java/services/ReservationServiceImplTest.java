@@ -150,8 +150,8 @@ public class ReservationServiceImplTest {
                 Optional.of(person));
         when(roomRepository.findById(id)).thenReturn(
                 Optional.of(room));
-        when(roomRepository.findIntersectingReservations(
-                room.getId(), reservationDTO.getDateBegin(), reservationDTO.getDateEnd())).thenReturn(0);
+        when(roomRepository.findIntersectingReservation(
+                room, reservationDTO.getDateBegin(), reservationDTO.getDateEnd())).thenReturn(0);
 
         when(mapperFacade.map(reservationDTO, Reservation.class)).thenReturn(reservation);
         reservation.setPerson(person);
