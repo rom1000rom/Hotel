@@ -3,11 +3,20 @@ package com.andersenlab.controllers;
 
 
 import com.andersenlab.dto.ReservationDto;
+import com.andersenlab.dto.page.ReservationPageDto;
 import com.andersenlab.service.ReservationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import ma.glasnost.orika.MapperFacade;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -25,10 +34,25 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private MapperFacade mapperFacade;
+
+    private static final Logger log = LogManager.getLogger(ReservationController.class);
+
     @GetMapping
-    @ApiOperation(value = "Get a list of all reservations", authorizations = { @Authorization(value="apiKey") })
-    public ResponseEntity<List<ReservationDto>> findAllReservations() {
-        return ResponseEntity.ok().body(reservationService.findAllReservations());
+    @ApiOperation(value = "Get a page of all reservations", authorizations = { @Authorization(value="apiKey") })
+    public ResponseEntity<ReservationPageDto> findAllReservations(
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize) {
+        log.debug("findAllReservations() - start");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize,
+                Sort.Direction.ASC, "id");
+        Page<ReservationDto> reservationPage = reservationService.findAllReservations(pageable);
+        ReservationPageDto result = new ReservationPageDto();
+        mapperFacade.map(reservationPage, result);
+        log.debug("findAllReservations() - end: result = {}", result);
+
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(value = "/{reservationId}")
@@ -64,20 +88,44 @@ public class ReservationController {
         return ResponseEntity.ok().body(reservationService.deleteReservation(reservationId));
     }
 
-    @GetMapping(value = "findByPersonId/{personId}")
-    @ApiOperation(value = "Get a list  reservations by Person id",
+    @GetMapping(value = "findByRoomId/{roomId}")
+    @ApiOperation(value = "Get a page reservations by Room id",
             authorizations = { @Authorization(value="apiKey") })
-    public ResponseEntity<List<ReservationDto>> findReservationsByPersonId(
-            @PathVariable("personId") Long personId) {
-        return ResponseEntity.ok().body(reservationService.findReservationsByPersonId(personId));
+    public ResponseEntity<ReservationPageDto> findReservationsByRoomId(
+            @PathVariable("roomId") Long roomId,
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize) {
+        log.debug("findReservationsByRoomId() - start: roomId = {}", roomId);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize,
+                Sort.Direction.ASC, "id");
+        Page<ReservationDto> reservationPage = reservationService.findReservationsByRoomId(
+                roomId, pageable);
+        ReservationPageDto result = new ReservationPageDto();
+        mapperFacade.map(reservationPage, result);
+        log.debug("findReservationsByRoomId() - end: roomId = {}, result = {}",
+                roomId, result);
+
+        return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping(value = "findByRoomId/{roomId}")
-    @ApiOperation(value = "Get a list  reservations by Room id",
+    @GetMapping(value = "findByPersonId/{personId}")
+    @ApiOperation(value = "Get a page reservations by Person id",
             authorizations = { @Authorization(value="apiKey") })
-    public ResponseEntity<List<ReservationDto>> findReservationsByRoomId(
-            @PathVariable("roomId") Long roomId) {
-        return ResponseEntity.ok().body(reservationService.findReservationsByRoomId(roomId));
+    public ResponseEntity<ReservationPageDto> findReservationsByPersonId(
+            @PathVariable("personId") Long personId,
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize) {
+        log.debug("findReservationsByPersonId() - start: personId = {}", personId);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize,
+                Sort.Direction.ASC, "id");
+        Page<ReservationDto> reservationPage = reservationService.findReservationsByPersonId(
+                personId, pageable);
+        ReservationPageDto result = new ReservationPageDto();
+        mapperFacade.map(reservationPage, result);
+        log.debug("findReservationsByPersonId() - end: personId = {}, result = {}",
+                personId, result);
+
+        return ResponseEntity.ok().body(result);
     }
 
 }

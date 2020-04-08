@@ -13,11 +13,10 @@ import ma.glasnost.orika.MapperFacade;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -59,9 +58,11 @@ public class ReservationServiceImpl implements ReservationService {
 
 
     @Override
-    public List<ReservationDto> findAllReservations() {
-        List<Reservation> listReservation = reservationRepository.findAll();
-        return mapperFacade.mapAsList(listReservation, ReservationDto.class);
+    public Page<ReservationDto> findAllReservations(Pageable pageable) {
+        Page<Reservation> listReservation =  reservationRepository.findAll(pageable);
+        return new PageImpl<>(
+                mapperFacade.mapAsList(listReservation, ReservationDto.class),
+                pageable, listReservation.getTotalElements());
     }
 
     @Override
@@ -72,21 +73,24 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDto> findReservationsByPersonId(Long id) {
-        List<Reservation> listReservation = reservationRepository.findAll();
-        return mapperFacade.mapAsList(listReservation.stream()
-                .filter(res-> res.getPerson().getId().equals(id))
-                .collect(Collectors.toList()), ReservationDto.class);
+    public Page<ReservationDto> findReservationsByPersonId(Long personId, Pageable pageable) {
+        Person person = personRepository.findById(personId)
+                .orElseThrow(() -> new HotelServiceException(EXCEPTION_MESSAGE_PERSON));
+
+        List<Reservation> listReservation = reservationRepository.findByPerson(person, pageable);
+        return new PageImpl<>(
+                mapperFacade.mapAsList(listReservation, ReservationDto.class),
+                pageable, listReservation.size());
     }
 
     @Override
-    public List<ReservationDto> findReservationsByRoomId(Long roomId) {
-        Pageable page = new PageRequest(
-                0, 10, new Sort(Sort.Direction.ASC, "id"));
+    public Page<ReservationDto> findReservationsByRoomId(Long roomId, Pageable pageable) {
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new HotelServiceException(EXCEPTION_MESSAGE_ROOM));
-        List<Reservation> listReservation = reservationRepository.findByRoom(room, page);
-        return mapperFacade.mapAsList(listReservation, ReservationDto.class);
+        List<Reservation> listReservation = reservationRepository.findByRoom(room, pageable);
+        return new PageImpl<>(
+                mapperFacade.mapAsList(listReservation, ReservationDto.class),
+                pageable, listReservation.size());
     }
 
     @Override

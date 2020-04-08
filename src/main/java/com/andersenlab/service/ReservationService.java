@@ -3,9 +3,11 @@ package com.andersenlab.service;
 
 
 import com.andersenlab.dto.ReservationDto;
+import org.springframework.data.domain.Page;
 
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+
 
 /**Интерфейс служит для определения сервисных функций по работе с бронированиями.
  @author Артемьев Р.А.
@@ -13,8 +15,8 @@ import java.util.List;
 public interface ReservationService {
 
      /**Метод возвращает список всех бронирований.
-     @return список объектов класса ReservationDTO*/
-     List<ReservationDto> findAllReservations();
+     @return страница объектов класса ReservationDTO*/
+     Page<ReservationDto> findAllReservations(Pageable pageable);
 
      /**Метод возвращает объект бронирования по его id
       @param id id бронирования
@@ -23,13 +25,13 @@ public interface ReservationService {
 
      /**Метод возвращает список объектов бронирования по id пользователя
       @param id id пользователя
-      @return список объектов класса ReservationDTO*/
-     List<ReservationDto> findReservationsByPersonId(Long id);
+      @return страница объектов класса ReservationDTO*/
+     Page<ReservationDto> findReservationsByPersonId(Long id, Pageable pageable);
 
      /**Метод возвращает список объектов бронирования по id номера в отеле
       @param roomId id номера в отеле
-      @return список объектов класса ReservationDTO*/
-     List<ReservationDto> findReservationsByRoomId(Long roomId);
+      @return страница объектов класса ReservationDTO*/
+     Page<ReservationDto> findReservationsByRoomId(Long roomId, Pageable pageable);
 
      /**Метод сохраняет бронирование номера
       @param reservationDTO объект бронирования, который нужно сохранить

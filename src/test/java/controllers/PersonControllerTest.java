@@ -6,16 +6,24 @@ import com.andersenlab.App;
 import com.andersenlab.controllers.PersonController;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.ReservationDto;
+import com.andersenlab.dto.page.PersonPageDto;
+import com.andersenlab.dto.page.ReservationPageDto;
 import com.andersenlab.security.JwtTokenUtil;
 import com.andersenlab.service.PersonService;
 import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ma.glasnost.orika.MapperFacade;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -51,6 +59,9 @@ public class PersonControllerTest {
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @MockBean
+    private MapperFacade mapperFacade;
+
+    @MockBean
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
@@ -61,17 +72,25 @@ public class PersonControllerTest {
     @Test
     public void testFindAllPersons() throws Exception
     {
-        //Подготавливаю ожидаемый результат
+        Integer pageNum = 0;
+        Integer pageSize = 2;
         List<PersonDto> listPersonDto = new ArrayList<>();
         listPersonDto.add(new PersonDto("TEST"));
         listPersonDto.add(new PersonDto("TEST2"));
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Page<PersonDto> personPage = new PageImpl<>(
+                listPersonDto, pageable, listPersonDto.size());
         //Настраиваю поведение мока
-        when(personService.findAllPersons()).thenReturn(listPersonDto);
+        when(personService.findAllPersons(pageable)).thenReturn(personPage);
+        PersonPageDto result = new PersonPageDto();
+        mapperFacade.map(personPage, result);
 
-        mockMvc.perform(get("/persons"))
+        mockMvc.perform(get("/persons")
+                .param("pageNumber", pageNum.toString())
+                .param("pageSize", pageSize.toString()))
                 .andExpect(status().isOk())//Проверяем Http-ответ
                 .andExpect(content().string(
-                        objectMapper.writeValueAsString(listPersonDto)));//Конвертируем в json
+                        objectMapper.writeValueAsString(result)));//Конвертируем в json
     }
 
     @Test

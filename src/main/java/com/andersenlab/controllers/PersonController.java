@@ -3,17 +3,25 @@ package com.andersenlab.controllers;
 
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.page.PersonPageDto;
 import com.andersenlab.security.JwtTokenUtil;
 import com.andersenlab.service.PersonService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
+import ma.glasnost.orika.MapperFacade;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.List;
+
 
 
 /**Класс представляет собой REST-контроллёр, содержащий методы для
@@ -35,11 +43,26 @@ public class PersonController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private MapperFacade mapperFacade;
+
+    private static final Logger log = LogManager.getLogger(PersonController.class);
+
+
     @GetMapping
-    //Swagger-аннотация, задаёт свойства API отдельного метода
-    @ApiOperation(value = "Get a list of all persons", authorizations = { @Authorization(value="apiKey") })
-    public ResponseEntity<List<PersonDto>> findAllPersons() {
-        return ResponseEntity.ok().body(personService.findAllPersons());
+    @ApiOperation(value = "Get a page of all persons", authorizations = { @Authorization(value="apiKey") })
+    public ResponseEntity<PersonPageDto> findAllPersons(
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize) {
+        log.debug("findAllPersons - start");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize,
+                Sort.Direction.ASC, "id");
+        Page<PersonDto> personPage = personService.findAllPersons(pageable);
+        PersonPageDto result = new PersonPageDto();
+        mapperFacade.map(personPage, result);
+        log.debug("findAllPersons() - end: result = {}", result);
+
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(value = "/{personId}")

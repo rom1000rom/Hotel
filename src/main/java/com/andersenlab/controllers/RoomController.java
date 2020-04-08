@@ -2,11 +2,21 @@ package com.andersenlab.controllers;
 
 
 
+import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.RoomDto;
 
+import com.andersenlab.dto.page.PersonPageDto;
+import com.andersenlab.dto.page.RoomPageDto;
 import com.andersenlab.service.RoomService;
 import io.swagger.annotations.*;
+import ma.glasnost.orika.MapperFacade;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -25,11 +35,25 @@ public class RoomController {
     @Autowired
     private RoomService roomService;
 
+    @Autowired
+    private MapperFacade mapperFacade;
+
+    private static final Logger log = LogManager.getLogger(RoomController.class);
+
     @GetMapping
-    //Swagger-аннотация, задаёт свойства API отдельного метода
-    @ApiOperation(value = "Get a list of all rooms", authorizations = { @Authorization(value="apiKey") })
-    public ResponseEntity<List<RoomDto>> findAllRooms() {
-        return ResponseEntity.ok().body(roomService.findAllRooms());
+    @ApiOperation(value = "Get a page of all rooms", authorizations = { @Authorization(value="apiKey") })
+    public ResponseEntity<RoomPageDto> findAllRooms(
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize) {
+        log.debug("findAllRooms - start");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize,
+                Sort.Direction.ASC, "id");
+        Page<RoomDto> roomPage = roomService.findAllRooms(pageable);
+        RoomPageDto result = new RoomPageDto();
+        mapperFacade.map(roomPage, result);
+        log.debug("findAllRooms() - end: result = {}", result);
+
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping(value = "/{roomId}")

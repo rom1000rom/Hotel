@@ -2,6 +2,7 @@ package com.andersenlab.service.impl;
 
 import com.andersenlab.dao.HotelRepository;
 import com.andersenlab.dao.RoomRepository;
+import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Hotel;
@@ -9,6 +10,9 @@ import com.andersenlab.model.Room;
 import com.andersenlab.service.RoomService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +39,11 @@ public class RoomServiceImpl implements RoomService {
     private static final String EXCEPTION_MESSAGE = "Such a room does not exist";
 
     @Override
-    public List<RoomDto> findAllRooms() {
-        List<Room> listRoom = roomRepository.findAll();
-        return mapperFacade.mapAsList(listRoom, RoomDto.class);
+    public Page<RoomDto> findAllRooms(Pageable pageable) {
+        Page<Room> pageRoom = roomRepository.findAll(pageable);
+        return new PageImpl<>(
+                mapperFacade.mapAsList(pageRoom, RoomDto.class),
+                pageable, pageRoom.getTotalElements());
     }
 
     @Override

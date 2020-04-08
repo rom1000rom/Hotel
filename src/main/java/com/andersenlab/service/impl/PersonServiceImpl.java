@@ -3,11 +3,15 @@ package com.andersenlab.service.impl;
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.ReservationDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.service.PersonService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +34,11 @@ public class PersonServiceImpl implements PersonService {
     private static final String EXCEPTION_MESSAGE = "Such a person does not exist";
 
     @Override
-    public List<PersonDto> findAllPersons() {
-        List<Person> listPerson = personRepository.findAll();
-        return mapperFacade.mapAsList(listPerson, PersonDto.class);
+    public Page<PersonDto> findAllPersons(Pageable pageable) {
+        Page<Person> listPerson = personRepository.findAll(pageable);
+        return new PageImpl<>(
+                mapperFacade.mapAsList(listPerson, PersonDto.class),
+                pageable, listPerson.getTotalElements());
     }
 
     @Override

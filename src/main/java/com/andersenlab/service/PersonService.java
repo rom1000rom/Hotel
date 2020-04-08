@@ -4,9 +4,9 @@ package com.andersenlab.service;
 
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-
-import java.util.List;
 
 /**Интерфейс служит для определения сервисных функций по работе с пользователями.
  @author Артемьев Р.А.
@@ -14,8 +14,8 @@ import java.util.List;
 public interface PersonService {
 
      /**Метод возвращает список всех пользователей.
-     @return список объектов класса PersonDTO*/
-     List<PersonDto> findAllPersons();
+     @return страница объектов класса PersonDTO*/
+     Page<PersonDto> findAllPersons(Pageable pageable);
 
      /**Метод возвращает объект пользователя по его id
       @param id id пользователя

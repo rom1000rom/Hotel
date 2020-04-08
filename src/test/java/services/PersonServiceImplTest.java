@@ -4,8 +4,10 @@ package services;
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.ReservationDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
+import com.andersenlab.model.Reservation;
 import com.andersenlab.service.PersonService;
 import com.andersenlab.service.impl.PersonServiceImpl;
 import ma.glasnost.orika.MapperFacade;
@@ -16,6 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,20 +53,27 @@ public class PersonServiceImplTest {
     @Test
     public void testFindAllPersons() {
         //Подготавливаю ожидаемый результат
+        int pageNum = 0;
+        int size = 2;
+        Pageable pageable = PageRequest.of(pageNum, size);
         List<Person> listPerson = new ArrayList<>();
         listPerson.add(new Person("TEST"));
         listPerson.add(new Person("TEST2"));
+        Page<Person> pagePerson = new PageImpl<>(
+                listPerson, pageable, listPerson.size());
         //Настраиваю поведение мока
-        when(personRepository.findAll()).thenReturn(listPerson);
+        when(personRepository.findAll(pageable)).thenReturn(pagePerson);
 
         List<PersonDto> listPersonDto = new ArrayList<>();
         listPersonDto.add(new PersonDto("TEST"));
         listPersonDto.add(new PersonDto("TEST2"));
+        Page<PersonDto> page = new PageImpl<>(
+                listPersonDto, pageable, listPerson.size());
 
-        when(mapperFacade.mapAsList(listPerson, PersonDto.class)).thenReturn(listPersonDto);
+        when(mapperFacade.mapAsList(pagePerson, PersonDto.class)).thenReturn(listPersonDto);
 
         //Проверяю поведение тестируемого объекта
-        assertEquals(listPersonDto, testObject.findAllPersons());
+        assertEquals(page, testObject.findAllPersons(pageable));
     }
 
     @Test
