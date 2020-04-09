@@ -2,7 +2,6 @@ package com.andersenlab.service.impl;
 
 import com.andersenlab.dao.HotelRepository;
 import com.andersenlab.dao.RoomRepository;
-import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Hotel;
@@ -16,8 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**Класс реализует сервисные функции по работе с номерами отеля.
@@ -79,5 +80,16 @@ public class RoomServiceImpl implements RoomService {
         else {
             throw new HotelServiceException(EXCEPTION_MESSAGE);
         }
+    }
+
+    @Override
+    public Page<RoomDto> findAvailableRooms(Pageable pageable, LocalDate dateBegin,
+                                            LocalDate dateEnd, Integer minPrice,
+                                            Integer maxPrice, Integer guests) {
+        Page<Room> result = roomRepository.findAvailableRooms(dateBegin, dateEnd, minPrice,
+                maxPrice, guests, pageable);
+        return new PageImpl<>(
+                mapperFacade.mapAsList(result, RoomDto.class),
+                pageable, result.getTotalElements());
     }
 }

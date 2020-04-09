@@ -17,8 +17,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -87,6 +90,30 @@ public class RoomController {
     public ResponseEntity<RoomDto> updateRoom(
             @RequestBody  RoomDto roomDTO) {
         return ResponseEntity.ok().body(roomService.updateRoom(roomDTO));
+    }
+
+    @GetMapping(value = "/findAvailableRooms")
+    @ApiOperation(value = "Get a page of available rooms", authorizations = { @Authorization(value="apiKey") })
+    public ResponseEntity<RoomPageDto> findAvailableRooms(
+            @RequestParam(name = "dateBegin")
+               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateBegin,
+            @RequestParam(name = "dateEnd")
+               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate dateEnd,
+            @RequestParam(name = "minPrice") Integer minPrice,
+            @RequestParam(name = "maxPrice") Integer maxPrice,
+            @RequestParam(name = "guests") Integer guests,
+            @RequestParam(name = "pageNumber") Integer pageNumber,
+            @RequestParam(name = "pageSize") Integer pageSize) {
+        log.debug("findAvailableRooms - start");
+        Pageable pageable = PageRequest.of(pageNumber, pageSize,
+                Sort.Direction.ASC, "id");
+        Page<RoomDto> roomPage = roomService.findAvailableRooms(pageable, dateBegin, dateEnd,
+        minPrice, maxPrice, guests);
+        RoomPageDto result = new RoomPageDto();
+        mapperFacade.map(roomPage, result);
+        log.debug("findAvailableRooms - end: result = {}", result);
+
+        return ResponseEntity.ok().body(result);
     }
 
 }

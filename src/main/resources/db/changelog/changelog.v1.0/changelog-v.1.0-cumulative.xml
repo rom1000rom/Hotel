@@ -12,7 +12,11 @@
     <include file= "v1.0_03_add_foreign_key_constraint.xml"
              relativeToChangelogFile="true"/>
 
+    <include file="v1.0_05_add_fields_to_room.xml"
+             relativeToChangelogFile="true" />
+
     <include file= "v1.0_04_add_test_data.xml"
              relativeToChangelogFile="true"/>
+
 
 </databaseChangeLog>

@@ -30,6 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +84,41 @@ public class RoomControllerTest {
         mapperFacade.map(roomPage, result);
 
         mockMvc.perform(get("/rooms")
+                .param("pageNumber", pageNum.toString())
+                .param("pageSize", pageSize.toString()))
+                .andExpect(status().isOk())//Проверяем Http-ответ
+                .andExpect(content().string(
+                        objectMapper.writeValueAsString(result)));//Конвертируем в json
+    }
+
+    @Test
+    public void testFindAvailableRooms() throws Exception
+    {
+        Integer pageNum = 0;
+        Integer pageSize = 2;
+        Integer minPrice = 500;
+        Integer maxPrice = 1000;
+        Integer guests = 2;
+        LocalDate dateBegin = LocalDate.parse("2016-09-23");
+        LocalDate dateEnd = LocalDate.parse("2016-09-25");
+        List<RoomDto> listRoomDto = new ArrayList<>();
+        listRoomDto.add(new RoomDto("TEST"));
+        listRoomDto.add(new RoomDto("TEST2"));
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Page<RoomDto> roomPage = new PageImpl<>(
+                listRoomDto, pageable, listRoomDto.size());
+        //Настраиваю поведение мока
+        when(roomService.findAvailableRooms(pageable, dateBegin, dateBegin,
+                minPrice, maxPrice, guests)).thenReturn(roomPage);
+        RoomPageDto result = new RoomPageDto();
+        mapperFacade.map(roomPage, result);
+
+        mockMvc.perform(get("/rooms/findAvailableRooms")
+                .param("dateBegin", dateBegin.toString())
+                .param("dateEnd", dateEnd.toString())
+                .param("minPrice", minPrice.toString())
+                .param("maxPrice", pageNum.toString())
+                .param("guests", guests.toString())
                 .param("pageNumber", pageNum.toString())
                 .param("pageSize", pageSize.toString()))
                 .andExpect(status().isOk())//Проверяем Http-ответ

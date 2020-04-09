@@ -19,6 +19,12 @@ public class RoomDto {
     @NotNull
     private String number;
 
+    @NotNull
+    private Integer maxGuests;
+
+    @NotNull
+    private Integer price;
+
     @JsonBackReference(value = "hotel - room")
     @NotNull
     private HotelDto hotelId;

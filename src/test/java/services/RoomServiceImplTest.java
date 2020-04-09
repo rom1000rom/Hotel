@@ -4,11 +4,9 @@ package services;
 import com.andersenlab.dao.HotelRepository;
 import com.andersenlab.dao.RoomRepository;
 import com.andersenlab.dto.HotelDto;
-import com.andersenlab.dto.PersonDto;
 import com.andersenlab.dto.RoomDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Hotel;
-import com.andersenlab.model.Person;
 import com.andersenlab.model.Room;
 import com.andersenlab.service.RoomService;
 import com.andersenlab.service.impl.RoomServiceImpl;
@@ -26,6 +24,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +77,34 @@ public class RoomServiceImplTest {
 
         //Проверяю поведение тестируемого объекта
         assertEquals(page, testObject.findAllRooms(pageable));
+    }
+
+    @Test
+    public void testFindAvailableRooms() {
+        int pageNum = 0;
+        int size = 2;
+        int minPrice = 500;
+        int maxPrice = 1000;
+        int guests = 2;
+        LocalDate dateBegin = LocalDate.parse("2016-09-23");
+        LocalDate dateEnd = LocalDate.parse("2016-09-25");
+        Pageable pageable = PageRequest.of(pageNum, size);
+        List<Room> listRoom = new ArrayList<>();
+        listRoom.add(new Room("TEST"));
+        listRoom.add(new Room("TEST2"));
+        Page<Room> pageRoom = new PageImpl<>(
+                listRoom, pageable, listRoom.size());
+        when(roomRepository.findAvailableRooms(dateBegin, dateEnd, minPrice, maxPrice,
+                guests, pageable)).thenReturn(pageRoom);
+        List<RoomDto> listRoomDto = new ArrayList<>();
+        listRoomDto.add(new RoomDto("TEST"));
+        listRoomDto.add(new RoomDto("TEST2"));
+        Page<RoomDto> page = new PageImpl<>(
+                listRoomDto, pageable, listRoomDto.size());
+        when(mapperFacade.mapAsList(pageRoom, RoomDto.class)).thenReturn(listRoomDto);
+
+        assertEquals(page, testObject.findAvailableRooms(pageable, dateBegin, dateEnd,
+                minPrice, maxPrice, guests));
     }
 
     @Test
