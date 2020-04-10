@@ -59,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate",
-                "/persons/registration", "/rooms", "/rooms/*")
+                "/persons/registration")
                 .permitAll()
                 .anyRequest().authenticated().and().
                 // сессия не будет использоваться для хранения состояния пользователя.

@@ -24,8 +24,8 @@ public interface RoomRepository extends JpaRepository<Room, Long>
      * @param dateEnd окончание периода
      * @return число Reservations, пересекающих указанный период */
     @Query("SELECT COUNT(r) FROM Reservation r WHERE r.room = ?1 AND \n" +
-            "            ((r.dateBegin <= ?2 AND r.dateEnd >= ?2)\n" +
-            "            OR (r.dateBegin <= ?3 AND r.dateEnd >= ?3))")
+            "            ((?2 BETWEEN r.dateBegin AND r.dateEnd)\n" +
+            "            OR (?3 BETWEEN r.dateBegin AND r.dateEnd))")
     Integer findIntersectingReservation(Room room, LocalDate dateBegin,
                                          LocalDate dateEnd);
 
@@ -39,8 +39,8 @@ public interface RoomRepository extends JpaRepository<Room, Long>
     @Query("SELECT r FROM Room r LEFT OUTER JOIN r.reservations res " +
             "WHERE ((r.price BETWEEN ?3 AND ?4) AND r.maxGuests >= ?5) AND " +
             "(res IS NULL OR  " +
-               "NOT((res.dateBegin <= ?1 AND res.dateEnd >= ?1) " +
-               "OR (res.dateBegin <= ?2 AND res.dateEnd >= ?2))) " +
+               "NOT((?1 BETWEEN res.dateBegin AND res.dateEnd) " +
+               "OR (?2 BETWEEN res.dateBegin AND res.dateEnd))) " +
             "ORDER BY r.id")
     Page<Room> findAvailableRooms(LocalDate dateBegin, LocalDate dateEnd, Integer minPrice,
                                   Integer maxPrice, Integer guests, Pageable pageable);

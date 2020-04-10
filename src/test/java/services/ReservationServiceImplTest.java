@@ -37,25 +37,26 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ReservationServiceImplTest {
 
-    @Mock
-    private ReservationRepository reservationRepository;
+  @Mock
+  private ReservationRepository reservationRepository;
 
-    @Mock
-    private PersonRepository personRepository;
+  @Mock
+  private PersonRepository personRepository;
 
-    @Mock
-    private RoomRepository roomRepository;
+  @Mock
+  private RoomRepository roomRepository;
 
-    @Mock
-    private MapperFacade mapperFacade;
+  @Mock
+  private MapperFacade mapperFacade;
 
-    @InjectMocks
-    private ReservationService testObject = new ReservationServiceImpl();
+  @InjectMocks
+  private ReservationService testObject = new ReservationServiceImpl(reservationRepository,
+      personRepository, roomRepository, mapperFacade);
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-    }
+  @Before
+  public void setUp() {
+    MockitoAnnotations.initMocks(this);
+  }
 
     @Test
     public void testFindAllReservation() {
@@ -142,77 +143,80 @@ public class ReservationServiceImplTest {
         assertEquals(page, testObject.findReservationsByPersonId(id, pageable));
     }
 
-    @Test
-    public void testFindReservationById() {
-        Long id = 10L;
-        Reservation reservation = new Reservation(
-                LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
-        reservation.setId(id);
-        when(reservationRepository.findById(id)).thenReturn(Optional.of(reservation));
+  @Test
+  public void testFindReservationById() {
+    Long id = 10L;
+    Reservation reservation =
+        new Reservation(LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21"));
+    reservation.setId(id);
+    when(reservationRepository.findById(id)).thenReturn(Optional.of(reservation));
 
-        ReservationDto reservationDTO = new ReservationDto();
-        reservationDTO.setDateBegin(reservation.getDateBegin());
-        reservationDTO.setDateEnd(reservation.getDateEnd());
-        reservationDTO.setId(id);
-        when(mapperFacade.map(reservation, ReservationDto.class)).thenReturn(reservationDTO);
+    ReservationDto reservationDTO = new ReservationDto();
+    reservationDTO.setDateBegin(reservation.getDateBegin());
+    reservationDTO.setDateEnd(reservation.getDateEnd());
+    reservationDTO.setId(id);
+    when(mapperFacade.map(reservation, ReservationDto.class)).thenReturn(reservationDTO);
 
-        assertEquals(reservationDTO, testObject.findReservationById(id));
-    }
+    assertEquals(reservationDTO, testObject.findReservationById(id));
+  }
 
-    @Test(expected = HotelServiceException.class)
-    public void testFindReservationByIdNotExist() {
-        Long id = 10L;
-        when(reservationRepository.findById(id)).thenReturn(Optional.empty());
+  @Test(expected = HotelServiceException.class)
+  public void testFindReservationByIdNotExist() {
+    Long id = 10L;
+    when(reservationRepository.findById(id)).thenReturn(Optional.empty());
 
-        testObject.findReservationById(id);
-    }
+    testObject.findReservationById(id);
+  }
 
-    @Test(expected = HotelServiceException.class)
-    public void testSaveReservationPersonNotExist() {
-        Long id = 12L;
-        ReservationDto reservationDTO = new ReservationDto();
-        PersonDto personDTO = new PersonDto("TEST");
-        personDTO.setId(id);
-        reservationDTO.setPerson(personDTO);
+  @Test(expected = HotelServiceException.class)
+  public void testSaveReservationPersonNotExist() {
+    Long id = 12L;
+    ReservationDto reservationDTO = new ReservationDto();
+    PersonDto personDTO = new PersonDto("TEST");
+    personDTO.setId(id);
+    reservationDTO.setPerson(personDTO);
 
-        when(personRepository.findById(id)).thenReturn(
-                Optional.empty());
-        testObject.saveReservation(reservationDTO);
-    }
+    when(personRepository.findById(id)).thenReturn(Optional.empty());
+    testObject.saveReservation(reservationDTO);
+  }
 
-    @Test
-    public void testSaveReservation() {
-        Long id = 12L;
-        String dateBegin = "2016-09-23";
-        String dateEnd = "2016-09-25";
+  @Test
+  public void testSaveReservation() {
+    Long id = 12L;
+    String dateBegin = "2016-09-23";
+    String dateEnd = "2016-09-25";
+    Integer maxGuest = 4;
+    Integer currentGuest = 3;
 
-        ReservationDto reservationDTO = new ReservationDto(
-                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+    ReservationDto reservationDTO =
+        new ReservationDto(LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        ReservationDto reservationDtoWithId = new ReservationDto(
-                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+    ReservationDto reservationDtoWithId =
+        new ReservationDto(LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
 
-        PersonDto personDTO = new PersonDto();
-        personDTO.setId(id);
-        reservationDTO.setPerson(personDTO);
-        reservationDtoWithId.setPerson(personDTO);
+    PersonDto personDTO = new PersonDto();
+    personDTO.setId(id);
+    reservationDTO.setPerson(personDTO);
+    reservationDtoWithId.setPerson(personDTO);
 
-        RoomDto roomDTO = new RoomDto();
-        roomDTO.setId(id);
-        reservationDTO.setRoom(roomDTO);
-        reservationDtoWithId.setRoom(roomDTO);
-        reservationDtoWithId.setId(id);
+    RoomDto roomDTO = new RoomDto();
+    roomDTO.setId(id);
+    roomDTO.setMaxGuests(currentGuest);
+    reservationDTO.setRoom(roomDTO);
+    reservationDTO.setCurrentGuestsNumber(currentGuest);
+    reservationDtoWithId.setRoom(roomDTO);
+    reservationDtoWithId.setId(id);
 
-        Reservation reservation = new Reservation(
-                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
-        Reservation reservationWithId = new Reservation(
-                LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
-        reservationWithId.setId(id);
+    Reservation reservation = new Reservation(LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+    Reservation reservationWithId =
+        new Reservation(LocalDate.parse(dateBegin), LocalDate.parse(dateEnd));
+    reservationWithId.setId(id);
 
-        Person person = new Person();
-        person.setId(id);
-        Room room = new Room();
-        room.setId(id);
+    Person person = new Person();
+    person.setId(id);
+    Room room = new Room();
+    room.setId(id);
+    room.setMaxGuests(maxGuest);
 
         when(personRepository.findById(id)).thenReturn(
                 Optional.of(person));
@@ -221,16 +225,18 @@ public class ReservationServiceImplTest {
         when(roomRepository.findIntersectingReservation(
                 room, reservationDTO.getDateBegin(), reservationDTO.getDateEnd())).thenReturn(0);
 
-        when(mapperFacade.map(reservationDTO, Reservation.class)).thenReturn(reservation);
-        reservation.setPerson(person);
-        reservation.setRoom(room);
+    when(mapperFacade.map(reservationDTO, Reservation.class)).thenReturn(reservation);
+    reservation.setPerson(person);
+    reservation.setRoom(room);
+    reservation.setCurrentGuestsNumber(currentGuest);
 
-        reservationWithId.setPerson(person);
-        reservationWithId.setRoom(room);
-        when(reservationRepository.save(reservation)).thenReturn(reservationWithId);
+    reservationWithId.setPerson(person);
+    reservationWithId.setRoom(room);
+    reservationWithId.setCurrentGuestsNumber(currentGuest);
+    when(reservationRepository.save(reservation)).thenReturn(reservationWithId);
 
-        assertEquals(id, testObject.saveReservation(reservationDTO));
-    }
+    assertEquals(id, testObject.saveReservation(reservationDTO));
+  }
 
 
 
@@ -241,7 +247,7 @@ public class ReservationServiceImplTest {
                 new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23"))));
         Mockito.doNothing().when(reservationRepository).deleteById(id);
 
-        assertEquals(id, testObject.deleteReservation(id));
-    }
+    assertEquals(id, testObject.deleteReservation(id));
+  }
 
 }
