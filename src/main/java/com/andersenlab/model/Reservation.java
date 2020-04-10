@@ -9,42 +9,48 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-/**Класс представляет собой бронирование номера.
- @author Артемьев Р.А.
- @version 05.03.2020 */
+/**
+ * Класс представляет собой бронирование номера.
+ * 
+ * @author Артемьев Р.А.
+ * @version 05.03.2020
+ */
 @Entity
 @Table(name = "reservation")
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = {"person","room"})
+@EqualsAndHashCode(exclude = {"person", "room"})
 public class Reservation {
 
-    @Id
-    @SequenceGenerator(name = "reservationSeq", sequenceName = "reservation_seq",
-            allocationSize = 1, initialValue = 3 )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservationSeq")
-    private Long id;
+  @Id
+  @SequenceGenerator(name = "reservationSeq", sequenceName = "reservation_seq", allocationSize = 1,
+      initialValue = 3)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservationSeq")
+  private Long id;
 
-    @Version
-    private Integer version;
+  @Version
+  private Integer version;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
-    private Person person;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "person_id")
+  private Person person;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "room_id")
+  private Room room;
 
-    @Column(name = "date_begin")
-    private LocalDate dateBegin;
+  @Column(name = "date_begin")
+  private LocalDate dateBegin;
 
-    @Column(name = "date_end")
-    private LocalDate dateEnd;
+  @Column(name = "date_end")
+  private LocalDate dateEnd;
 
-    public Reservation(LocalDate dateBegin, LocalDate dateEnd) {
-        this.dateBegin = dateBegin;
-        this.dateEnd = dateEnd;
-    }
+  @Column(name = "current_guests_number")
+  private Integer currentGuestsNumber;
+
+  public Reservation(LocalDate dateBegin, LocalDate dateEnd) {
+    this.dateBegin = dateBegin;
+    this.dateEnd = dateEnd;
+  }
 
 }

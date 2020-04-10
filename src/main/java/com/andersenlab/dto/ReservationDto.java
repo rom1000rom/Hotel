@@ -15,7 +15,8 @@ public class ReservationDto {
 
   /*
    * Аннотация позволяет избежать бесконечной рекурсии при отображении объектного
-   * поля(родительского) в JSON */
+   * поля(родительского) в JSON
+   */
   @JsonBackReference(value = "person - reservation")
   @NotNull
   private PersonDto person;
@@ -29,6 +30,9 @@ public class ReservationDto {
 
   @NotNull
   private LocalDate dateEnd;
+
+  @NotNull
+  private Integer currentGuestsNumber;
 
   public ReservationDto(LocalDate dateBegin, LocalDate dateEnd) {
     this.dateBegin = dateBegin;
