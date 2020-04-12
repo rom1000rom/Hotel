@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1585308384353-56" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="surname" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="surname"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-57" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="date_of_birth" type="DATE"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="date_of_birth"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-58" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="country" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="country"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-59" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="city" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="city"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-60" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="street" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="street"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-61" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="house" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="house"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-62" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="apartment" type="INTEGER"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="apartment"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1585308384353-63" author="roman_artemev">
+        <addColumn tableName="person">
+            <column name="path_to_photo" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <rollback>
+            <dropColumn tableName="person" columnName="path_to_photo"/>
+        </rollback>
+    </changeSet>
+
+
+
+</databaseChangeLog>

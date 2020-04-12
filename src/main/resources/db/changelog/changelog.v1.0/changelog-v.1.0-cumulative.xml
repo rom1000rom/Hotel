@@ -15,6 +15,9 @@
     <include file="v1.0_05_add_fields_to_room.xml"
              relativeToChangelogFile="true" />
 
+    <include file="v1.0_06_add_fields_to_person.xml"
+             relativeToChangelogFile="true" />
+
     <include file= "v1.0_04_add_test_data.xml"
              relativeToChangelogFile="true"/>
 

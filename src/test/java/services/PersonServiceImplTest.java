@@ -3,11 +3,9 @@ package services;
 
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dto.PersonDto;
-import com.andersenlab.dto.PersonRegistartionDto;
-import com.andersenlab.dto.ReservationDto;
+import com.andersenlab.dto.PersonRegistrationDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
-import com.andersenlab.model.Reservation;
 import com.andersenlab.service.PersonService;
 import com.andersenlab.service.impl.PersonServiceImpl;
 import ma.glasnost.orika.MapperFacade;
@@ -101,33 +99,32 @@ public class PersonServiceImplTest {
     @Test
     public void testSavePerson() {
         Long id = 12L;
-        PersonRegistartionDto personRegistartionDto = new PersonRegistartionDto("TEST" );
+        PersonRegistrationDto personRegistrationDto = new PersonRegistrationDto("TEST" );
         Person person = new Person("TEST");
 
         Person personWithId = new Person("TEST");
         personWithId.setId(id);
 
-        when(mapperFacade.map(personRegistartionDto, Person.class)).thenReturn(person);
+        when(mapperFacade.map(personRegistrationDto, Person.class)).thenReturn(person);
         when(personRepository.save(person)).thenReturn(personWithId);
 
-        assertEquals(id, testObject.savePerson(personRegistartionDto));
+        assertEquals(id, testObject.savePerson(personRegistrationDto));
     }
 
     @Test
     public void testUpdatePerson() {
         Long id = 12L;
-        PersonRegistartionDto personRegistartionDto = new PersonRegistartionDto("TEST_NEW" );
-        personRegistartionDto.setId(id);
+        PersonRegistrationDto personRegistrationDto = new PersonRegistrationDto("TEST_NEW" );
         Person person = new Person("TEST");
         person.setId(id);
 
         when(personRepository.findById(id)).thenReturn(
                 Optional.of(person));
-        person.setPersonName("TEST_NEW");
+        person.setName("TEST_NEW");
         when(personRepository.save(person)).thenReturn(person);
-        when(mapperFacade.map(person, PersonRegistartionDto.class)).thenReturn(personRegistartionDto);
+        when(mapperFacade.map(person, PersonRegistrationDto.class)).thenReturn(personRegistrationDto);
 
-        assertEquals(personRegistartionDto, testObject.updatePerson(personRegistartionDto));
+        assertEquals(personRegistrationDto, testObject.updatePerson(personRegistrationDto, id));
     }
 
     @Test

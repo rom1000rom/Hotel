@@ -3,7 +3,7 @@ package com.andersenlab.service;
 
 
 import com.andersenlab.dto.PersonDto;
-import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.PersonRegistrationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,9 +23,9 @@ public interface PersonService {
      PersonDto findPersonById(Long id);
 
      /**Метод сохраняет объект пользователя
-      @param personRegistartionDto объект с данными пользователя, которого нужно сохранить
+      @param personRegistrationDto объект с данными пользователя, которого нужно сохранить
       @return id объекта пользователя в базе*/
-      Long savePerson(PersonRegistartionDto personRegistartionDto);
+      Long savePerson(PersonRegistrationDto personRegistrationDto);
 
      /**Метод удаляет объект пользователя по id
       @param id пользователя, которого нужно удалить
@@ -33,9 +33,10 @@ public interface PersonService {
       Long deletePerson(Long id);
 
     /**Метод обновляет объект пользователя
-     @param personRegistartionDto объект с данными пользователя, которого нужно обновить
+     @param personRegistrationDto объект с данными пользователя, которого нужно обновить
+     @param id id пользователя
      @return объект обновлённого пользователя*/
-    PersonRegistartionDto updatePerson(PersonRegistartionDto personRegistartionDto);
+    PersonRegistrationDto updatePerson(PersonRegistrationDto personRegistrationDto, Long id);
 
     /**Метод добавляет пользователя в чёрный список по id.
      * Если пользователь уже в списке, метод не сделает ничего.

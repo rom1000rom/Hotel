@@ -10,9 +10,17 @@
         <insert tableName="person">
             <column name="admin" value="true"/>
             <column name="blacklisted" value="false"/>
-            <column name="encryted_password"
+            <column name="password"
                     value="$2a$10$aaoYJSmCZLiePRfUEV2MpuLODan4VtZejfEfAkR2gCrXINwe6KpDq"/>
-            <column name="person_name" value="admin"/>
+            <column name="name" value="admin"/>
+            <column name="surname" value="admin"/>
+            <column name="date_of_birth" value="1999-12-01"/>
+            <column name="country" value="Russian Federation"/>
+            <column name="city" value="Chelyabinsk"/>
+            <column name="street" value="Lenin street"/>
+            <column name="house" value="12"/>
+            <column name="apartment" value="24"/>
+            <column name="path_to_photo" value=""/>
             <column name="version" value="0"/>
         </insert>
 
@@ -27,9 +35,17 @@
         <insert tableName="person">
             <column name="admin" value="false"/>
             <column name="blacklisted" value="false"/>
-            <column name="encryted_password"
+            <column name="password"
                     value="$2a$10$osqrS7sBs4rUNs4CFtHemezeBOUK6ibrsN5unwKDJylNsKyXLZP2G"/>
-            <column name="person_name" value="user"/>
+            <column name="name" value="user"/>
+            <column name="surname" value="user"/>
+            <column name="date_of_birth" value="1998-03-11"/>
+            <column name="country" value="Russian Federation"/>
+            <column name="city" value="Chelyabinsk"/>
+            <column name="street" value="Lenin street"/>
+            <column name="house" value="14"/>
+            <column name="apartment" value="36"/>
+            <column name="path_to_photo" value=""/>
             <column name="version" value="0"/>
         </insert>
 

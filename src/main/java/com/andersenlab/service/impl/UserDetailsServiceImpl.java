@@ -32,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName)  {
-        Person appUser = personRepository.findOneByPersonNameLike(userName);
+        Person appUser = personRepository.findOneByNameLike(userName);
 
         if (appUser == null) {
             log.error("User " + userName + " not found!");
@@ -51,8 +51,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         grantList.add(authority);
 
-        return  new User(appUser.getPersonName(),
-                appUser.getEncrytedPassword(), grantList);
+        return  new User(appUser.getName(),
+                appUser.getPassword(), grantList);
     }
 
 }
