@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: controllers.PersonControllerTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.531 s - in controllers.PersonControllerTest

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="roman_artemev" id="1585308384353-2">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="facilities">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="facilitiesPK"/>
+            </column>
+            <column name="facilities_name" type="VARCHAR(255)"/>
+            <column name="facilities_number" type="VARCHAR(255)"/>
+            <column name="facilities_price" type="numeric(19, 2)"/>
+            <column name="version" type="INTEGER"/>
+            <column name="hotel_id" type="BIGINT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="facilities"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="roman_artemev" id="1585308384353-3">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="hotel">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="hotelPK"/>
+            </column>
+            <column name="hotel_name" type="VARCHAR(255)"/>
+            <column name="version" type="INTEGER"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="hotel"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="roman_artemev" id="1585308384353-4">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="invoice">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="invoicePK"/>
+            </column>
+            <column name="date_begin" type="DATE"/>
+            <column name="date_end" type="DATE"/>
+            <column name="invoice_number" type="VARCHAR(255)"/>
+            <column name="version" type="INTEGER"/>
+            <column name="person_id" type="BIGINT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="invoice"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="roman_artemev" id="1585308384353-5">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="person">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="personPK"/>
+            </column>
+            <column name="admin" type="BOOLEAN"/>
+            <column name="blacklisted" type="BOOLEAN"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="version" type="INTEGER"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="person"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="roman_artemev" id="1585308384353-6">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="provided_facilities">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="provided_facilitiesPK"/>
+            </column>
+            <column name="cost_facilities" type="numeric(19, 2)"/>
+            <column name="count_facilities" type="BIGINT"/>
+            <column name="date_facilities" type="DATE"/>
+            <column name="version" type="INTEGER"/>
+            <column name="facilities_id" type="BIGINT"/>
+            <column name="invoice_id" type="BIGINT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="provided_facilities"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="roman_artemev" id="1585308384353-7">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="provided_room">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="provided_roomPK"/>
+            </column>
+            <column name="cost_room" type="numeric(19, 2)"/>
+            <column name="date_room" type="DATE"/>
+            <column name="version" type="INTEGER"/>
+            <column name="invoice_id" type="BIGINT"/>
+            <column name="room_id" type="BIGINT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="provided_room"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="roman_artemev" id="1585308384353-8">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="reservation">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="reservationPK"/>
+            </column>
+            <column name="date_begin" type="DATE"/>
+            <column name="date_end" type="DATE"/>
+            <column name="version" type="INTEGER"/>
+            <column name="person_id" type="BIGINT"/>
+            <column name="room_id" type="BIGINT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="reservation"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="roman_artemev" id="1585308384353-9">
+        <preConditions onFail="MARK_RAN"> </preConditions>
+        <createTable tableName="room">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="roomPK"/>
+            </column>
+            <column name="room_number" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="version" type="INTEGER"/>
+            <column name="hotel_id" type="BIGINT"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="room"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

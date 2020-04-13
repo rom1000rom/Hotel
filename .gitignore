@@ -2,7 +2,7 @@
 # Covers Maven build directory
 # ---------------------------------------------------------------------
 #
-target/
+
 build/
 .gradle/
 gradle-app.setting

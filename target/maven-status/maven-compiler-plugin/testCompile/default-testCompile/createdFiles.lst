@@ -1,0 +1,11 @@
+controllers\PersonControllerTest.class
+services\ReservationServiceImplTest.class
+dao\AbstractDaoTest.class
+services\RoomServiceImplTest.class
+com\andersenlab\dao\HotelRepositoryTest.class
+dao\ReservationRepositoryTest.class
+dao\RoomRepositoryTest.class
+services\PersonServiceImplTest.class
+controllers\RoomControllerTest.class
+dao\PersonRepositoryTest.class
+controllers\ReservarionControllerTest.class

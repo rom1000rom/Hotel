@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<changeSet id="1585308384353-54" author="roman_artemev">
+		<addColumn tableName="room">
+			<column name="max_guests" type="int" defaultValue="0" />
+		</addColumn>
+
+		<rollback>
+			<dropColumn tableName="room" columnName="max_guests" />
+		</rollback>
+	</changeSet>
+
+	<changeSet id="1585308384353-55" author="roman_artemev">
+		<addColumn tableName="room">
+			<column name="price" type="int" defaultValue="0" />
+		</addColumn>
+
+		<rollback>
+			<dropColumn tableName="room" columnName="price" />
+		</rollback>
+	</changeSet>
+
+	<changeSet id="2" author="maksim_sinelnikov">
+		<addColumn schemaName="public" tableName="reservation">
+			<column name="current_guests_number" type="int"
+				defaultValue="0"></column>
+		</addColumn>
+
+		<rollback>
+			<dropColumn tableName="reservation"
+				columnName="current_guests_number" />
+		</rollback>
+	</changeSet>
+
+
+</databaseChangeLog>
