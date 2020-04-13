@@ -85,6 +85,11 @@
         </rollback>
     </changeSet>
 
-
+    <changeSet author="roman_artemev" id="1585308384353-64">
+        <addUniqueConstraint
+                             columnNames="name"
+                             constraintName="const_name"
+                             tableName="person" />
+    </changeSet>
 
 </databaseChangeLog>
