@@ -32,12 +32,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userName)  {
-        Person appUser = personRepository.findOneByPersonNameLike(userName);
+        List<Person> listPerson = personRepository.findByName(userName);
 
-        if (appUser == null) {
+        if (listPerson.isEmpty()) {
             log.error("User " + userName + " not found!");
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");
         }
+        Person appUser = listPerson.get(0);
         log.info("Found User: " + appUser);
 
         GrantedAuthority authority;
@@ -51,8 +52,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         grantList.add(authority);
 
-        return  new User(appUser.getPersonName(),
-                appUser.getEncrytedPassword(), grantList);
+        return  new User(appUser.getName(),
+                appUser.getPassword(), grantList);
     }
 
 }

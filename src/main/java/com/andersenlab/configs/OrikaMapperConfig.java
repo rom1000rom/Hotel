@@ -39,7 +39,7 @@ public class OrikaMapperConfig {
 
     mapperFactory.classMap(Person.class, PersonDto.class).byDefault().register();
 
-    mapperFactory.classMap(Person.class, PersonRegistartionDto.class).byDefault().register();
+    mapperFactory.classMap(Person.class, PersonRegistrationDto.class).byDefault().register();
 
     mapperFactory.classMap(Room.class, RoomDto.class).byDefault().register();
 

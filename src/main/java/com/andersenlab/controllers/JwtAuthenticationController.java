@@ -52,10 +52,10 @@ public class JwtAuthenticationController {
 
         jwtTokenUtil.changeSecret();
 
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        authenticate(authenticationRequest.getName(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
+                .loadUserByUsername(authenticationRequest.getName());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 

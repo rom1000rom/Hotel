@@ -2,7 +2,7 @@ package com.andersenlab.controllers;
 
 
 import com.andersenlab.dto.PersonDto;
-import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.PersonRegistrationDto;
 import com.andersenlab.dto.page.PersonPageDto;
 import com.andersenlab.security.JwtTokenUtil;
 import com.andersenlab.service.PersonService;
@@ -88,14 +88,14 @@ public class PersonController {
     @ApiOperation(value = "Save a new person")
     /*@RequestBody говорит, что параметр будет именно в теле запроса
       @Valid - аннотация, которая активирует механизм валидации для данного бина*/
-    public ResponseEntity<PersonRegistartionDto> savePerson(
-            @RequestBody @Valid PersonRegistartionDto personRegistartionDto)
+    public ResponseEntity<PersonRegistrationDto> savePerson(
+            @RequestBody @Valid PersonRegistrationDto personRegistrationDto)
     {
         //Кодируем пароль перед добавлением в базу
-        personRegistartionDto.setEncrytedPassword(passwordEncoder.encode(
-                personRegistartionDto.getEncrytedPassword()));
-        personRegistartionDto.setId(personService.savePerson(personRegistartionDto));
-        return ResponseEntity.status(201).body(personRegistartionDto);
+        personRegistrationDto.setPassword(passwordEncoder.encode(
+                personRegistrationDto.getPassword()));
+        personService.savePerson(personRegistrationDto);
+        return ResponseEntity.status(201).body(personRegistrationDto);
     }
 
     @DeleteMapping(value = "/{personId}")
@@ -106,14 +106,14 @@ public class PersonController {
     }
 
     @PutMapping
-    @ApiOperation(value = "Update the person name and password",
+    @ApiOperation(value = "Update the person registration data",
             authorizations = { @Authorization(value="apiKey") })
-    public ResponseEntity<PersonRegistartionDto> updatePerson(
-            @RequestBody @Valid PersonRegistartionDto personRegistartionDto) {
-        personRegistartionDto.setEncrytedPassword(passwordEncoder.encode(
-                personRegistartionDto.getEncrytedPassword()));
-
-        return ResponseEntity.ok().body(personService.updatePerson(personRegistartionDto));
+    public ResponseEntity<PersonRegistrationDto> updatePerson(
+            @RequestBody @Valid PersonRegistrationDto personRegistrationDto,
+            @RequestParam("id") Long id ) {
+        personRegistrationDto.setPassword(passwordEncoder.encode(
+                personRegistrationDto.getPassword()));
+        return ResponseEntity.ok().body(personService.updatePerson(personRegistrationDto, id));
     }
 
     @PutMapping(value = "addToBlacklist/{personId}")

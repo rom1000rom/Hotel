@@ -64,8 +64,8 @@
             </column>
             <column name="admin" type="BOOLEAN"/>
             <column name="blacklisted" type="BOOLEAN"/>
-            <column name="encryted_password" type="VARCHAR(255)"/>
-            <column name="person_name" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
             <column name="version" type="INTEGER"/>
         </createTable>
 
