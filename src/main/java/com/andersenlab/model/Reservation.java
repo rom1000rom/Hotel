@@ -20,7 +20,9 @@ import java.time.LocalDate;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "reservationSeq", sequenceName = "reservation_seq",
+            allocationSize = 1, initialValue = 3 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservationSeq")
     private Long id;
 
     @Version
@@ -34,8 +36,10 @@ public class Reservation {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @Column(name = "date_begin")
     private LocalDate dateBegin;
 
+    @Column(name = "date_end")
     private LocalDate dateEnd;
 
     public Reservation(LocalDate dateBegin, LocalDate dateEnd) {

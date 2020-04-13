@@ -2,33 +2,27 @@ package com.andersenlab.model;
 
 
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "room")
-@EqualsAndHashCode(exclude = {"reservations"})
+@EqualsAndHashCode(exclude = {"id","version","reservations"})
+@ToString(exclude = {"reservations", "hotelId"})
 @Data
 @NoArgsConstructor
 public class Room {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name = "roomSeq", sequenceName = "room_seq",
+            allocationSize = 1, initialValue = 11 )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roomSeq")
     private Long id;
 
     @Version
@@ -36,6 +30,12 @@ public class Room {
 
     @Column(name = "room_number", nullable = false)
     private String number;
+
+    @Column(name = "max_guests", nullable = false)
+    private Integer maxGuests;
+
+    @Column(name = "price", nullable = false)
+    private Integer price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id")

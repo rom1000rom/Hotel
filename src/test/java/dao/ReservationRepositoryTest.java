@@ -3,6 +3,7 @@ package dao;
 
 
 import com.andersenlab.dao.ReservationRepository;
+import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Reservation;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import static junit.framework.Assert.assertEquals;
 
 
-public class ReservationRepositoryIT extends AbstractDaoTest
+public class ReservationRepositoryTest extends AbstractDaoTest
 {
     @Autowired
     private ReservationRepository repository;
@@ -24,8 +25,9 @@ public class ReservationRepositoryIT extends AbstractDaoTest
     }
 
     @Test
-    public void savePersonTest(){
-        assertEquals(reservation, repository.findById(reservation.getId()).get());
+    public void savePersonTest() {
+        assertEquals(reservation, repository.findById(reservation.getId()).orElseThrow(() ->
+                new HotelServiceException("Such a reservation does not exist")));
     }
 
     private Reservation createReservation()

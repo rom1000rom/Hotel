@@ -25,10 +25,19 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long JWT_TOKEN_VALIDITY = 5L * 60 * 60;
 
     @Value("${jwt.secret}")
     private String secret;
+
+    @Value("${jwt.logoutSecret}")
+    private String logoutSecret;
+
+    public void changeSecret() {
+        String buf = secret;
+        secret = logoutSecret;
+        logoutSecret = buf;
+    }
 
     // получить имя пользователя из токена jwt
     public String getUsernameFromToken(String token) {

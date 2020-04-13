@@ -3,17 +3,7 @@ package com.andersenlab.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,7 +15,9 @@ import lombok.EqualsAndHashCode;
 public class ProvidedRoom {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@SequenceGenerator( name = "providedRoomSeq", sequenceName = "provided_room_seq",
+			allocationSize = 1, initialValue = 7 )
+	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "providedRoomSeq")
 	private Long id;
 
 	@Version

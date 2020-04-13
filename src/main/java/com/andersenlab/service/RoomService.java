@@ -1,12 +1,13 @@
-package com.andersenlab.services;
+package com.andersenlab.service;
 
 
 
 import com.andersenlab.dto.RoomDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 
-
-import java.util.List;
 
 /**Интерфейс служит для определения сервисных функций по работе с номерами отеля.
  @author Артемьев Р.А.
@@ -14,8 +15,8 @@ import java.util.List;
 public interface RoomService {
 
      /**Метод возвращает список всех номеров.
-     @return список объектов класса RoomDTO*/
-     List<RoomDto> findAllRooms();
+     @return страница объектов класса RoomDTO*/
+     Page<RoomDto> findAllRooms(Pageable pageable);
 
      /**Метод возвращает объект номера по его id
       @param id id номера
@@ -36,4 +37,15 @@ public interface RoomService {
       @param id номера, которого нужно удалить
       @return id удалённого номера*/
       Long deleteRoom(Long id);
+
+     /** Метод ищет свободные номера по заданным параметрам
+      * @param dateBegin дата заезда
+      * @param dateEnd дата отъезда
+      * @param minPrice минимальная цена номера
+      * @param maxPrice максимальная цена номера
+      * @param guests количество гостей
+      * @return страница объектов класса RoomDTO, свободных номеров*/
+     Page<RoomDto> findAvailableRooms(Pageable pageable, LocalDate dateBegin, LocalDate dateEnd,
+                                      Integer minPrice, Integer maxPrice, Integer guests);
+
 }

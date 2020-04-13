@@ -1,7 +1,9 @@
-package com.andersenlab.services.impl;
+package com.andersenlab.service.impl;
 
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.model.Person;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**Класс позволяет получить из источника данных объект пользователя и сформировать из него
  объект UserDetails который будет использоваться контекстом Spring Security.
@@ -27,16 +28,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PersonRepository personRepository;
 
-    private static final Logger log = Logger.getLogger(UserDetailsServiceImpl .class.getName());
+    private static final Logger log = LogManager.getLogger(UserDetailsServiceImpl.class);
 
     @Override
     public UserDetails loadUserByUsername(String userName)  {
-        Person appUser = personRepository.findOneByPersonNameLike(userName);
+        List<Person> listPerson = personRepository.findByName(userName);
 
-        if (appUser == null) {
-            log.info("User " + userName + " not found!");
+        if (listPerson.isEmpty()) {
+            log.error("User " + userName + " not found!");
             throw new UsernameNotFoundException("User " + userName + " was not found in the database");
         }
+        Person appUser = listPerson.get(0);
         log.info("Found User: " + appUser);
 
         GrantedAuthority authority;
@@ -50,8 +52,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         grantList.add(authority);
 
-        return  new User(appUser.getPersonName(),
-                appUser.getEncrytedPassword(), grantList);
+        return  new User(appUser.getName(),
+                appUser.getPassword(), grantList);
     }
 
 }

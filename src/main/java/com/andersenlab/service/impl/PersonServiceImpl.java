@@ -1,17 +1,18 @@
-package com.andersenlab.services.impl;
+package com.andersenlab.service.impl;
 
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dto.PersonDto;
-import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.PersonRegistrationDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
-import com.andersenlab.services.PersonService;
+import com.andersenlab.service.PersonService;
 import ma.glasnost.orika.MapperFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 /**Класс реализует сервисные функции по работе с пользователями.
@@ -30,9 +31,11 @@ public class PersonServiceImpl implements PersonService {
     private static final String EXCEPTION_MESSAGE = "Such a person does not exist";
 
     @Override
-    public List<PersonDto> findAllPersons() {
-        List<Person> listPerson = (List<Person>)personRepository.findAll();
-        return mapperFacade.mapAsList(listPerson, PersonDto.class);
+    public Page<PersonDto> findAllPersons(Pageable pageable) {
+        Page<Person> listPerson = personRepository.findAll(pageable);
+        return new PageImpl<>(
+                mapperFacade.mapAsList(listPerson, PersonDto.class),
+                pageable, listPerson.getTotalElements());
     }
 
     @Override
@@ -43,8 +46,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Long savePerson(PersonRegistartionDto personRegistartionDto) {
-        return personRepository.save(mapperFacade.map(personRegistartionDto, Person.class)).getId();
+    public Long savePerson(PersonRegistrationDto personRegistrationDto) {
+        return personRepository.save(mapperFacade.map(personRegistrationDto, Person.class)).getId();
     }
 
     @Override
@@ -59,14 +62,19 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonRegistartionDto updatePerson(PersonRegistartionDto personRegistartionDto) {
-        Person person = personRepository.findById(personRegistartionDto.getId()).orElseThrow(() ->
+    public PersonRegistrationDto updatePerson(PersonRegistrationDto personRegistrationDto, Long id) {
+        Person person = personRepository.findById(id).orElseThrow(() ->
                 new HotelServiceException(EXCEPTION_MESSAGE));
-
-        person.setPersonName(personRegistartionDto.getPersonName());
-        person.setEncrytedPassword(personRegistartionDto.getEncrytedPassword());
-
-            return mapperFacade.map(personRepository.save(person), PersonRegistartionDto.class);
+        person.setName(personRegistrationDto.getName());
+        person.setSurname(personRegistrationDto.getSurname());
+        person.setPassword(personRegistrationDto.getPassword());
+        person.setCountry(personRegistrationDto.getCountry());
+        person.setCity(personRegistrationDto.getCity());
+        person.setStreet(personRegistrationDto.getStreet());
+        person.setHouse(personRegistrationDto.getHouse());
+        person.setApartment(personRegistrationDto.getApartment());
+        person.setPathToPhoto(personRegistrationDto.getPathToPhoto());
+            return mapperFacade.map(personRepository.save(person), PersonRegistrationDto.class);
     }
 
     @Override

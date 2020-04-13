@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -16,14 +17,38 @@ import java.util.List;
 @EqualsAndHashCode(exclude = {"reservations"})
 public class PersonDto {
 
+    @NotNull
     private Long id;
 
     @NotNull
-    private String personName;
+    private String name;
+
+    @NotNull
+    private String surname;
 
     private Boolean blacklisted = false;
 
     private Boolean admin = false;
+
+    @NotNull
+    private LocalDate dateOfBirth;
+
+    @NotNull
+    private String country;
+
+    @NotNull
+    private String city;
+
+    @NotNull
+    private String street;
+
+    @NotNull
+    private String house;
+
+    @NotNull
+    private Integer apartment;
+
+    private String pathToPhoto;
 
     /*Аннотация позволяет избежать бесконечной рекурсии при отображении поля -
     коллекции(дочернего) в JSON*/
@@ -31,6 +56,6 @@ public class PersonDto {
     private List<ReservationDto> reservations;
 
     public PersonDto(String personName) {
-        this.personName = personName;
+        this.name = personName;
     }
 }

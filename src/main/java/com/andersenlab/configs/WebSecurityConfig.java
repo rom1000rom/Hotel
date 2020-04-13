@@ -3,7 +3,7 @@ package com.andersenlab.configs;
 
 import com.andersenlab.security.JwtAuthenticationEntryPoint;
 import com.andersenlab.security.JwtRequestFilter;
-import com.andersenlab.services.impl.UserDetailsServiceImpl;
+import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -59,10 +58,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate")
+                .authorizeRequests().antMatchers("/authenticate",
+                "/persons/registration")
                 .permitAll()
                 .anyRequest().authenticated().and().
-                // убедитесь, что мы используем сессию без сохранения состояния;
                 // сессия не будет использоваться для хранения состояния пользователя.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -71,12 +70,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
-                "/configuration/**", "/swagger-ui.html", "/webjars/**", "classpath:/META-INF/resources/",
-        "/META-INF/resources/webjars/");
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
+                "/swagger-ui.html", "/webjars/**", "classpath:/META-INF/resources/",
+                "/META-INF/resources/webjars/");
     }
 }
+
+
 
 
 

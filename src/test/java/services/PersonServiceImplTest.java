@@ -3,11 +3,11 @@ package services;
 
 import com.andersenlab.dao.PersonRepository;
 import com.andersenlab.dto.PersonDto;
-import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.PersonRegistrationDto;
 import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
-import com.andersenlab.services.PersonService;
-import com.andersenlab.services.impl.PersonServiceImpl;
+import com.andersenlab.service.PersonService;
+import com.andersenlab.service.impl.PersonServiceImpl;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +16,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,20 +51,27 @@ public class PersonServiceImplTest {
     @Test
     public void testFindAllPersons() {
         //Подготавливаю ожидаемый результат
+        int pageNum = 0;
+        int size = 2;
+        Pageable pageable = PageRequest.of(pageNum, size);
         List<Person> listPerson = new ArrayList<>();
         listPerson.add(new Person("TEST"));
         listPerson.add(new Person("TEST2"));
+        Page<Person> pagePerson = new PageImpl<>(
+                listPerson, pageable, listPerson.size());
         //Настраиваю поведение мока
-        when(personRepository.findAll()).thenReturn(listPerson);
+        when(personRepository.findAll(pageable)).thenReturn(pagePerson);
 
         List<PersonDto> listPersonDto = new ArrayList<>();
         listPersonDto.add(new PersonDto("TEST"));
         listPersonDto.add(new PersonDto("TEST2"));
+        Page<PersonDto> page = new PageImpl<>(
+                listPersonDto, pageable, listPerson.size());
 
-        when(mapperFacade.mapAsList(listPerson, PersonDto.class)).thenReturn(listPersonDto);
+        when(mapperFacade.mapAsList(pagePerson, PersonDto.class)).thenReturn(listPersonDto);
 
         //Проверяю поведение тестируемого объекта
-        assertEquals(listPersonDto, testObject.findAllPersons());
+        assertEquals(page, testObject.findAllPersons(pageable));
     }
 
     @Test
@@ -88,33 +99,32 @@ public class PersonServiceImplTest {
     @Test
     public void testSavePerson() {
         Long id = 12L;
-        PersonRegistartionDto personRegistartionDto = new PersonRegistartionDto("TEST" );
+        PersonRegistrationDto personRegistrationDto = new PersonRegistrationDto("TEST" );
         Person person = new Person("TEST");
 
         Person personWithId = new Person("TEST");
         personWithId.setId(id);
 
-        when(mapperFacade.map(personRegistartionDto, Person.class)).thenReturn(person);
+        when(mapperFacade.map(personRegistrationDto, Person.class)).thenReturn(person);
         when(personRepository.save(person)).thenReturn(personWithId);
 
-        assertEquals(id, testObject.savePerson(personRegistartionDto));
+        assertEquals(id, testObject.savePerson(personRegistrationDto));
     }
 
     @Test
     public void testUpdatePerson() {
         Long id = 12L;
-        PersonRegistartionDto personRegistartionDto = new PersonRegistartionDto("TEST_NEW" );
-        personRegistartionDto.setId(id);
+        PersonRegistrationDto personRegistrationDto = new PersonRegistrationDto("TEST_NEW" );
         Person person = new Person("TEST");
         person.setId(id);
 
         when(personRepository.findById(id)).thenReturn(
                 Optional.of(person));
-        person.setPersonName("TEST_NEW");
+        person.setName("TEST_NEW");
         when(personRepository.save(person)).thenReturn(person);
-        when(mapperFacade.map(person, PersonRegistartionDto.class)).thenReturn(personRegistartionDto);
+        when(mapperFacade.map(person, PersonRegistrationDto.class)).thenReturn(personRegistrationDto);
 
-        assertEquals(personRegistartionDto, testObject.updatePerson(personRegistartionDto));
+        assertEquals(personRegistrationDto, testObject.updatePerson(personRegistrationDto, id));
     }
 
     @Test

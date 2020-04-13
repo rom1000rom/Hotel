@@ -9,8 +9,8 @@ import com.andersenlab.exceptions.HotelServiceException;
 import com.andersenlab.model.Person;
 import com.andersenlab.model.Reservation;
 import com.andersenlab.model.Room;
-import com.andersenlab.services.ReservationService;
-import com.andersenlab.services.impl.ReservationServiceImpl;
+import com.andersenlab.service.ReservationService;
+import com.andersenlab.service.impl.ReservationServiceImpl;
 import ma.glasnost.orika.MapperFacade;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +20,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,7 +32,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -56,23 +60,86 @@ public class ReservationServiceImplTest {
     @Test
     public void testFindAllReservation() {
         //Подготавливаю ожидаемый результат
+        int pageNum = 0;
+        int size = 2;
+        Pageable pageable = PageRequest.of(pageNum, size);
         List<Reservation> listReservation = new ArrayList<>();
         listReservation.add(new Reservation(LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
         listReservation.add(new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
+        Page<Reservation> pageReservation = new PageImpl<>(
+                listReservation, pageable, listReservation.size());
         //Настраиваю поведение мока
-        when(reservationRepository.findAll()).thenReturn(listReservation);
+        when(reservationRepository.findAll(pageable)).thenReturn(pageReservation);
 
         List<ReservationDto> listReservationDto = new ArrayList<>();
         listReservationDto.add(new ReservationDto(
                 LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
         listReservationDto.add(new ReservationDto(
                 LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
+        Page<ReservationDto> page = new PageImpl<>(
+                listReservationDto, pageable, listReservation.size());
+        when(mapperFacade.mapAsList(pageReservation, ReservationDto.class))
+                .thenReturn(listReservationDto);
+        //Проверяю поведение тестируемого объекта
+        assertEquals(page, testObject.findAllReservations(pageable));
+    }
+
+    @Test
+    public void testFindReservationsByRoomId() {
+        Long id = 10L;
+        int pageNum = 0;
+        int size = 2;
+        Room room = new Room("TEST");
+        room.setId(id);
+        Pageable pageable = PageRequest.of(pageNum, size);
+        List<Reservation> listReservation = new ArrayList<>();
+        listReservation.add(new Reservation(LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
+        listReservation.add(new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
+
+        when(roomRepository.findById(id)).thenReturn(Optional.of(room));
+        when(reservationRepository.findByRoom(room, pageable)).thenReturn(listReservation);
+
+        List<ReservationDto> listReservationDto = new ArrayList<>();
+        listReservationDto.add(new ReservationDto(
+                LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
+        listReservationDto.add(new ReservationDto(
+                LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
+        Page<ReservationDto> page = new PageImpl<>(
+               listReservationDto, pageable, listReservation.size());
 
         when(mapperFacade.mapAsList(listReservation, ReservationDto.class))
                 .thenReturn(listReservationDto);
         //Проверяю поведение тестируемого объекта
-        assertEquals(listReservationDto, testObject.findAllReservations());
+        assertEquals(page, testObject.findReservationsByRoomId(id, pageable));
+    }
 
+    @Test
+    public void testFindReservationsByPersonId() {
+        Long id = 10L;
+        int pageNum = 0;
+        int size = 2;
+        Person person = new Person("TEST");
+        person.setId(id);
+        Pageable pageable = PageRequest.of(pageNum, size);
+        List<Reservation> listReservation = new ArrayList<>();
+        listReservation.add(new Reservation(LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
+        listReservation.add(new Reservation(LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
+
+        when(personRepository.findById(id)).thenReturn(Optional.of(person));
+        when(reservationRepository.findByPerson(person, pageable)).thenReturn(listReservation);
+
+        List<ReservationDto> listReservationDto = new ArrayList<>();
+        listReservationDto.add(new ReservationDto(
+                LocalDate.parse("2016-09-19"), LocalDate.parse("2016-09-21")));
+        listReservationDto.add(new ReservationDto(
+                LocalDate.parse("2016-09-22"), LocalDate.parse("2016-09-23")));
+        Page<ReservationDto> page = new PageImpl<>(
+                listReservationDto, pageable, listReservation.size());
+
+        when(mapperFacade.mapAsList(listReservation, ReservationDto.class))
+                .thenReturn(listReservationDto);
+        //Проверяю поведение тестируемого объекта
+        assertEquals(page, testObject.findReservationsByPersonId(id, pageable));
     }
 
     @Test
@@ -151,8 +218,8 @@ public class ReservationServiceImplTest {
                 Optional.of(person));
         when(roomRepository.findById(id)).thenReturn(
                 Optional.of(room));
-        when(roomRepository.findIntersectingReservations(
-                room.getId(), reservationDTO.getDateBegin(), reservationDTO.getDateEnd())).thenReturn(0);
+        when(roomRepository.findIntersectingReservation(
+                room, reservationDTO.getDateBegin(), reservationDTO.getDateEnd())).thenReturn(0);
 
         when(mapperFacade.map(reservationDTO, Reservation.class)).thenReturn(reservation);
         reservation.setPerson(person);
@@ -164,6 +231,7 @@ public class ReservationServiceImplTest {
 
         assertEquals(id, testObject.saveReservation(reservationDTO));
     }
+
 
 
     @Test

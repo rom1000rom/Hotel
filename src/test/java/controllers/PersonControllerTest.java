@@ -5,17 +5,26 @@ package controllers;
 import com.andersenlab.App;
 import com.andersenlab.controllers.PersonController;
 import com.andersenlab.dto.PersonDto;
-import com.andersenlab.dto.PersonRegistartionDto;
+import com.andersenlab.dto.PersonRegistrationDto;
+import com.andersenlab.dto.page.PersonPageDto;
 import com.andersenlab.security.JwtTokenUtil;
-import com.andersenlab.services.PersonService;
-import com.andersenlab.services.impl.UserDetailsServiceImpl;
+import com.andersenlab.service.PersonService;
+import com.andersenlab.service.impl.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import ma.glasnost.orika.MapperFacade;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -23,6 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,27 +61,47 @@ public class PersonControllerTest {
     private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @MockBean
+    private MapperFacade mapperFacade;
+
+    @MockBean
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeClass
+    public static void setUpClass()
+    {
+        objectMapper = new ObjectMapper();
+        //Это позволяет корректно отражать LocalDate библиотекой Jackson
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
 
     @Test
     public void testFindAllPersons() throws Exception
     {
-        //Подготавливаю ожидаемый результат
+        Integer pageNum = 0;
+        Integer pageSize = 2;
         List<PersonDto> listPersonDto = new ArrayList<>();
         listPersonDto.add(new PersonDto("TEST"));
         listPersonDto.add(new PersonDto("TEST2"));
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Page<PersonDto> personPage = new PageImpl<>(
+                listPersonDto, pageable, listPersonDto.size());
         //Настраиваю поведение мока
-        when(personService.findAllPersons()).thenReturn(listPersonDto);
+        when(personService.findAllPersons(pageable)).thenReturn(personPage);
+        PersonPageDto result = new PersonPageDto();
+        mapperFacade.map(personPage, result);
 
-        mockMvc.perform(get("/persons"))
+        mockMvc.perform(get("/persons")
+                .param("pageNumber", pageNum.toString())
+                .param("pageSize", pageSize.toString()))
                 .andExpect(status().isOk())//Проверяем Http-ответ
                 .andExpect(content().string(
-                        objectMapper.writeValueAsString(listPersonDto)));//Конвертируем в json
+                        objectMapper.writeValueAsString(result)));//Конвертируем в json
     }
 
     @Test
@@ -91,23 +121,30 @@ public class PersonControllerTest {
     @Test
     public void testSavePerson() throws Exception
     {
-        Long id = 0L;
-        String password = "password";
-        String encrytedPassword = "ENCR_PASSWORD";
+        Long id = 10L;
+        String name = "TEST";
+        String surname = "TEST";
+        LocalDate dateOfBirth = LocalDate.parse("2016-09-22");
+        String country = "TEST";
+        String city = "TEST";
+        String street = "TEST";
+        String house = "TEST";
+        Integer apartment = 1;
+        String pas = "password";
+        String encrytedPas = "ENCR_PASSWORD";
 
-        PersonRegistartionDto actual= new PersonRegistartionDto("TEST_NAME");
-        actual.setEncrytedPassword(password);
-        PersonRegistartionDto expected  = new PersonRegistartionDto("TEST_NAME");
+        PersonRegistrationDto actual= new PersonRegistrationDto(name, surname, pas, dateOfBirth,
+                country, city, street, house, apartment, "");
 
-        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);
-        expected.setEncrytedPassword(encrytedPassword);
+        when(passwordEncoder.encode(actual.getPassword())).thenReturn(encrytedPas);
+        PersonRegistrationDto expected= new PersonRegistrationDto(name, surname, encrytedPas,
+                dateOfBirth, country, city, street, house, apartment, "");
         when(personService.savePerson(actual)).thenReturn(id);
-        expected.setId(id);
 
-        mockMvc.perform(post("/persons")
+        mockMvc.perform(post("/persons/registration")
                 .content(objectMapper.writeValueAsString(actual))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(201))//Проверяем Http-ответ
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+
                 .andExpect(content().string(
                         objectMapper.writeValueAsString(expected)));//Конвертируем в json
     }
@@ -128,22 +165,30 @@ public class PersonControllerTest {
     public void testUpdatePerson() throws Exception
     {
         Long id = 10L;
-        String password = "password";
-        String encrytedPassword = "ENCR_PASSWORD";
+        String name = "TEST";
+        String surname = "TEST";
+        LocalDate dateOfBirth = LocalDate.parse("2016-09-22");
+        String country = "TEST";
+        String city = "TEST";
+        String street = "TEST";
+        String house = "TEST";
+        Integer apartment = 1;
+        String pas = "password";
+        String encrytedPas = "ENCR_PASSWORD";
 
-        PersonRegistartionDto actual= new PersonRegistartionDto("TEST_NAME_NEW");
-        actual.setEncrytedPassword(password);
-        actual.setId(id);
-        PersonRegistartionDto expected  = new PersonRegistartionDto("TEST_NAME_NEW");
-        expected.setId(id);
+        PersonRegistrationDto actual= new PersonRegistrationDto(name, surname, pas, dateOfBirth,
+                country, city, street, house, apartment, "");
 
-        when(passwordEncoder.encode(actual.getEncrytedPassword())).thenReturn(encrytedPassword);
-        expected.setEncrytedPassword(encrytedPassword);
-        when(personService.updatePerson(expected)).thenReturn(expected);
+        when(passwordEncoder.encode(actual.getPassword())).thenReturn(encrytedPas);
+        PersonRegistrationDto expected= new PersonRegistrationDto(name, surname, encrytedPas,
+                dateOfBirth, country, city, street, house, apartment, "");
+        when(personService.updatePerson(expected, id)).thenReturn(expected);
 
         mockMvc.perform(put("/persons")
+                .param("id", id.toString()
+                )
                 .content(objectMapper.writeValueAsString(actual))
-                .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
                         objectMapper.writeValueAsString(expected)));//Конвертируем в json
